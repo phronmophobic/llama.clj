@@ -1,0 +1,16 @@
+{:paths ["src" "resources"]
+ :deps {org.clojure/clojure {:mvn/version "1.12.0-alpha3"}
+        net.java.dev.jna/jna {:mvn/version "5.13.0"}
+        com.phronemophobic/clong {;; :mvn/version "1.0"
+                                  :local/root "../clong"
+                                  }}
+ 
+ :aliases
+ {:project
+  {:jvm-opts ["-Djna.library.path=/Users/adrian/workspace/llama.cpp/build-metal"
+              "-Djava.library.path=/Users/adrian/workspace/llama.cpp/build-metal"
+              ;; "-Djava.library.path=../llvm-project/build/out/lib"
+              ;; "-Djna.library.path=../llvm-project/build/out/lib"
+              ]
+   :extra-deps {org.bytedeco/llvm-platform {:mvn/version "16.0.4-1.5.9"}
+                }}}}
