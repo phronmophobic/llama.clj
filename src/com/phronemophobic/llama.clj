@@ -55,7 +55,9 @@
 
 (defn ^:private llm-prompt [model-path prompt]
   (raw/llama_backend_init 0)
-  (let [params (raw/llama_context_default_params)
+  (let [params (doto (raw/llama_context_default_params)
+                 ;; (.writeField "n_gpu_layers" (int 1))
+                 )
         model (raw/llama_load_model_from_file model-path params)
         _(assert model)
         context (raw/llama_new_context_with_model model params)
