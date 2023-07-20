@@ -4,7 +4,11 @@
         com.phronemophobic/clong {:mvn/version "1.1"}}
  
  :aliases
- {:project
+ {:build {:deps {io.github.clojure/tools.build {:git/tag "v0.8.3" :git/sha "0d20256"}
+                 slipset/deps-deploy {:mvn/version "RELEASE"}}
+          :ns-default build}
+
+  :project
   {:jvm-opts [;; "-Djna.library.path=/Users/adrian/workspace/llama.cpp/build-metal"
               ;; "-Djava.library.path=/Users/adrian/workspace/llama.cpp/build-metal"
 
