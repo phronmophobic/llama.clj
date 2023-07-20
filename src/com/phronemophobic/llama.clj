@@ -3,14 +3,15 @@
   (:import java.lang.ref.Cleaner
            com.sun.jna.Memory
            com.sun.jna.Pointer
-           com.sun.jna.ptr.IntByReference           
+           com.sun.jna.ptr.IntByReference
+           com.sun.jna.ptr.FloatByReference
            com.sun.jna.Structure))
 
 (raw/import-structs!)
 
 (def token-data-size (.size (llama_token_data.)))
 
-(defn ^:private generate-tokens [ctx token-buf num-tokens]
+(defn ^:private generate-tokens [ctx ^Memory token-buf num-tokens]
   (let [max-context-size (raw/llama_n_ctx ctx)]
     (loop [num-tokens num-tokens]
       (let [token-count (raw/llama_get_kv_cache_token_count ctx)]
@@ -18,7 +19,7 @@
           (do
             (raw/llama_eval ctx token-buf num-tokens token-count 1)
             (let [n-vocab (raw/llama_n_vocab ctx)
-                  logits (-> (raw/llama_get_logits ctx)
+                  logits (-> ^FloatByReference (raw/llama_get_logits ctx)
                              .getPointer
                              (.getFloatArray 0 n-vocab))
                 
@@ -55,7 +56,7 @@
 
 (defn ^:private llm-prompt [model-path prompt]
   (raw/llama_backend_init 0)
-  (let [params (doto (raw/llama_context_default_params)
+  (let [params (doto ^llama_context_params (raw/llama_context_default_params)
                  ;; (.writeField "n_gpu_layers" (int 1))
                  )
         model (raw/llama_load_model_from_file model-path params)
