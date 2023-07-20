@@ -14,7 +14,7 @@ llama.clj relies on the excellent [llama.cpp](https://github.com/ggerganov/llama
 
 The llama.cpp shared library can either be compiled locally or can be included as a standalone maven dependency.
 
-The easiest method is include the corresponding native dependency for your platform (including multiple is fine, but will increase the size of your dependencies).
+The easiest method is to include the corresponding native dependency for your platform (including multiple is fine, but will increase the size of your dependencies).
 
 ```clojure
 com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "e274269fd87aac0f71ab02a2c4676f60fd6198cf"}
