@@ -13,7 +13,8 @@
 
 (defn ^:private generate-tokens [ctx ^Memory token-buf num-tokens]
   (let [max-context-size (raw/llama_n_ctx ctx)]
-    (loop [num-tokens num-tokens]
+    (loop [num-tokens num-tokens
+           candidates-buf nil]
       (let [token-count (raw/llama_get_kv_cache_token_count ctx)]
         (if (< token-count max-context-size)
           (do
@@ -22,19 +23,21 @@
                   logits (-> ^FloatByReference (raw/llama_get_logits ctx)
                              .getPointer
                              (.getFloatArray 0 n-vocab))
-                
-                  candidates-buf (Memory. (* token-data-size n-vocab))]
+
+                  buf-size (* token-data-size n-vocab)
+                  candidates-buf (if (and candidates-buf
+                                          (>= (.size ^Memory candidates-buf)
+                                              buf-size))
+                                   candidates-buf
+                                   (Memory. buf-size))]
               (doseq [i (range n-vocab)]
-                (let [struct-mem (.share candidates-buf
-                                         (* i token-data-size)
-                                         token-data-size)
-                      candidate (Structure/newInstance llama_token_dataByReference struct-mem)
+                (let [base-addr (* i token-data-size)
                       id i
                       logit (aget logits id)
                       p 0]
-                  (.writeField candidate "id" (int id))
-                  (.writeField candidate "logit" (float logit))
-                  (.writeField candidate "p" (float p))))
+                  (.setInt candidates-buf base-addr id)
+                  (.setFloat candidates-buf (+ base-addr 4) logit)
+                  (.setFloat candidates-buf (+ base-addr 8) 0)))
               (let [candidates-array-head (doto (Structure/newInstance llama_token_dataByReference
                                                                        candidates-buf)
                                             (.read))
@@ -50,7 +53,8 @@
                 (when (not= new-token-id
                             (raw/llama_token_eos))
                   (.setInt token-buf 0 new-token-id)
-                  (recur 1))))))))))
+                  (recur 1
+                         candidates-buf))))))))))
 
 
 
