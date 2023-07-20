@@ -5,7 +5,7 @@ A wrapper for [llama.cpp](https://github.com/ggerganov/llama.cpp)
 ## Dependency
 
 ```clojure
-com.phronemophobic/llama-clj {:mvn/version "0.1.0"}
+com.phronemophobic/llama-clj {:mvn/version "0.1"}
 ```
 
 ### Native Dependency
