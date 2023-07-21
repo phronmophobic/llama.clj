@@ -48,12 +48,15 @@ For more complete information about the models that llama.clj can work with, ref
 
 Another good resource for models is [TheBloke](https://huggingface.co/TheBloke) on [huggingface](https://huggingface.co/).
 
+## Quick Start
+
 If you're just looking for a model to try things out, try the 3.5Gb [llama2 7B chat model](https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/tree/main)  from TheBloke. Make sure to check the link for important info like license and use policy.
 
 ```sh
 mkdir -p models
 (cd models && curl -L -O 'https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/resolve/main/llama-2-7b-chat.ggmlv3.q4_0.bin')
-clojure -M -m com.phronemophobic.llama "models/llama-2-7b-chat.ggmlv3.q4_0.bin" "what is 2+2?"
+;; mvn-llama alias pulls precompiled llama.cpp libs from maven
+clojure -M:mvn-llama -m com.phronemophobic.llama "models/llama-2-7b-chat.ggmlv3.q4_0.bin" "what is 2+2?"
 ```
 
 ## Usage
