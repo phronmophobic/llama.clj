@@ -40,9 +40,12 @@ com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "e274269fd87aac0
 
 Clone https://github.com/ggerganov/llama.cpp and follow the instructions for building. Make sure to include the shared library options.
 
+_Note: The llama.cpp ffi bindings are based on the `294f424554c1599784ac9962462fc39ace92d8a5` git commit. Future versions of llama.cpp might not be compatible if breaking changes are made. TODO: include instructions for updating ffi bindings._
+
 For Example:
 
 ```sh
+git checkout 294f424554c1599784ac9962462fc39ace92d8a5
 mkdir build
 cd build
 cmake -DBUILD_SHARED_LIBS=ON ..
