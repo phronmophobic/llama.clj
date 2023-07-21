@@ -13,3 +13,4 @@
 /.socket-repl-port
 .hgignore
 .hg/
+/models
