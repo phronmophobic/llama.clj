@@ -52,7 +52,7 @@ cmake -DBUILD_SHARED_LIBS=ON ..
 cmake --build . --config Release
 ```
 
-Next, include an alias that includes the path where the shared library is located:
+Next, include an alias that includes the path to the directory where the shared library is located:
 ```clojure
 ;; in aliases
 ;; add jvm opt for local llama build.
