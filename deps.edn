@@ -8,6 +8,12 @@
                  slipset/deps-deploy {:mvn/version "RELEASE"}}
           :ns-default build}
 
+  :mvn-llama
+  {:extra-deps
+   {com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "e274269fd87aac0f71ab02a2c4676f60fd6198cf"}
+    com.phronemophobic.cljonda/llama-cpp-darwin-x86-64 {:mvn/version "e274269fd87aac0f71ab02a2c4676f60fd6198cf"}
+    com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "e274269fd87aac0f71ab02a2c4676f60fd6198cf"}}}
+
   :project
   {:jvm-opts [;; "-Djna.library.path=/Users/adrian/workspace/llama.cpp/build-metal"
               ;; "-Djava.library.path=/Users/adrian/workspace/llama.cpp/build-metal"
