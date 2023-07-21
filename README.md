@@ -44,11 +44,11 @@ Next include an alias that includes the path where the shared library is located
 
 ### Obtaining models
 
-For more complete information about models that llama.clj can work with, refer to the [llama.cpp readme](https://github.com/ggerganov/llama.cpp).
+For more complete information about the models that llama.clj can work with, refer to the [llama.cpp readme](https://github.com/ggerganov/llama.cpp).
 
 Another good resource for models is [TheBloke](https://huggingface.co/TheBloke) on [huggingface](https://huggingface.co/).
 
-If you're just looking for a model to try things out, try the 3.5Gb [llama2 7B chat model](https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/tree/main)  from TheBloke.
+If you're just looking for a model to try things out, try the 3.5Gb [llama2 7B chat model](https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/tree/main)  from TheBloke. Make sure to check the link for important info like license and use policy.
 
 ```sh
 mkdir -p models
