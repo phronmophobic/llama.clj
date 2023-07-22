@@ -172,7 +172,7 @@
 
   (def ctx (create-context model-path))
 
-  (def prompt "In the context of llms, what is a logit?")
+  (def prompt "What is clojure?")
   ;; updates context logits
   (llama-update ctx prompt)
 
