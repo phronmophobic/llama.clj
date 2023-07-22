@@ -168,18 +168,28 @@
        (.getFloatArray 0 n-vocab))))
 
 (comment
-  (def model-path "/Users/adrian/workspace/llama.cpp/models/Llama-2-7B-Chat-GGML/llama-2-7b-chat.ggmlv3.q4_0.bin")
+  (def model-path "models/llama-2-7b-chat.ggmlv3.q4_0.bin")
 
   (def ctx (create-context model-path))
 
-  (llama-update ctx "Describe settler's of catan.")
+  (def prompt "In the context of llms, what is a logit?")
+  ;; updates context logits
+  (llama-update ctx prompt)
 
-  (let [next-token (sample-logits-greedy (get-logits ctx))]
-    (print (raw/llama_token_to_str ctx next-token))
-    (llama-update ctx next-token))
+  (def results
+    (loop [results [prompt]]
+      (let [next-token (sample-logits-greedy (get-logits ctx))
+            next-str (raw/llama_token_to_str ctx next-token)]
+        (print next-str)
+        (flush)
+        (if (not= next-token
+                  (raw/llama_token_eos))
+          (do
+            (llama-update ctx next-token)
+            (recur (conj results next-str)))
+          results))))
 
-  )
-
+  ,)
 
 (defn -main [model-path prompt]
   ;; "/Users/adrian/workspace/llama.cpp/models/Llama-2-7B-Chat-GGML/llama-2-7b-chat.ggmlv3.q4_0.bin"
