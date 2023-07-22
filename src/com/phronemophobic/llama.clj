@@ -93,16 +93,66 @@
 (defonce ^:private llm-init
   (delay
     (raw/llama_backend_init 0)))
-(defn create-context [model-path]
-  @llm-init
-  (let [params (doto ^llama_context_params (raw/llama_context_default_params)
-                 (.writeField "n_gpu_layers" (int 1))
-                 )
-        model (raw/llama_load_model_from_file model-path params)
-        _(assert model)
-        context (raw/llama_new_context_with_model model params)]
-    context))
 
+(defn ^:private ->bool [b]
+  (if b
+    (byte 1)
+    (byte 0)))
+
+(defn ^:private map->llama-params [m]
+  (reduce-kv
+   (fn [^llama_context_params
+        params k v]
+     (case k
+       :seed (.writeField params "seed" (int v))
+       :n-ctx (.writeField params "n_ctx" (int v))
+       :n-batch (.writeField params "n_batch" (int v))
+       :n-gpu-layers (.writeField params "n_gpu_layers" (int v))
+       :main-gpu (.writeField params "main_gpu" (int v))
+       :tensor-split (.writeField params "tensor_split" (float-array v))
+       :rope-freq-base (.writeField params "rope_freq_base" (float v))
+       :rope-freq-scale (.writeField params "rope_freq_scale" (float v))
+       ;; :progress-callback (.writeField params "progress_callback" v)
+       ;; :progress-callback-user-data (.writeField params "progress_callback_user_data" v)
+       :low-vram (.writeField params "low_vram" (->bool v))
+       :f16-kv (.writeField params "f16_kv" (->bool v))
+       :logits-all (.writeField params "logits_all" (->bool v))
+       :vocab-only (.writeField params "vocab_only" (->bool v))
+       :use-mmap (.writeField params "use_mmap" (->bool v))
+       :use-mlock (.writeField params "use_mlock" (->bool v))
+       :embedding (.writeField params "embedding" (->bool v)))
+     ;; return params
+     params)
+   (raw/llama_context_default_params)
+   m))
+
+(defn create-context
+  ([model-path]
+   (create-context model-path nil))
+  ([model-path
+    {:keys [seed
+            n-ctx
+            n-batch
+            n-gpu-layers
+            main-gpu
+            tensor-split
+            rope-freq-base
+            rope-freq-scale
+            low-vram
+            f16-kv
+            logits-all
+            vocab-only
+            use-mmap
+            use-mlock
+            embedding]
+     :as opts}]
+   @llm-init
+   (let [^llama_context_params
+         params (map->llama-params opts)
+         model (raw/llama_load_model_from_file model-path params)
+         _(assert model)
+         context (raw/llama_new_context_with_model model params)]
+     context)))
 
 ;; todo use a soft cache
 (defonce ^:private
