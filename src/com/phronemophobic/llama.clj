@@ -90,6 +90,97 @@
     (generate-tokens context token-buf embd_inp)))
 
 
+(defonce ^:private llm-init
+  (delay
+    (raw/llama_backend_init 0)))
+(defn create-context [model-path]
+  @llm-init
+  (let [params (doto ^llama_context_params (raw/llama_context_default_params)
+                 (.writeField "n_gpu_layers" (int 1))
+                 )
+        model (raw/llama_load_model_from_file model-path params)
+        _(assert model)
+        context (raw/llama_new_context_with_model model params)]
+    context))
+
+
+;; todo use a soft cache
+(defonce ^:private
+  token-bufs
+  (atom {}))
+
+(defn ^:private get-token-buf [ctx n]
+  (get
+   (swap! token-bufs
+          (fn [m]
+            (let [buf (get m ctx)]
+              (if (and buf
+                       (>= (.size ^Memory buf)
+                           (* 4 n)))
+                m
+                (assoc m ctx (Memory. (* 4 n)))))))
+   ctx))
+
+(defn ^:private tokenize [ctx s add-bos?]
+  (let [add-bos (if add-bos?
+                  1
+                  0)
+
+        s (if add-bos?
+            (str " " s)
+            s)
+        max-tokens (+ add-bos (count s))
+        token-buf (get-token-buf ctx max-tokens)
+        num-tokens (raw/llama_tokenize ctx s token-buf max-tokens add-bos)]
+    [num-tokens token-buf]))
+
+(defn llama-update
+  ([ctx s]
+   (llama-update ctx s (raw/llama_get_kv_cache_token_count ctx)))
+  ([ctx s n-past]
+   (let [[num-tokens token-buf]
+         (cond
+           (string? s)
+           (tokenize ctx s (zero? n-past))
+
+           (integer? s)
+           (let [^Memory buf (get-token-buf ctx 1)]
+             [1 (doto buf
+                  (.setInt 0 s))]))]
+     (raw/llama_eval ctx token-buf num-tokens n-past 1)
+     ctx)))
+
+(defn sample-logits-greedy [logits]
+  (transduce (map-indexed vector)
+             (completing
+              (fn [[idx1 f1 :as r1] [idx2 f2 :as r2]]
+                (if (> f1 f2)
+                  r1
+                  r2))
+              first)
+             [nil Float/MIN_VALUE]
+             logits))
+
+(defn get-logits [ctx]
+  (let [n-vocab (raw/llama_n_vocab ctx)]
+   (-> ^FloatByReference (raw/llama_get_logits ctx)
+       .getPointer
+       (.getFloatArray 0 n-vocab))))
+
+(comment
+  (def model-path "/Users/adrian/workspace/llama.cpp/models/Llama-2-7B-Chat-GGML/llama-2-7b-chat.ggmlv3.q4_0.bin")
+
+  (def ctx (create-context model-path))
+
+  (llama-update ctx "Describe settler's of catan.")
+
+  (let [next-token (sample-logits-greedy (get-logits ctx))]
+    (print (raw/llama_token_to_str ctx next-token))
+    (llama-update ctx next-token))
+
+  )
+
+
 (defn -main [model-path prompt]
   ;; "/Users/adrian/workspace/llama.cpp/models/Llama-2-7B-Chat-GGML/llama-2-7b-chat.ggmlv3.q4_0.bin"
   (llm-prompt model-path prompt))
