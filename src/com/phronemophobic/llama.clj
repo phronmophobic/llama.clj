@@ -8,6 +8,7 @@
            com.sun.jna.Structure))
 
 (raw/import-structs!)
+(defonce cleaner (delay (Cleaner/create)))
 
 (def token-data-size (.size (llama_token_data.)))
 
@@ -152,6 +153,23 @@
          model (raw/llama_load_model_from_file model-path params)
          _(assert model)
          context (raw/llama_new_context_with_model model params)]
+
+     ;; cleanup
+     (let [ctx-ptr (Pointer/nativeValue context)
+           model-ptr (Pointer/nativeValue model)
+           model-ref (volatile! model)]
+       (.register ^Cleaner @cleaner context
+                  (fn []
+                    (raw/llama_free ctx-ptr)
+
+                    ;; make sure model doesn't lose
+                    ;; all references and get garbage
+                    ;; collected until context is freed.
+                    (vreset! model-ref nil)))
+       (.register ^Cleaner @cleaner model
+                  (fn []
+                    (raw/llama_free_model model-ptr))))
+
      context)))
 
 ;; todo use a soft cache
