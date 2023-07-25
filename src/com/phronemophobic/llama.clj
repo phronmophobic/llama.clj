@@ -128,6 +128,27 @@
    m))
 
 (defn create-context
+   "Create and return an opaque llama context.
+
+  `model-path` should be an absolute or relative path to a F16, Q4_0, Q4_1, Q5_0, Q5_1, or Q8_0 ggml model.
+
+  An optional map of parameters may be passed for parameterizing the model. The following keys map to their corresponding llama.cpp equivalents:
+  - `:seed`: RNG seed, -1 for random
+  - `:n-ctx`: text context
+  - `:n-batch`: prompt processing batch size
+  - `:n-gpu-layers`: number of layers to store in VRAM
+  - `:main-gpu`: the GPU that is used for scratch and small tensors
+  - `:tensor-split`: how to split layers across multiple GPUs
+  - `:rope-freq-base`: RoPE base frequency
+  - `:rope-freq-scale`: RoPE frequency scaling factor
+  - `:low-vram`: if true, reduce VRAM usage at the cost of performance
+  - `:f16-kv`: use fp16 for KV cache
+  - `:logits-all`: the llama_eval() call computes all logits, not just the last one
+  - `:vocab-only`: only load the vocabulary, no weights
+  - `:use-mmap`: use mmap if possible
+  - `:use-mlock`: force system to keep model in RAM
+  - `:embedding`: embedding mode only
+  "
   ([model-path]
    (create-context model-path nil))
   ([model-path
@@ -146,13 +167,16 @@
             use-mmap
             use-mlock
             embedding]
-     :as opts}]
+     :as params}]
    @llm-init
    (let [^llama_context_params
-         params (map->llama-params opts)
-         model (raw/llama_load_model_from_file model-path params)
-         _(assert model)
-         context (raw/llama_new_context_with_model model params)]
+         llama-params (map->llama-params params)
+         model (raw/llama_load_model_from_file model-path llama-params)
+         _ (when (nil? model)
+             (throw (ex-info "Error creating model"
+                             {:params params
+                              :model-path model-path})))
+         context (raw/llama_new_context_with_model model llama-params)]
 
      ;; cleanup
      (let [ctx-ptr (Pointer/nativeValue context)
