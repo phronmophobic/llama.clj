@@ -154,6 +154,12 @@
   - `:use-mmap`: use mmap if possible
   - `:use-mlock`: force system to keep model in RAM
   - `:embedding`: embedding mode only
+
+  Resources can be freed by calling .close on the returned context.
+  Using a closed context is undefined and will probably crash the JVM.
+
+  Contexts are not thread-safe. Using the same context on multiple threads
+  is undefined and will probably crash the JVM.
   "
   ([model-path]
    (create-context model-path nil))
@@ -182,23 +188,40 @@
              (throw (ex-info "Error creating model"
                              {:params params
                               :model-path model-path})))
-         context (raw/llama_new_context_with_model model llama-params)]
+         context (raw/llama_new_context_with_model model llama-params)
+
+         ctx-ptr (atom (Pointer/nativeValue context))
+         model-ptr (atom (Pointer/nativeValue model))
+
+         model-ref (atom model)
+         ;; idempotent cleanup of context
+         ;; must not hold references to context!
+         delete-context (fn []
+                          (let [[old new] (swap-vals! ctx-ptr (constantly nil))]
+                            (when old
+                              (println "deleting context")
+                              (raw/llama_free (Pointer. old))
+                              ;; make sure model doesn't lose
+                              ;; all references and get garbage
+                              ;; collected until context is freed.
+                              (reset! model-ref nil))))
+         ;; idempotent cleanup of model
+         ;; must not hold references to model!
+         delete-model (fn []
+                        (let [[old new] (swap-vals! model-ptr (constantly nil))]
+                          (when old
+                            (println "Deleting model.")
+                            (raw/llama_free_model (Pointer. old)))))
+
+         ;; make context autocloseable
+         context (proxy [Pointer java.lang.AutoCloseable] [(Pointer/nativeValue context)]
+                   (close []
+                     (delete-context)
+                     (delete-model)))]
 
      ;; cleanup
-     (let [ctx-ptr (Pointer/nativeValue context)
-           model-ptr (Pointer/nativeValue model)
-           model-ref (volatile! model)]
-       (.register ^Cleaner @cleaner context
-                  (fn []
-                    (raw/llama_free ctx-ptr)
-
-                    ;; make sure model doesn't lose
-                    ;; all references and get garbage
-                    ;; collected until context is freed.
-                    (vreset! model-ref nil)))
-       (.register ^Cleaner @cleaner model
-                  (fn []
-                    (raw/llama_free_model model-ptr))))
+     (.register ^Cleaner @cleaner context delete-context)
+     (.register ^Cleaner @cleaner model delete-model)
 
      context)))
 
