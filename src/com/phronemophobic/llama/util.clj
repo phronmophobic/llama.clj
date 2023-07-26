@@ -31,14 +31,16 @@
   "Generates a response from prompt and print the results as they become available.
 
   Returns nil"
-  [ctx prompt opts]
-  (transduce
-   (comp (map #(raw/llama_token_to_str ctx %))
-         (take-while (fn [_]
-                       (not (Thread/interrupted)))))
-   (completing
-    (fn [_ s]
-      (print s)
-      (flush)))
-   nil
-   (llama/generate ctx prompt opts)))
+  ([ctx prompt]
+   (print-response ctx prompt nil))
+  ([ctx prompt opts]
+   (transduce
+    (comp (map #(raw/llama_token_to_str ctx %))
+          (take-while (fn [_]
+                        (not (Thread/interrupted)))))
+    (completing
+     (fn [_ s]
+       (print s)
+       (flush)))
+    nil
+    (llama/generate ctx prompt opts))))
