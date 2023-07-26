@@ -76,6 +76,14 @@ Example:
 clojure -M -m com.phronemophobic.llama "models/Llama-2-7B-Chat-GGML/llama-2-7b-chat.ggmlv3.q4_0.bin" "what is 2+2?"
 ```
 
+## "Roadmap"
+
+- [ ] Pure clojure implementation for mirostatv2 and other useful samplers.
+- [ ] Provide reasonable default implementations for generating responses larger than the context size.
+- [ ] More docs!
+  - [ ] Reference docs
+  - [ ] Intro Guide to LLMs.
+
 ## License
 
 The MIT License (MIT)
