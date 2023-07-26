@@ -1,5 +1,6 @@
 (ns com.phronemophobic.llama
-  (:require [com.phronemophobic.llama.raw :as raw])
+  (:require [com.phronemophobic.llama.raw :as raw]
+            [clojure.string :as str])
   (:import java.lang.ref.Cleaner
            com.sun.jna.Memory
            com.sun.jna.Pointer
@@ -9,6 +10,11 @@
 
 (raw/import-structs!)
 (defonce cleaner (delay (Cleaner/create)))
+
+(defn eos []
+  (raw/llama_token_eos))
+(defn bos []
+  (raw/llama_token_bos))
 
 (def token-data-size (.size (llama_token_data.)))
 
@@ -253,16 +259,121 @@
              [nil Float/MIN_VALUE]
              logits))
 
+(defn ^:private ctx->candidates [ctx candidates-buf*]
+  (let [n-vocab (raw/llama_n_vocab ctx)
+        buf-size (* token-data-size n-vocab)
+        candidates-buf @candidates-buf*
+        ^Memory
+        candidates-buf (if (and candidates-buf
+                                (>= (.size ^Memory candidates-buf)
+                                    buf-size))
+                         candidates-buf
+                         (vreset! candidates-buf* (Memory. buf-size)))
+
+        logits (-> ^FloatByReference (raw/llama_get_logits ctx)
+                             .getPointer
+                             (.getFloatArray 0 n-vocab))]
+    (doseq [i (range n-vocab)]
+      (let [base-addr (* i token-data-size)
+            id i
+            logit (aget logits id)
+            p 0]
+        (.setInt candidates-buf base-addr id)
+        (.setFloat candidates-buf (+ base-addr 4) logit)
+        (.setFloat candidates-buf (+ base-addr 8) 0)))
+    (let [candidates-array-head (doto (Structure/newInstance llama_token_dataByReference
+                                                             candidates-buf)
+                                  (.read))
+          candidates* (doto (llama_token_data_arrayByReference.)
+                        (.writeField "data" candidates-array-head)
+                        (.writeField "size" (long n-vocab))
+                        (.writeField "sorted" (byte 0)))]
+      candidates*)))
+
+;; tau default 5.0
+;; eta default 0.1
+(defn ^:private sample-mirostat-v2 [ctx candidates-buf* mu* tau eta]
+  (let [mu (FloatByReference. @mu*)
+        candidates (ctx->candidates ctx candidates-buf*)
+        next-token (raw/llama_sample_token_mirostat_v2 ctx candidates tau eta mu)]
+    (vreset! mu* (.getValue mu))
+    next-token))
+
+(defn init-mirostat-v2-sampler
+  ([ctx]
+   (let [tau (float 5.0)
+         eta (float 0.1)]
+     (init-mirostat-v2-sampler ctx tau eta)))
+  ([ctx tau eta]
+   (fn [logits]
+     (sample-mirostat-v2 ctx
+                         (volatile! nil)
+                         (volatile! (* 2 tau))
+                         tau
+                         eta))))
+
 (defn get-logits [ctx]
   (let [n-vocab (raw/llama_n_vocab ctx)]
-   (-> ^FloatByReference (raw/llama_get_logits ctx)
-       .getPointer
-       (.getFloatArray 0 n-vocab))))
+    (-> ^FloatByReference (raw/llama_get_logits ctx)
+        .getPointer
+        (.getFloatArray 0 n-vocab))))
+
+(defn generate
+  "Returns a seqable/reducible sequence of tokens from ctx from prompt."
+  ([ctx prompt]
+   (generate ctx prompt nil))
+  ([ctx prompt {:keys [samplef
+                       num-threads
+                       seed
+                       resize-context]
+                :as opts}]
+   (let [samplef (or samplef
+                     (init-mirostat-v2-sampler ctx))
+         eos (raw/llama_token_eos)]
+     (reify
+       clojure.lang.Seqable
+       (seq [_]
+         (when seed
+           (raw/llama_set_rng_seed ctx seed))
+         ((fn next [ctx]
+            (let [next-token (samplef (get-logits ctx))]
+              (when (not= eos next-token)
+                (cons next-token
+                      (lazy-seq (next (llama-update ctx next-token)))))))
+          (llama-update ctx prompt 0)))
+       clojure.lang.IReduceInit
+       (reduce [_ rf init]
+         (when seed
+           (raw/llama_set_rng_seed ctx seed))
+         (loop [acc init
+                ret (llama-update ctx prompt 0)]
+           (let [next-token (samplef (get-logits ctx))]
+             (if (= eos next-token)
+               acc
+               (let [acc (rf acc next-token)]
+                 (if (reduced? acc)
+                   @acc
+                   (recur acc (llama-update ctx next-token))))))))))))
+
+
+(defn generate-response
+  ([ctx prompt]
+   (generate-response ctx prompt nil))
+  ([ctx prompt opts]
+   (let [[prompt-token-count _] (tokenize ctx prompt true)]
+     (str/join
+      (eduction
+       (take (- (raw/llama_n_ctx ctx)
+                prompt-token-count))
+       (map #(raw/llama_token_to_str ctx %))
+       (generate ctx prompt nil))))))
 
 (comment
   (def model-path "models/llama-2-7b-chat.ggmlv3.q4_0.bin")
+  (def model-path "../llama.cpp/models/Llama-2-7B-Chat-GGML/llama-2-7b-chat.ggmlv3.q8_0.bin")
+  (def model-path "../llama.cpp/models/Llama-2-7B-Chat-GGML/llama-2-7b-chat.ggmlv3.q5_1.bin")
 
-  (def ctx (create-context model-path))
+  (def ctx (create-context model-path {:n-gpu-layers 1}))
 
   (def prompt "What is clojure?")
   ;; updates context logits
