@@ -3,12 +3,11 @@
 (ns intro
   (:require [nextjournal.clerk :as clerk]
             [nextjournal.clerk.viewer :as v]
+            [util.viewers :refer [wrap-seed]]
             [com.phronemophobic.llama :as llama]
             [com.phronemophobic.llama.raw :as raw]
             [com.phronemophobic.llama.util :as llutil]
-            [clojure.string :as str])
-  (:import com.sun.jna.Memory)
-  )
+            [clojure.string :as str]))
 
 {:nextjournal.clerk/visibility {:code :show :result :hide}}
 
@@ -47,30 +46,11 @@
   (def llama-context (llama/create-context llama7b-path {:n-gpu-layers 1}))
   (def seed 4321))
 
-;; ## Quick Start
+{:nextjournal.clerk/visibility {:code :hide :result :hide}}
 
-^{:nextjournal.clerk/visibility {:code :hide :result :show}}
-(clerk/code
-   '(llama/generate-response llama-context "What are some reasons for learning clojure?"))
+(clerk/add-viewers! [util.viewers/llama-viewer])
 
-^{:nextjournal.clerk/visibility {:code :hide :result :hide}}
-(comment
-
-
-  #_reseed ^{:nextjournal.clerk/visibility {:code :hide :result :hide} ::clerk/no-cache true} (def llama-context (doto llama-context (raw/llama_set_rng_seed seed)))
-
-  (def tokens
-    (llama/generate-tokens llama-context "What are some reasons for learning clojure?")))
-
-;; _Note: the initial german word and the begining of the response is an artifact of how the llama2 chat model works_
-
-#_reseed ^{:nextjournal.clerk/visibility {:code :hide :result :hide} ::clerk/no-cache true} (def llama-context (doto llama-context (raw/llama_set_rng_seed seed)))
-
-^{:nextjournal.clerk/visibility {:code :hide :result :show}}
-(clerk/md
- (llama/generate-response llama-context "What are some reasons for learning clojure?"))
-
-
+{:nextjournal.clerk/visibility {:code :show :result :show}}
 
 ;; ## Token Generation
 
@@ -79,7 +59,7 @@
 ;; One of main operations of an llm is to predict the next token
 ;; given a sequence of tokens.
 
-{:nextjournal.clerk/visibility {:code :show :result :show}}
+
 (llutil/next-token llama-context [10994 2787])
 
 
@@ -137,38 +117,24 @@
         tokens
         (recur (conj tokens next-token))))))")
 
-#_reseed ^{:nextjournal.clerk/visibility {:code :hide :result :hide} ::clerk/no-cache true} (def llama-context (doto llama-context (raw/llama_set_rng_seed seed)))
-
-^{:nextjournal.clerk/visibility {:code :hide :result :show}}
-(def full-response-tokens
-  (into []
-        (take 100)
-        (llama/generate-tokens llama-context input-str)))
+^{:nextjournal.clerk/visibility {:code :hide :result :hide}}
+(wrap-seed
+ (def full-response-tokens
+   (into []
+         (take 100)
+         (llama/generate-tokens llama-context input-str)))
+ {:code :hide :result :hide})
 
 (llutil/untokenize llama-context full-response-tokens)
 
 ;; _Note: the initial german word and the begining of the response is an artifact of how the llama2 chat model works_
 
-#_reseed ^{:nextjournal.clerk/visibility {:code :hide :result :hide} ::clerk/no-cache true} (def llama-context (doto llama-context (raw/llama_set_rng_seed seed)))
+;; If you do run this snippet, you'll probably find that it's _very_ slow, even on a gpu. This naive implementation is easy to follow, but is not very efficient. The llama.clj provides a high level API that offers efficient, idiomatic token generation for models.
 
-;; If you do run this snippet, you'll probably find that it's _very_ slow, even on a gpu. This naive implementation is easy to follow, but is not very efficient. Since generating a full response is a common use case, an optimized version that produces the same result is available.
-
-^{:nextjournal.clerk/visibility {:code :hide :result :hide}}
-(comment
-  (into []
-        (take 100)
-        (llama/generate-tokens llama-context input-str)))
 ^{:nextjournal.clerk/visibility {:code :hide :result :show}}
-
-(clerk/code '(llama/generate-response llama-context input-str))
-#_reseed ^{:nextjournal.clerk/visibility {:code :hide :result :hide} ::clerk/no-cache true} (def llama-context (doto llama-context (raw/llama_set_rng_seed seed)))
-^{:nextjournal.clerk/visibility {:code :hide :result :show}}
-(clerk/md
- (str
-  "```\n"
-  (llama/generate-response llama-context input-str)
-  "\n```"))
-
+(wrap-seed
+ (llama/generate-response llama-context input-str)
+ {:code :show :result :show})
 
 
 ^{:nextjournal.clerk/visibility {:code :hide :result :hide}}
