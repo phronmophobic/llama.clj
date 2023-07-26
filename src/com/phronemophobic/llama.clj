@@ -14,7 +14,7 @@
 (def ^:dynamic
   *num-threads*
   "Number of threads used when generating tokens."
-  (+ 2 (.. Runtime getRuntime availableProcessors)))
+  (.. Runtime getRuntime availableProcessors))
 
 (def ^:private token-data-size (.size (llama_token_data.)))
 
