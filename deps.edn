@@ -14,11 +14,27 @@
     com.phronemophobic.cljonda/llama-cpp-darwin-x86-64 {:mvn/version "e274269fd87aac0f71ab02a2c4676f60fd6198cf"}
     com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "e274269fd87aac0f71ab02a2c4676f60fd6198cf"}}}
 
+  :clerk {:extra-paths ["notebooks"]
+          :extra-deps
+          {io.github.nextjournal/clerk {:mvn/version "0.14.919"}}}
+
+  :generate-docs
+  {:extra-deps {io.github.nextjournal/clerk {:mvn/version "0.14.919"}
+                com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "e274269fd87aac0f71ab02a2c4676f60fd6198cf"}
+                com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "e274269fd87aac0f71ab02a2c4676f60fd6198cf"}}
+   :extra-paths ["notebooks"]
+   :exec-fn nextjournal.clerk/build!
+   :exec-args {:paths ["notebooks/docs.clj"]
+               :out-path "docs/"
+               :bundle true}}
+
   :project
-  {:jvm-opts [;; "-Djna.library.path=/Users/adrian/workspace/llama.cpp/build-metal"
-              ;; "-Djava.library.path=/Users/adrian/workspace/llama.cpp/build-metal"
+  {:extra-paths ["notebooks"]
+   #_#_:jvm-opts [ ;; "-Djna.library.path=/Users/adrian/workspace/llama.cpp/build-metal"
+                  ;; "-Djava.library.path=/Users/adrian/workspace/llama.cpp/build-metal"
 
               ]
    :extra-deps {org.bytedeco/llvm-platform {:mvn/version "16.0.4-1.5.9"}
                 com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "e274269fd87aac0f71ab02a2c4676f60fd6198cf"}
+                io.github.nextjournal/clerk {:mvn/version "0.14.919"}
                 }}}}
