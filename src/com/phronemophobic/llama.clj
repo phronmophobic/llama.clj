@@ -11,7 +11,10 @@
 (raw/import-structs!)
 (defonce cleaner (delay (Cleaner/create)))
 
-
+(def ^:dynamic
+  *num-threads*
+  "Number of threads used when generating tokens."
+  (+ 2 (.. Runtime getRuntime availableProcessors)))
 
 (def ^:private token-data-size (.size (llama_token_data.)))
 
@@ -180,9 +183,12 @@
 
 (defn llama-update
   ([ctx s]
-   (llama-update ctx s (raw/llama_get_kv_cache_token_count ctx)))
+   (llama-update ctx s (raw/llama_get_kv_cache_token_count ctx) *num-threads*))
   ([ctx s n-past]
-   (let [[num-tokens token-buf]
+   (llama-update ctx s n-past *num-threads*))
+  ([ctx s n-past num-threads]
+   (let [num-threads (or num-threads *num-threads*)
+         [num-tokens token-buf]
          (cond
            (string? s)
            (tokenize ctx s (zero? n-past))
@@ -193,7 +199,7 @@
                   (.setInt 0 s))]))]
      (assert (< n-past (raw/llama_n_ctx ctx))
              "Context size exceeded")
-     (raw/llama_eval ctx token-buf num-tokens n-past 1)
+     (raw/llama_eval ctx token-buf num-tokens n-past num-threads)
      ctx)))
 
 (defn sample-logits-greedy [logits]
@@ -287,21 +293,21 @@
             (let [next-token (samplef (get-logits ctx))]
               (when (not= eos next-token)
                 (cons next-token
-                      (lazy-seq (next (llama-update ctx next-token)))))))
-          (llama-update ctx prompt 0)))
+                      (lazy-seq (next (llama-update ctx next-token (raw/llama_get_kv_cache_token_count ctx) num-threads)))))))
+          (llama-update ctx prompt 0 num-threads)))
        clojure.lang.IReduceInit
        (reduce [_ rf init]
          (when seed
            (raw/llama_set_rng_seed ctx seed))
          (loop [acc init
-                ret (llama-update ctx prompt 0)]
+                ret (llama-update ctx prompt 0 num-threads)]
            (let [next-token (samplef (get-logits ctx))]
              (if (= eos next-token)
                acc
                (let [acc (rf acc next-token)]
                  (if (reduced? acc)
                    @acc
-                   (recur acc (llama-update ctx next-token))))))))))))
+                   (recur acc (llama-update ctx next-token (raw/llama_get_kv_cache_token_count ctx) num-threads))))))))))))
 
 (defn generate
   ([ctx prompt]
@@ -351,7 +357,7 @@
   ,)
 
 (defn -main [model-path prompt]
-  (let [ctx (create-context model-path)
+  (let [ctx (create-context model-path {:n-gpu-layers 1})
         [prompt-token-count _] (tokenize ctx prompt true)]
     (transduce
      (comp (take-while (fn [_]
