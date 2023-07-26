@@ -245,6 +245,8 @@
            (let [^Memory buf (get-token-buf ctx 1)]
              [1 (doto buf
                   (.setInt 0 s))]))]
+     (assert (< n-past (raw/llama_n_ctx ctx))
+             "Context size exceeded")
      (raw/llama_eval ctx token-buf num-tokens n-past 1)
      ctx)))
 
