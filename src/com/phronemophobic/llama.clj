@@ -125,7 +125,6 @@
          delete-context (fn []
                           (let [[old new] (swap-vals! ctx-ptr (constantly nil))]
                             (when old
-                              (println "deleting context")
                               (raw/llama_free (Pointer. old))
                               ;; make sure model doesn't lose
                               ;; all references and get garbage
@@ -136,7 +135,6 @@
          delete-model (fn []
                         (let [[old new] (swap-vals! model-ptr (constantly nil))]
                           (when old
-                            (println "Deleting model.")
                             (raw/llama_free_model (Pointer. old)))))
 
          ;; make context autocloseable
