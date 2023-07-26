@@ -1,6 +1,6 @@
 ^{:nextjournal.clerk/visibility {:code :hide :result :hide}
   :nextjournal.clerk/toc true}
-(ns docs
+(ns intro
   (:require [nextjournal.clerk :as clerk]
             [nextjournal.clerk.viewer :as v]
             [com.phronemophobic.llama :as llama]
@@ -60,7 +60,7 @@
   #_reseed ^{:nextjournal.clerk/visibility {:code :hide :result :hide} ::clerk/no-cache true} (def llama-context (doto llama-context (raw/llama_set_rng_seed seed)))
 
   (def tokens
-    (llama/generate llama-context "What are some reasons for learning clojure?")))
+    (llama/generate-tokens llama-context "What are some reasons for learning clojure?")))
 
 ;; _Note: the initial german word and the begining of the response is an artifact of how the llama2 chat model works_
 
@@ -143,7 +143,7 @@
 (def full-response-tokens
   (into []
         (take 100)
-        (llama/generate llama-context input-str)))
+        (llama/generate-tokens llama-context input-str)))
 
 (llutil/untokenize llama-context full-response-tokens)
 
@@ -157,7 +157,7 @@
 (comment
   (into []
         (take 100)
-        (llama/generate llama-context input-str)))
+        (llama/generate-tokens llama-context input-str)))
 ^{:nextjournal.clerk/visibility {:code :hide :result :show}}
 
 (clerk/code '(llama/generate-response llama-context input-str))
@@ -173,15 +173,13 @@
 
 ^{:nextjournal.clerk/visibility {:code :hide :result :hide}}
 (comment
-  (clerk/serve! {:watch-paths ["notebooks/docs.clj"]})
+  (clerk/serve! {:watch-paths ["notebooks/intro.clj"]})
   
-  (clerk/show! "notebooks/docs.clj")
+  (clerk/show! "notebooks/intro.clj")
 
-  (clerk/build! {:paths ["notebooks/docs.clj"]
+  (clerk/build! {:paths ["notebooks/intro.clj"]
                  :out-path "docs/"
                  :bundle true})
 
-  (render-graph {:nodes ["A" "B"]}
-                {:filename "tmp/graph.png"})
   
   ,)

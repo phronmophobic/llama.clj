@@ -24,9 +24,11 @@
                 com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "e274269fd87aac0f71ab02a2c4676f60fd6198cf"}}
    :extra-paths ["notebooks"]
    :exec-fn nextjournal.clerk/build!
-   :exec-args {:paths ["notebooks/docs.clj"]
+   :exec-args {:paths ["notebooks/*"]
+               :index "notebooks/usage.clj"
                :out-path "docs/"
-               :bundle true}}
+               ;;:bundle true
+               }}
 
   :project
   {:extra-paths ["notebooks"]
