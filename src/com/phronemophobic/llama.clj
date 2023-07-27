@@ -18,9 +18,13 @@
 
 (def ^:private token-data-size (.size (llama_token_data.)))
 
-(defn eos []
+(defn eos
+  "Returns the llama end of sentence token."
+  []
   (raw/llama_token_eos))
-(defn bos []
+(defn bos
+  "Returns the llama beginning of sentence token."
+  []
   (raw/llama_token_bos))
 
 (defonce ^:private llm-init
@@ -180,6 +184,13 @@
     [num-tokens token-buf]))
 
 (defn llama-update
+  "Adds `s` to the current context and updates the context's logits (see `get-logits`).
+
+  `s`: either be a string or an integer token.
+  `n-past`: number of previous tokens to include when updating logits.
+  `num-threads`: number of threads to use when updating the logits.
+                 If not provided, or `nil`, defaults to `*num-threads*`.
+  "
   ([ctx s]
    (llama-update ctx s (raw/llama_get_kv_cache_token_count ctx) *num-threads*))
   ([ctx s n-past]
@@ -200,7 +211,11 @@
      (raw/llama_eval ctx token-buf num-tokens n-past num-threads)
      ctx)))
 
-(defn sample-logits-greedy [logits]
+(defn sample-logits-greedy
+  "Returns the token with the highest value.
+
+  `logits`: a collection of floats representing the logits (see `get-logits`)."
+  [logits]
   (transduce (map-indexed vector)
              (completing
               (fn [[idx1 f1 :as r1] [idx2 f2 :as r2]]
@@ -252,6 +267,7 @@
     next-token))
 
 (defn init-mirostat-v2-sampler
+  "Given a context, returns a sampling function that uses the llama.cpp mirostat_v2 implementation."
   ([ctx]
    (let [tau (float 5.0)
          eta (float 0.1)]
@@ -264,20 +280,23 @@
                          tau
                          eta))))
 
-(defn get-logits [ctx]
+(defn get-logits
+  "Returns a copy of the current context's logits as a float array."
+  [ctx]
   (let [n-vocab (raw/llama_n_vocab ctx)]
     (-> ^FloatByReference (raw/llama_get_logits ctx)
         .getPointer
         (.getFloatArray 0 n-vocab))))
 
 (defn generate-tokens
-  "Returns a seqable/reducible sequence of tokens from ctx from prompt."
+  "Returns a seqable/reducible sequence of tokens from ctx with prompt."
   ([ctx prompt]
    (generate-tokens ctx prompt nil))
   ([ctx prompt {:keys [samplef
                        num-threads
                        seed
-                       resize-context]
+                       ;; resize-context
+                       ]
                 :as opts}]
    (let [samplef (or samplef
                      (init-mirostat-v2-sampler ctx))
@@ -308,6 +327,7 @@
                    (recur acc (llama-update ctx next-token (raw/llama_get_kv_cache_token_count ctx) num-threads))))))))))))
 
 (defn generate
+  "Returns a seqable/reducible sequence of strings generated from ctx with prompt."
   ([ctx prompt]
    (generate ctx prompt nil))
   ([ctx prompt opts]
@@ -317,6 +337,7 @@
 
 
 (defn generate-response
+  "Returns a string with all tokens generated from prompt up until end of sentence or max content size."
   ([ctx prompt]
    (generate-response ctx prompt nil))
   ([ctx prompt opts]
