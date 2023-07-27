@@ -2,12 +2,6 @@
 
 A wrapper for [llama.cpp](https://github.com/ggerganov/llama.cpp)
 
-## Dependency
-
-```clojure
-com.phronemophobic/llama-clj {:mvn/version "0.1"}
-```
-
 ## Quick Start
 
 If you're just looking for a model to try things out, try the 3.6Gb [llama2 7B chat model](https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/tree/main)  from TheBloke. Make sure to check the link for important info like license and use policy.
@@ -23,6 +17,12 @@ clojure -M:mvn-llama -m com.phronemophobic.llama "models/llama-2-7b-chat.ggmlv3.
 ## Documentation
 
 [Overview Guide](https://phronmophobic.github.io/llama.clj/)
+
+## Dependency
+
+```clojure
+com.phronemophobic/llama-clj {:mvn/version "0.1"}
+```
 
 ### Native Dependency
 
@@ -69,7 +69,7 @@ For more complete information about the models that llama.clj can work with, ref
 
 Another good resource for models is [TheBloke](https://huggingface.co/TheBloke) on [huggingface](https://huggingface.co/).
 
-## Usage
+## Cli Usage
 
 ```sh
 clojure -M -m com.phronemophobic.llama <path-to-model> <prompt>
