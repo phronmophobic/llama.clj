@@ -30,6 +30,25 @@
                ;;:bundle true
                }}
 
+  :codox
+  {:extra-deps {codox-theme-rdash/codox-theme-rdash {:mvn/version "0.1.2"}
+                ;; nrepl/nrepl {:mvn/version "0.8.3"}
+                ;; cider/cider-nrepl {:mvn/version "0.25.5"}
+                com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "e274269fd87aac0f71ab02a2c4676f60fd6198cf"}
+                com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "e274269fd87aac0f71ab02a2c4676f60fd6198cf"}
+                com.cnuernber/codox {:mvn/version "1.001"}}
+   :exec-fn codox.main/-main
+   :exec-args {:name "llama.clj"
+               :description "A wrapper for llama.cpp"
+               :metadata {:doc/format :markdown}
+               :themes [:rdash]
+               :source-paths ["src"]
+               :output-path "docs/reference"
+               :source-uri "https://github.com/phronmophobic/llama.clj/blob/main/{filepath}#L{line}"
+               :namespaces [com.phronemophobic.llama
+                            com.phronemophobic.llama.raw
+                            com.phronemophobic.llama.util]}}
+
   :project
   {:extra-paths ["notebooks"]
    #_#_:jvm-opts [ ;; "-Djna.library.path=/Users/adrian/workspace/llama.cpp/build-metal"
