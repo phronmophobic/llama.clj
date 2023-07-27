@@ -84,9 +84,14 @@
 ;; Working with raw tokens is useful in some cases, but most of the time, it's more useful to work with a generated sequence of strings corresponding to those tokens. Lllama.clj provides a simple wrapper of `llama/generate-tokens` for that purpose, `llama/generate`.
 
 (wrap-seed
- (clojure.string/join
-  (llama/generate llama-context "Write a haiku about documentation.")))
+ (into []
+       (take 5)
+       (llama/generate llama-context "Write a haiku about documentation.")))
 
+;; If results don't need to be streamed, then `llama/generate-string` can be used to return a string with all the generated text up to the max context size.
+
+(wrap-seed
+ (llama/generate-string llama-context "Write a haiku about documentation."))
 
 ^{:nextjournal.clerk/visibility {:code :hide :result :hide}}
 (comment

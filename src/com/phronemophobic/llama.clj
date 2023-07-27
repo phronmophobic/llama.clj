@@ -336,10 +336,10 @@
     (generate-tokens ctx prompt opts))))
 
 
-(defn generate-response
-  "Returns a string with all tokens generated from prompt up until end of sentence or max content size."
+(defn generate-string
+  "Returns a string with all tokens generated from prompt up until end of sentence or max context size."
   ([ctx prompt]
-   (generate-response ctx prompt nil))
+   (generate-string ctx prompt nil))
   ([ctx prompt opts]
    (let [[prompt-token-count _] (tokenize ctx prompt true)]
      (str/join

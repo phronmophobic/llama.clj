@@ -133,9 +133,8 @@
 
 ^{:nextjournal.clerk/visibility {:code :hide :result :show}}
 (wrap-seed
- (llama/generate-response llama-context input-str)
+ (llama/generate-string llama-context input-str)
  {:code :show :result :show})
-
 
 ^{:nextjournal.clerk/visibility {:code :hide :result :hide}}
 (comment
