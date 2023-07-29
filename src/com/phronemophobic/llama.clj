@@ -331,7 +331,7 @@
   ([ctx prompt]
    (generate ctx prompt nil))
   ([ctx prompt opts]
-   (eduction
+   (sequence
     (map #(raw/llama_token_to_str ctx %))
     (generate-tokens ctx prompt opts))))
 
