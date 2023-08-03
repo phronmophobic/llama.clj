@@ -35,9 +35,8 @@
    (print-response ctx prompt nil))
   ([ctx prompt opts]
    (transduce
-    (comp (map #(raw/llama_token_to_str ctx %))
-          (take-while (fn [_]
-                        (not (Thread/interrupted)))))
+    (take-while (fn [_]
+                  (not (Thread/interrupted))))
     (completing
      (fn [_ s]
        (print s)
