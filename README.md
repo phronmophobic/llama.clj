@@ -78,7 +78,7 @@ clojure -M -m com.phronemophobic.llama <path-to-model> <prompt>
 Example:
 
 ```bash
-clojure -M -m com.phronemophobic.llama "models/Llama-2-7B-Chat-GGML/llama-2-7b-chat.ggmlv3.q4_0.bin" "what is 2+2?"
+clojure -M:mvn-llama -m com.phronemophobic.llama "models/llama-2-7b-chat.ggmlv3.q4_0.bin" "what is 2+2?"
 ```
 
 ## "Roadmap"
