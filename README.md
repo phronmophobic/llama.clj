@@ -33,7 +33,7 @@ The llama.cpp shared library can either be compiled locally or can be included a
 
 #### Precompiled native deps on clojars
 
-The easiest method is to include the corresponding native dependency for your platform (including multiple is fine, but will increase the size of your dependencies). See the [mvn-llama alias](https://github.com/phronmophobic/llama.clj/blob/e31b78875863871480fce0a81c002e627f67b73b/deps.edn#L11C3-L11C13) for an example.
+The easiest method is to include the corresponding native dependency for your platform (including multiple is fine, but will increase the size of your dependencies). See the [mvn-llama alias](https://github.com/phronmophobic/llama.clj/blob/b4fef0e8fc23a72349796911cef33d6bbdadcd73/deps.edn#L11) for an example.
 
 ```clojure
 com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
