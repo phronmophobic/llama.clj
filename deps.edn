@@ -21,7 +21,7 @@
   :generate-docs
   {:extra-deps {io.github.nextjournal/clerk {:mvn/version "0.14.919"}
                 com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
-                com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}}
+                com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "CUBLAS-6e88a462d7d2d281e33f35c3c41df785ef633bc1"}}
    :extra-paths ["notebooks"]
    :exec-fn nextjournal.clerk/build!
    :exec-args {:paths ["notebooks/*"]
