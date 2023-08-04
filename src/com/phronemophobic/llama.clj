@@ -52,6 +52,7 @@
        ;; :progress-callback (.writeField params "progress_callback" v)
        ;; :progress-callback-user-data (.writeField params "progress_callback_user_data" v)
        :low-vram (.writeField params "low_vram" (->bool v))
+       :mul_mat_q (.writeField params "mul_mat_q" (->bool v))
        :f16-kv (.writeField params "f16_kv" (->bool v))
        :logits-all (.writeField params "logits_all" (->bool v))
        :vocab-only (.writeField params "vocab_only" (->bool v))
@@ -78,6 +79,7 @@
   - `:rope-freq-base`: RoPE base frequency
   - `:rope-freq-scale`: RoPE frequency scaling factor
   - `:low-vram`: if true, reduce VRAM usage at the cost of performance
+  - `:mul_mat_q`: if true, use experimental mul_mat_q kernels
   - `:f16-kv`: use fp16 for KV cache
   - `:logits-all`: the llama_eval() call computes all logits, not just the last one
   - `:vocab-only`: only load the vocabulary, no weights

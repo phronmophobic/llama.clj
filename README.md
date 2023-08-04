@@ -36,21 +36,23 @@ The llama.cpp shared library can either be compiled locally or can be included a
 The easiest method is to include the corresponding native dependency for your platform (including multiple is fine, but will increase the size of your dependencies). See the [mvn-llama alias](https://github.com/phronmophobic/llama.clj/blob/e31b78875863871480fce0a81c002e627f67b73b/deps.edn#L11C3-L11C13) for an example.
 
 ```clojure
-com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "e274269fd87aac0f71ab02a2c4676f60fd6198cf"}
-com.phronemophobic.cljonda/llama-cpp-darwin-x86-64 {:mvn/version "e274269fd87aac0f71ab02a2c4676f60fd6198cf"}
-com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "e274269fd87aac0f71ab02a2c4676f60fd6198cf"}
+com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
+com.phronemophobic.cljonda/llama-cpp-darwin-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
+com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
 ```
 
 #### Locally compiled
 
 Clone https://github.com/ggerganov/llama.cpp and follow the instructions for building. Make sure to include the shared library options.
 
-_Note: The llama.cpp ffi bindings are based on the `294f424554c1599784ac9962462fc39ace92d8a5` git commit. Future versions of llama.cpp might not be compatible if breaking changes are made. TODO: include instructions for updating ffi bindings._
+_Note: The llama.cpp ffi bindings are based on the `4329d1acb01c353803a54733b8eef9d93d0b84b2` git commit. Future versions of llama.cpp might not be compatible if breaking changes are made. TODO: include instructions for updating ffi bindings._
 
 For Example:
 
 ```sh
-git checkout 294f424554c1599784ac9962462fc39ace92d8a5
+git clone https://github.com/ggerganov/llama.cpp
+cd llama.cpp
+git checkout 4329d1acb01c353803a54733b8eef9d93d0b84b2
 mkdir build
 cd build
 cmake -DBUILD_SHARED_LIBS=ON ..

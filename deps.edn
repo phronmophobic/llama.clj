@@ -10,9 +10,9 @@
 
   :mvn-llama
   {:extra-deps
-   {com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "e274269fd87aac0f71ab02a2c4676f60fd6198cf"}
-    com.phronemophobic.cljonda/llama-cpp-darwin-x86-64 {:mvn/version "e274269fd87aac0f71ab02a2c4676f60fd6198cf"}
-    com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "e274269fd87aac0f71ab02a2c4676f60fd6198cf"}}}
+   {com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
+    com.phronemophobic.cljonda/llama-cpp-darwin-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
+    com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}}}
 
   :clerk {:extra-paths ["notebooks"]
           :extra-deps
@@ -20,8 +20,8 @@
 
   :generate-docs
   {:extra-deps {io.github.nextjournal/clerk {:mvn/version "0.14.919"}
-                com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "e274269fd87aac0f71ab02a2c4676f60fd6198cf"}
-                com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "e274269fd87aac0f71ab02a2c4676f60fd6198cf"}}
+                com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
+                com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}}
    :extra-paths ["notebooks"]
    :exec-fn nextjournal.clerk/build!
    :exec-args {:paths ["notebooks/*"]
@@ -34,8 +34,8 @@
   {:extra-deps {codox-theme-rdash/codox-theme-rdash {:mvn/version "0.1.2"}
                 ;; nrepl/nrepl {:mvn/version "0.8.3"}
                 ;; cider/cider-nrepl {:mvn/version "0.25.5"}
-                com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "e274269fd87aac0f71ab02a2c4676f60fd6198cf"}
-                com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "e274269fd87aac0f71ab02a2c4676f60fd6198cf"}
+                com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
+                com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
                 com.cnuernber/codox {:mvn/version "1.001"}}
    :exec-fn codox.main/-main
    :exec-args {:name "llama.clj"
