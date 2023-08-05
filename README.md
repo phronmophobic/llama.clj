@@ -83,6 +83,28 @@ Example:
 clojure -M:mvn-llama -m com.phronemophobic.llama "models/llama-2-7b-chat.ggmlv3.q4_0.bin" "what is 2+2?"
 ```
 
+## cuBLAS support
+
+For gpu support on linux, cuda must be installed. The instructions for cuda installation can be found in [nvidia's documentation](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/contents.html).
+
+Make sure to restart and follow the [post installation instructions](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#post-installation-actions) so that the cuda development tools like nvcc are available on the path.
+
+Currently, pre-compiled binaries of llama.cpp with cuBLAS support are not available. The llama.cpp native dependencies must be [compiled locally](#locally-compiled) with `-DLLAMA_CUBLAS=ON` as argument. Something like:
+
+```sh
+git clone https://github.com/ggerganov/llama.cpp
+cd llama.cpp
+git checkout 4329d1acb01c353803a54733b8eef9d93d0b84b2
+mkdir build
+cd build
+cmake -DBUILD_SHARED_LIBS=ON ..
+cmake --build . --config Release
+```
+
+### More cuBlas Resources
+- https://github.com/ggerganov/llama.cpp#cublas
+- https://docs.nvidia.com/cuda/cuda-installation-guide-linux/contents.html
+
 ## "Roadmap"
 
 - [ ] Pure clojure implementation for mirostatv2 and other useful samplers.
