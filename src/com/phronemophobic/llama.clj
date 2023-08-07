@@ -36,6 +36,16 @@
     (byte 1)
     (byte 0)))
 
+(defn ^:private ->float-array-by-reference [v]
+  (let [arr (float-array v)
+        arrlen (alength arr)
+        num-bytes (* arrlen 4)
+        mem (doto (Memory. num-bytes)
+              (.write 0 arr 0 arrlen))
+        fbr (doto (FloatByReference.)
+              (.setPointer mem))]
+    fbr))
+
 (defn ^:private map->llama-params [m]
   (reduce-kv
    (fn [^llama_context_params
@@ -46,7 +56,7 @@
        :n-batch (.writeField params "n_batch" (int v))
        :n-gpu-layers (.writeField params "n_gpu_layers" (int v))
        :main-gpu (.writeField params "main_gpu" (int v))
-       :tensor-split (.writeField params "tensor_split" (float-array v))
+       :tensor-split (.writeField params "tensor_split" (->float-array-by-reference  v))
        :rope-freq-base (.writeField params "rope_freq_base" (float v))
        :rope-freq-scale (.writeField params "rope_freq_scale" (float v))
        ;; :progress-callback (.writeField params "progress_callback" v)
