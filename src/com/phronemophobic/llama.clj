@@ -68,7 +68,9 @@
        :vocab-only (.writeField params "vocab_only" (->bool v))
        :use-mmap (.writeField params "use_mmap" (->bool v))
        :use-mlock (.writeField params "use_mlock" (->bool v))
-       :embedding (.writeField params "embedding" (->bool v)))
+       :embedding (.writeField params "embedding" (->bool v))
+       :gqa (.writeField params "n_gqa" (int v))
+       :rms-norm-eps (.writeField params "rms_norm_eps" (float v)))
      ;; return params
      params)
    (raw/llama_context_default_params)
@@ -96,6 +98,8 @@
   - `:use-mmap`: use mmap if possible
   - `:use-mlock`: force system to keep model in RAM
   - `:embedding`: embedding mode only
+  - `:gqa`: grouped-query attention factor (TEMP!!! use 8 for LLaMAv2 70B)
+  - `:rms-norm-eps`: rms norm eps (TEMP!!! use 1e-5 for LLaMAv2)
 
   Resources can be freed by calling .close on the returned context.
   Using a closed context is undefined and will probably crash the JVM.
@@ -120,7 +124,9 @@
             vocab-only
             use-mmap
             use-mlock
-            embedding]
+            embedding
+            gqa
+            rms-norm-eps]
      :as params}]
    @llm-init
    (let [^llama_context_params
