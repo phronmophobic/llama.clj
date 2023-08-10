@@ -215,7 +215,7 @@
    (llama-update ctx s n-past *num-threads*))
   ([ctx s n-past num-threads]
    (let [num-threads (or num-threads *num-threads*)
-         [num-tokens token-buf]
+         [total-tokens ^Memory token-buf]
          (cond
            (string? s)
            (tokenize ctx s (zero? n-past))
@@ -226,7 +226,18 @@
                   (.setInt 0 s))]))]
      (assert (< n-past (raw/llama_n_ctx ctx))
              "Context size exceeded")
-     (raw/llama_eval ctx token-buf num-tokens n-past num-threads)
+
+     (let [batch-size 512]
+       (loop [offset 0
+              n-past n-past]
+         (let [batch-buf (.share token-buf (* offset 4))
+               num-batch-tokens (min batch-size (- total-tokens offset))]
+           (raw/llama_eval ctx batch-buf num-batch-tokens n-past num-threads)
+           (let [next-offset (+ offset num-batch-tokens)]
+             (when (< next-offset total-tokens)
+               (recur next-offset
+                      (+ n-past num-batch-tokens)))))))
+
      ctx)))
 
 (defn sample-logits-greedy
