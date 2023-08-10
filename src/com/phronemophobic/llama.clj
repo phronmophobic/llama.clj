@@ -371,8 +371,15 @@
   (def model-path "models/llama-2-7b-chat.ggmlv3.q4_0.bin")
   (def model-path "../llama.cpp/models/Llama-2-7B-Chat-GGML/llama-2-7b-chat.ggmlv3.q8_0.bin")
   (def model-path "../llama.cpp/models/Llama-2-7B-Chat-GGML/llama-2-7b-chat.ggmlv3.q5_1.bin")
+  (def model-path "models/llama2_7b_chat_uncensored.ggmlv3.q4_0.bin")
+  (def model-path "models/Wizard-Vicuna-13B-Uncensored.ggmlv3.q4_0.bin")
 
-  (def ctx (create-context model-path {:n-gpu-layers 1}))
+  (def ctx (create-context model-path {:n-gpu-layers 1
+                                       :n-ctx 2048}))
+
+  (require '[com.phronemophobic.llama.util.prompt :as prompt])
+  (require '[com.phronemophobic.llama.util :as llutil])
+  (llutil/print-response ctx "what is clojure?")
 
   (def prompt "What is clojure?")
   ;; updates context logits
