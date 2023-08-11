@@ -170,7 +170,9 @@
                      (case k
                        :n-batch n-batch
                        :params params
-                       :model @model-ref))
+                       :model @model-ref
+                       ;; else
+                       nil))
                    (close []
                      (delete-context)
                      (delete-model)))]
