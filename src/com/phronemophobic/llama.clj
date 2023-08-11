@@ -159,8 +159,18 @@
                           (when old
                             (raw/llama_free_model (Pointer. old)))))
 
-         ;; make context autocloseable
-         context (proxy [Pointer java.lang.AutoCloseable] [(Pointer/nativeValue context)]
+         n-batch (.readField llama-params "n_batch")
+         ;; make context autocloseable and implement
+         ;; some map lookup interfaces
+         context (proxy [Pointer
+                         clojure.lang.ILookup
+                         java.lang.AutoCloseable]
+                     [(Pointer/nativeValue context)]
+                   (valAt [k]
+                     (case k
+                       :n-batch n-batch
+                       :params params
+                       :model @model-ref))
                    (close []
                      (delete-context)
                      (delete-model)))]
@@ -227,7 +237,7 @@
      (assert (< n-past (raw/llama_n_ctx ctx))
              "Context size exceeded")
 
-     (let [batch-size 512]
+     (let [batch-size (:n-batch ctx)]
        (loop [offset 0
               n-past n-past]
          (let [batch-buf (.share token-buf (* offset 4))
