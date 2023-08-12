@@ -101,7 +101,7 @@ cmake -DBUILD_SHARED_LIBS=ON -DLLAMA_CUBLAS=ON ..
 cmake --build . --config Release
 ```
 
-### More cuBlas Resources
+### More cuBLAS Resources
 - https://github.com/ggerganov/llama.cpp#cublas
 - https://docs.nvidia.com/cuda/cuda-installation-guide-linux/contents.html
 
