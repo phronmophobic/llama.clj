@@ -97,7 +97,7 @@ cd llama.cpp
 git checkout 4329d1acb01c353803a54733b8eef9d93d0b84b2
 mkdir build
 cd build
-cmake -DBUILD_SHARED_LIBS=ON ..
+cmake -DBUILD_SHARED_LIBS=ON -DLLAMA_CUBLAS=ON ..
 cmake --build . --config Release
 ```
 
