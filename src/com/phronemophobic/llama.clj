@@ -404,24 +404,8 @@
   (require '[com.phronemophobic.llama.util :as llutil])
   (llutil/print-response ctx "what is clojure?")
 
-  (def prompt "What is clojure?")
-  ;; updates context logits
-  (llama-update ctx prompt)
 
-  (def results
-    (loop [results [prompt]]
-      (let [next-token (sample-logits-greedy (get-logits ctx))
-            next-str (raw/llama_token_to_str ctx next-token)]
-        (print next-str)
-        (flush)
-        (if (not= next-token
-                  (raw/llama_token_eos))
-          (do
-            (llama-update ctx next-token)
-            (recur (conj results next-str)))
-          results))))
-
-  ,)
+  ),
 
 (defn -main [model-path prompt]
   (let [ctx (create-context model-path {:n-gpu-layers 1})
