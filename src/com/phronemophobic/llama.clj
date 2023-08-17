@@ -388,7 +388,7 @@
        (take (- (raw/llama_n_ctx ctx)
                 prompt-token-count))
        (map #(raw/llama_token_to_str ctx %))
-       (generate-tokens ctx prompt nil))))))
+       (generate-tokens ctx prompt opts))))))
 
 (comment
   (def model-path "models/llama-2-7b-chat.ggmlv3.q4_0.bin")
