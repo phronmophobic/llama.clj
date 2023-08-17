@@ -159,8 +159,20 @@
                           (when old
                             (raw/llama_free_model (Pointer. old)))))
 
-         ;; make context autocloseable
-         context (proxy [Pointer java.lang.AutoCloseable] [(Pointer/nativeValue context)]
+         n-batch (.readField llama-params "n_batch")
+         ;; make context autocloseable and implement
+         ;; some map lookup interfaces
+         context (proxy [Pointer
+                         clojure.lang.ILookup
+                         java.lang.AutoCloseable]
+                     [(Pointer/nativeValue context)]
+                   (valAt [k]
+                     (case k
+                       :n-batch n-batch
+                       :params params
+                       :model @model-ref
+                       ;; else
+                       nil))
                    (close []
                      (delete-context)
                      (delete-model)))]
@@ -215,7 +227,7 @@
    (llama-update ctx s n-past *num-threads*))
   ([ctx s n-past num-threads]
    (let [num-threads (or num-threads *num-threads*)
-         [num-tokens token-buf]
+         [total-tokens ^Memory token-buf]
          (cond
            (string? s)
            (tokenize ctx s (zero? n-past))
@@ -226,7 +238,18 @@
                   (.setInt 0 s))]))]
      (assert (< n-past (raw/llama_n_ctx ctx))
              "Context size exceeded")
-     (raw/llama_eval ctx token-buf num-tokens n-past num-threads)
+
+     (let [batch-size (:n-batch ctx)]
+       (loop [offset 0
+              n-past n-past]
+         (let [batch-buf (.share token-buf (* offset 4))
+               num-batch-tokens (min batch-size (- total-tokens offset))]
+           (raw/llama_eval ctx batch-buf num-batch-tokens n-past num-threads)
+           (let [next-offset (+ offset num-batch-tokens)]
+             (when (< next-offset total-tokens)
+               (recur next-offset
+                      (+ n-past num-batch-tokens)))))))
+
      ctx)))
 
 (defn sample-logits-greedy
@@ -365,7 +388,7 @@
        (take (- (raw/llama_n_ctx ctx)
                 prompt-token-count))
        (map #(raw/llama_token_to_str ctx %))
-       (generate-tokens ctx prompt nil))))))
+       (generate-tokens ctx prompt opts))))))
 
 (comment
   (def model-path "models/llama-2-7b-chat.ggmlv3.q4_0.bin")
@@ -381,24 +404,8 @@
   (require '[com.phronemophobic.llama.util :as llutil])
   (llutil/print-response ctx "what is clojure?")
 
-  (def prompt "What is clojure?")
-  ;; updates context logits
-  (llama-update ctx prompt)
 
-  (def results
-    (loop [results [prompt]]
-      (let [next-token (sample-logits-greedy (get-logits ctx))
-            next-str (raw/llama_token_to_str ctx next-token)]
-        (print next-str)
-        (flush)
-        (if (not= next-token
-                  (raw/llama_token_eos))
-          (do
-            (llama-update ctx next-token)
-            (recur (conj results next-str)))
-          results))))
-
-  ,)
+  ),
 
 (defn -main [model-path prompt]
   (let [ctx (create-context model-path {:n-gpu-layers 1})
