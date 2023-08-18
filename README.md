@@ -1,6 +1,6 @@
 # llama.clj
 
-Run LLM models locally. A clojure wrapper for [llama.cpp](https://github.com/ggerganov/llama.cpp).
+Run LLMs locally. A clojure wrapper for [llama.cpp](https://github.com/ggerganov/llama.cpp).
 
 ## Quick Start
 
