@@ -19,10 +19,13 @@ clojure -M:mvn-llama -m com.phronemophobic.llama "models/llama-2-7b-chat.ggmlv3.
 [Overview Guide](https://phronmophobic.github.io/llama.clj/)  
 [API Docs](https://phronmophobic.github.io/llama.clj/reference/)  
 
-## Dependency
+## How to install?
 
 ```clojure
 com.phronemophobic/llama-clj {:mvn/version "0.5"}
+;; Required native dependency for llama.cpp, ignore if you're planning to
+;; compile llama.cpp bindings yourself. See below for more details
+com.phronemophobic.cljonda/llama-cpp-<YOUR OS ARCHITECTURE> {:mvn/version "...."}
 ```
 
 ### Native Dependency
@@ -82,6 +85,29 @@ Example:
 ```bash
 clojure -M:mvn-llama -m com.phronemophobic.llama "models/llama-2-7b-chat.ggmlv3.q4_0.bin" "what is 2+2?"
 ```
+
+## REPL Usage
+
+Here's an interactive example:
+
+```clojure
+(require '[clojure.string :as str]
+         '[com.phronemophobic.llama :as llama]
+         '[com.phronemophobic.llama.util :as llutil])
+
+(def ctx (llama/create-context "$PATH_TO/llama-2-7b-chat.ggmlv3.q4_0.bin"
+                               {:n-gpu-layers 1
+                                :n-ctx 2048}))
+
+(do
+  (println "please wait...")
+  (println (str/join "" (llama/generate ctx "What is your name?" nil)))) ;; very random response :-)
+
+;; or for more fancy output:
+
+(llutil/print-response ctx "What is your name?")
+```
+
 
 ## cuBLAS support
 
