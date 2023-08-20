@@ -65,8 +65,10 @@
   {:extra-paths ["notebooks" "tests"]
    :jvm-opts ["-XX:+UnlockDiagnosticVMOptions"
               "-XX:+DebugNonSafepoints"
-              "-XX:-HeapDumpOnOutOfMemoryError"]
-   #_#_:jvm-opts ["-Djna.library.path=/Users/adrian/workspace/llama.cpp/build"]
+              "-XX:-HeapDumpOnOutOfMemoryError"
+
+              ;; "-Djna.library.path=/Users/adrian/workspace/llama.cpp/build"
+              ]
    :extra-deps {org.bytedeco/llvm-platform {:mvn/version "16.0.4-1.5.9"}
                 com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"
                                                                      ;;:local/root "/Users/adrian/workspace/cljonda/build/llama-cpp.jar"
