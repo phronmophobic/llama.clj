@@ -2,6 +2,11 @@
   (:require [com.phronemophobic.llama.raw :as raw]
             [clojure.string :as str])
   (:import java.lang.ref.Cleaner
+           java.nio.charset.CodingErrorAction
+           java.nio.charset.CharsetDecoder
+           java.nio.charset.Charset
+           java.nio.ByteBuffer
+           java.nio.CharBuffer
            com.sun.jna.Memory
            com.sun.jna.Pointer
            com.sun.jna.ptr.IntByReference
@@ -329,6 +334,127 @@
         .getPointer
         (.getFloatArray 0 n-vocab))))
 
+
+(defn ^:private char->str
+  "Transducer that expects a stream of chars. If a surrogate pair is detected,
+  wait until the full pair is available before emitting."
+  []
+  (fn [rf]
+    (let [v (volatile! nil)]
+      (fn
+        ([] (rf))
+        ([result]
+         (let [result (if-let [c @v]
+                        (unreduced (rf result c))
+                        result)]
+           (rf result)))
+        ([result c]
+         (if-let [c1 @v]
+           (do
+             (vreset! v nil)
+             (rf result (str c1 c)))
+           (if (Character/isHighSurrogate c)
+             (do
+               (vreset! v c)
+               result)
+             (rf result (str c)))))))))
+
+(defn ^:private preserving-reduced
+  [rf]
+  #(let [ret (rf %1 %2)]
+     (if (reduced? ret)
+       (reduced ret)
+       ret)))
+
+(def ^:private llama-token-to-str
+  (.getFunction ^com.sun.jna.NativeLibrary raw/libllama
+                "llama_token_to_str"))
+
+(defn decode-token-to-char
+  "Returns a transducer that expects a stream of llama tokens
+  and outputs a stream of decoded chars.
+
+  The transducer will buffer intermediate results until enough
+  bytes to decode a character are available."
+  ([ctx]
+   (decode-token-to-char ctx (Charset/forName "UTF-8")))
+  ([ctx ^Charset charset]
+   (fn [rf]
+     (let [decoder (doto (.newDecoder charset)
+                     (.onMalformedInput CodingErrorAction/REPLACE)
+                     (.onUnmappableCharacter CodingErrorAction/REPLACE))
+
+           input-buffer (ByteBuffer/allocate 256)
+           output-buffer (CharBuffer/allocate 256)
+
+           rrf (preserving-reduced rf)]
+       (fn
+         ([] (rf))
+         ([result]
+          (.flip input-buffer)
+          (let [result
+                (let [ ;; Invoke the decode method one final time, passing true for the endOfInput argument; and then
+                      decoder-result1 (.decode decoder input-buffer output-buffer true)
+                      ;; Invoke the flush method so that the decoder can flush any internal state to the output buffer.
+                      decoder-result2 (.flush decoder output-buffer)]
+                  (if (and (.isUnderflow decoder-result1)
+                           (.isUnderflow decoder-result2))
+                    (do
+                      (.flip output-buffer)
+                      (let [result (reduce rrf result output-buffer)]
+                        (.clear output-buffer)
+                        result))
+                    ;; else
+                    (throw (Exception. "Unexpected decoder state."))))]
+            (rf result)))
+         ([result token]
+          (let [^Pointer p (.invoke
+                            ^com.sun.jna.Function llama-token-to-str
+                            Pointer (to-array [ctx (int token)]))
+                ;; p points to a c string
+                ;; find length by counting until null token is found
+                len (loop [i 0]
+                      (if (zero? (.getByte p i))
+                        i
+                        (recur (inc i))))]
+            (.put input-buffer (.getByteBuffer p 0 len))
+            (.flip input-buffer)
+
+            ;; Invoke the decode method zero or more times, as long as additional input may be available, passing false for the endOfInput argument and filling the input buffer and flushing the output buffer between invocations;
+            (let [decoder-result (.decode decoder input-buffer output-buffer false)]
+              (cond
+                (.isUnderflow decoder-result)
+                (do
+                  (.compact input-buffer)
+                  (.flip output-buffer)
+                  (let [result (reduce rrf result output-buffer)]
+                    (.clear output-buffer)
+                    result))
+
+                (.isOverflow decoder-result)
+                (throw (ex-info "Decoder buffer too small" {}))
+
+                (.isError decoder-result)
+                (throw (ex-info "Decoder Error" {:decoder decoder}))
+
+                :else
+                (throw (Exception. "Unexpected decoder state.")))))))))))
+
+
+(defn decode-token
+  "Returns a transducer that expects a stream of llama tokens
+  and outputs a stream of strings.
+
+  The transducer will buffer intermediate results until enough
+  bytes to decode a character are available. Also combines
+  surrogate pairs of characters."
+  ([ctx]
+   (decode-token ctx (Charset/forName "UTF-8")))
+  ([ctx ^Charset charset]
+   (comp
+    (decode-token-to-char ctx charset)
+    (char->str))))
+
 (defn generate-tokens
   "Returns a seqable/reducible sequence of tokens from ctx with prompt."
   ([ctx prompt]
@@ -373,7 +499,7 @@
    (generate ctx prompt nil))
   ([ctx prompt opts]
    (eduction
-    (map #(raw/llama_token_to_str ctx %))
+    (decode-token ctx)
     (generate-tokens ctx prompt opts))))
 
 
@@ -387,7 +513,7 @@
       (eduction
        (take (- (raw/llama_n_ctx ctx)
                 prompt-token-count))
-       (map #(raw/llama_token_to_str ctx %))
+       (decode-token-to-char ctx)
        (generate-tokens ctx prompt opts))))))
 
 (comment
@@ -403,6 +529,9 @@
   (require '[com.phronemophobic.llama.util.prompt :as prompt])
   (require '[com.phronemophobic.llama.util :as llutil])
   (llutil/print-response ctx "what is clojure?")
+
+  (llutil/print-response ctx "The unicode emoji for :smile:"
+                         {:seed 4321})
 
 
   ),
