@@ -23,8 +23,10 @@
             *out* w]
     (pr obj)))
 
+(def libllama-options
+  {com.sun.jna.Library/OPTION_STRING_ENCODING "UTF8"})
 (def ^:no-doc libllama
-  (com.sun.jna.NativeLibrary/getInstance "llama"))
+  (com.sun.jna.NativeLibrary/getInstance "llama" libllama-options))
 
 (defn ^:private dump-api []
   (let [outf (io/file

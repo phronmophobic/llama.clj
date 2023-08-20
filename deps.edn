@@ -49,8 +49,20 @@
                             com.phronemophobic.llama.raw
                             com.phronemophobic.llama.util]}}
 
+  :test {:extra-paths ["test"]
+         :extra-deps
+         {com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"
+                                                                     ;;:local/root "/Users/adrian/workspace/cljonda/build/llama-cpp.jar"
+                                                                     }
+          io.github.cognitect-labs/test-runner
+          {:git/tag "v0.5.1" :git/sha "dfb30dd"}
+          org.clojure/test.check {:mvn/version "1.1.1"}}
+
+         :main-opts ["-m" "cognitect.test-runner"]
+         :exec-fn cognitect.test-runner.api/test}
+
   :project
-  {:extra-paths ["notebooks"]
+  {:extra-paths ["notebooks" "tests"]
    :jvm-opts ["-XX:+UnlockDiagnosticVMOptions"
               "-XX:+DebugNonSafepoints"
               "-XX:-HeapDumpOnOutOfMemoryError"]
@@ -60,4 +72,5 @@
                                                                      ;;:local/root "/Users/adrian/workspace/cljonda/build/llama-cpp.jar"
                                                                      }
                 io.github.nextjournal/clerk {:mvn/version "0.14.919"}
+                org.clojure/test.check {:mvn/version "1.1.1"}
                 }}}}

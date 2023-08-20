@@ -213,7 +213,7 @@
         s (if add-bos?
             (str " " s)
             s)
-        max-tokens (+ add-bos (count s))
+        max-tokens (+ add-bos (alength (.getBytes s "utf-8")))
         token-buf (get-token-buf ctx max-tokens)
         num-tokens (raw/llama_tokenize ctx s token-buf max-tokens add-bos)]
     [num-tokens token-buf]))
