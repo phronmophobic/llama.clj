@@ -27,7 +27,10 @@
 (defn untokenize
   "Given a sequence of tokens, return the string representation."
   [ctx tokens]
-  (str/join (map #(raw/llama_token_to_str ctx %) tokens)))
+  (str/join
+   (eduction
+    (llama/decode-token-to-char ctx)
+    tokens)))
 
 (defn print-response
   "Generates a response from prompt and print the results as they become available.
