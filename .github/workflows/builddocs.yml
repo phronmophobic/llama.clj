@@ -39,8 +39,9 @@ jobs:
         uses: DeLaGuardo/setup-clojure@9.5
         with:
           cli: 1.11.1.1208
-      - name: Download llama
+      - name: Download llama2
         run: mkdir -p models && cd models && curl -L -O 'https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/resolve/main/llama-2-7b-chat.ggmlv3.q4_0.bin'
+      - name: Download llama2-uncensored
         run: mkdir -p models && cd models && curl -L -O 'https://huggingface.co/TheBloke/llama2_7b_chat_uncensored-GGML/resolve/main/llama2_7b_chat_uncensored.ggmlv3.q4_0.bin'
       - name: Build static
         run: clojure -X:generate-docs
