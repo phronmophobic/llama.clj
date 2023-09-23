@@ -1,0 +1,32 @@
+(* 
+
+https://github.com/aphyr/clj-antlr/blob/master/grammars/json.instaparse
+
+Copyright © 2014 Kyle Kingsbury aphyr@aphyr.com, and Factual, Inc. Includes ANTLR code under the BSD 3-clause license, written by Terence Parr and Sam Harwell. My sincerest appreciation to all ANTLR contributors as well. :)
+
+Distributed under the Eclipse Public License, the same as Clojure.
+
+https://opensource.org/license/epl-1-0/
+*)
+
+(* NOTE: NOT THE FULL JSON SPEC *)
+
+jsonText = <WS*> (jsonObject | jsonArray) <WS*>
+
+jsonValue = 'false' | 'null' | 'true' | jsonObject | jsonArray | jsonNumber | jsonString
+
+jsonNumber = NUMBER
+
+jsonString = STRING
+
+jsonObject = '{' <WS*> (member (<WS*> ',' <WS*> member)*)? <WS*> '}'
+
+member = STRING <WS*> ':' <WS*> jsonValue
+
+jsonArray = '[' <WS*> (jsonValue (<WS*> ',' <WS*> jsonValue)*)? <WS*> ']'
+
+<NUMBER> = #"[0-9]+"
+
+<WS> = ' ' | '\t' | '\n' | '\r'
+
+<STRING> = '"' #"[a-zA-Z 0-9]*" '"'
