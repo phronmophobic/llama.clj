@@ -33,7 +33,8 @@
 ;; Throughout these docs, we'll be using the llama 7b chat model.
 ;; and the following context based on this model.
 ^{:nextjournal.clerk/visibility {:code :hide :result :show}}
-(clerk/code ";; downloaded previously
+(clerk/code ";; downloaded previously from
+;; https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/resolve/main/llama-2-7b-chat.ggmlv3.q4_0.bin
 (def llama7b-path \"models/llama-2-7b-chat.ggmlv3.q4_0.bin\")
 (def llama-context (llama/create-context llama7b-path {:n-gpu-layers 1}))
 ")
