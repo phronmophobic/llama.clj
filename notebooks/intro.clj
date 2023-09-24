@@ -524,10 +524,10 @@ If a question does not make any sense, or is not factually coherent, explain why
 
 (def queries
   ["Programming with Clojure."
+   "Programming with monads."
    "Crying in the rain."
    "Dancing in the rain."
    "Debugging a race condition."
-   "Programming with monads."
    "Solving problems in a hammock."
    "Sitting in traffic."
    "Drinking poison."])
