@@ -271,7 +271,11 @@ If a question does not make any sense, or is not factually coherent, explain why
   (loop [tokens
          (into response-tokens
                (llutil/tokenize llama-context
-                                (llama2-prompt "In one sentence, describe how does Clojurescript relate to Clojure?")))]
+                                (str
+                                 "[INST]"
+                                 "Can I use it to write a web app?"
+                                 "[/INST]"
+                                 )))]
     (let [logits (get-logits llama-context tokens)
           ;; greedy sampling
           tok (->> logits
