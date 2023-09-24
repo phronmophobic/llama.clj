@@ -43,7 +43,7 @@
 
 ;; ## Recreating the Chat Interface
 
-;; If you've interacted with an LLM, it's probably while using one of the various chat interfaces. Before exploring other usages, we'll first explain how a chat interface can be implemented using just the one basic operation.
+;; If you've interacted with an LLM, it's probably while using one of the various chat interfaces. Before exploring other usages of local LLMs, we'll first explain how a chat interface can be implemented.
 
 ;; ### Tokens
 
@@ -77,7 +77,7 @@
         (range 0 Integer/MAX_VALUE)))
 
 ;; Number of tokens:
-^{:nextjournal.clerk/visibility {:code :hide :result :hide}}
+^{:nextjournal.clerk/visibility {:code :hide :result :show}}
 (count token->str)
 
 ;; The longest token:
@@ -96,7 +96,7 @@
    (count (filter #{\space} untoken )))
  token->str)
 
-;; One last caveat to watch out for when converting between tokens and text is that not every token produces valid a valid utf-8 string. It may require multiple tokens before a valid utf-8 string is available. 
+;; One last caveat to watch out for when converting between tokens and text is that not every token produces a valid utf-8 string. It may require multiple tokens before a valid utf-8 string is available. 
 
 (def smiley-tokens (llutil/tokenize llama-context "😊"))
 
@@ -207,7 +207,7 @@
 
 ;; #### Full Response Generation
 
-;; Generating probabilities for the very next token is interesting, but not very useful by itself. What we really want is a full response. The way we do that is by using the probabilities to pick the next token, then append that token to our initial prompt, then retrieve new logits from our model using the one basic operation.
+;; Generating probabilities for the very next token is interesting, but not very useful by itself. What we really want is a full response. The way we do that is by using the probabilities to pick the next token, then append that token to our initial prompt, then retrieve new logits from our model, then rinse and repeat.
 
 ;; One of the decisions that most LLM APIs hide is the method for choosing the next token. In principle, we can choose any token and keep going (just as we were able to choose the initial prompt). The name for choosing the next token using the logits provided by the LLM is called **sampling**.
 
@@ -352,7 +352,7 @@ If a question does not make any sense, or is not factually coherent, explain why
 
 ;; To get a feel for how different sampling methods might impact results, check out the visualization tool at [https://perplexity.vercel.app/](https://perplexity.vercel.app/).
 
-;; #### Constrained sampling methods
+;; #### Constrained Sampling Methods
 
 ;; In addition to choosing sampling methods that improve responses, it's also possible to implement sampling methods that constrain the responses in interesting ways. Remember, it's completely up to the implementation as to determine which token gets fed back into the model.
 
