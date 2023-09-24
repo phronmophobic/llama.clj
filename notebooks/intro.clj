@@ -177,7 +177,7 @@
   (apply + (softmax clojure-is-a-logits)))
 
 
-;; `clojure-is-a-logits` is an array of numbers. The number of logits is 32,000 which is the number of tokens our model can represent. Each index in the array is proportional to the probability that the corresponding token will come next (according to our llm). 
+;; `clojure-is-a-logits` is an array of numbers. The number of logits is 32,000 which is the number of tokens our model can represent. Each index in the array is proportional to the probability that the corresponding token will come next (according to our LLM). 
 
 ;; Given that higher numbers are more probable, let's see what the top 10 candidates are:
 
@@ -393,7 +393,7 @@ If a question does not make any sense, or is not factually coherent, explain why
       (map #(str "> " %))
       (str/join "\n")))
 
-;; By artifically boosting the chances of selecting "and", we were able to generate a rambling response. It's also possible to get rambling responses by changing the prompt to ask for a rambling response. In some cases, it's more effective to artificially augment the probabilities offered by the LLM.
+;; By artificially boosting the chances of selecting "and", we were able to generate a rambling response. It's also possible to get rambling responses by changing the prompt to ask for a rambling response. In some cases, it's more effective to artificially augment the probabilities offered by the LLM.
 
 ;; ##### JSON Output
 
@@ -457,7 +457,7 @@ If a question does not make any sense, or is not factually coherent, explain why
 
 
 ;; Another interesting use case for local LLMs is for quickly building simple classifiers. LLMs inherently keep statistics relating various concepts. For this example,
-;; we'll create a simple sentiment classifer that describes a sentence as either "Happy" or "Sad". We'll also run our classifier against the llama2 uncensored model
+;; we'll create a simple sentiment classifier that describes a sentence as either "Happy" or "Sad". We'll also run our classifier against the llama2 uncensored model
 ;; to show how model choice impacts the results for certain tasks.
 
 (defn llama2-uncensored-prompt
@@ -487,7 +487,7 @@ If a question does not make any sense, or is not factually coherent, explain why
                 (str "Give a one word answer of \"Happy\" or \"Sad\" for describing the following sentence: " sentence))
         _ (llama/llama-update llama-context prompt 0)
 
-        ;; check happy and sad probilities for first tokens
+        ;; check happy and sad probabilities for first tokens
         logits (llama/get-logits llama-context)
         probs (softmax logits)
         hp1 (nth probs h1)
