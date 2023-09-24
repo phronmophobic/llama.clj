@@ -47,7 +47,7 @@
 
 ;; ### Tokens
 
-;; Keen readers may have already noticed that chat clients work with text, but LLMs work with **tokens**. Choosing how to bridge the gap between text and tokens is an interesting topic for creating LLMs, but it's not important for understanding how to run LLMs locally. All we need to know is that text can be tokenized into tokens and vice versa. 
+;; Keen readers may have already noticed that chat interfaces work with text, but LLMs work with **tokens**. Choosing how to bridge the gap between text and tokens is an interesting topic for creating LLMs, but it's not important for understanding how to run LLMs locally. All we need to know is that text can be tokenized into tokens and vice versa. 
 
 ;; Just to get a sense of the differences between tokens and text, let's look at how the llama2 7b chat model tokenizes text.
 
@@ -177,7 +177,7 @@
   (apply + (softmax clojure-is-a-logits)))
 
 
-;; `clojure-is-a-logits` is an array of numbers. The number of logits is 32,000 which is the number of tokens our model can represent. Each index in the array is proportional to the probability that the corresponding token will come next (according to our LLM). 
+;; `clojure-is-a-logits` is an array of numbers. The number of logits is 32,000 which is the number of tokens our model can represent. Each index in the array is proportional to the probability that the corresponding token will come next according to our LLM. 
 
 ;; Given that higher numbers are more probable, let's see what the top 10 candidates are:
 
@@ -265,7 +265,7 @@ If a question does not make any sense, or is not factually coherent, explain why
       (map #(str "> " %))
       (str/join "\n")))
 
-;; Let's ask a follow up question. All we need to is keep appending prompts and then generate more tokens.
+;; Let's ask a follow up question. All we need to do is keep appending prompts and continue generating more tokens.
 
 (def response-tokens2
   (loop [tokens
@@ -309,11 +309,11 @@ If a question does not make any sense, or is not factually coherent, explain why
 
 ;; ### Privacy
 
-;; One reason to run LLMs locally rather than via an API is making sure that sensitive or personal data isn't bouncing around the internet unnecessarily. Data privacy is important for both individual use as well as protecting data on behalf of customers.
+;; One reason to run LLMs locally rather than via an API is making sure that sensitive or personal data isn't bouncing around the internet unnecessarily. Data privacy is important for both individual use as well as protecting data on behalf of users and customers.
 
 ;; ### Alternative Sampling Methods
 
-;; Sampling is the method used for choosing the next token given the logits returned from an LLM. Our chat interface example used greedy sampling, but choosing the next token by always selecting the highest likelihood token often does not lead to the best results. The intuition for greedy sampling's poor performance is that using the highest probability tokens often leads to boring, uninteresting, and repetitive results.
+;; Sampling is the method used for choosing the next token given the logits returned from an LLM. Our chat interface example used greedy sampling, but choosing the next token by always selecting the highest likelihood token often does not lead to the best results. The intuition for greedy sampling's poor performance is that always picking the highest probability tokens often leads to boring, uninteresting, and repetitive results.
 
 ;; Let's compare greedy sampling vs [mirostatv2](https://arxiv.org/abs/2007.14966), llama.clj's default sampling method:
 
@@ -408,7 +408,7 @@ If a question does not make any sense, or is not factually coherent, explain why
 
 ;; _Note: This example uses a subset of JSON that avoids sequences
 ;; that would require lookback to validate. Implementing lookback
-;; to support arbitrary JSON output is left as an exercise to the reader._
+;; to support arbitrary JSON output is left as an exercise for the reader._
 
 (def json-parser
   (insta/parser (slurp
