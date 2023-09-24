@@ -550,6 +550,14 @@ If a question does not make any sense, or is not factually coherent, explain why
 ;; New models with different strengths, weaknesses, capabilities, and resource requirements are becoming available [regularly](https://huggingface.co/models?pipeline_tag=text-generation). 
 ;; As the classifier example showed, different models can perform drastically different depending on the task.
 
+;; Just to give an idea, here's a short list of other models to try:
+
+;; - [metharme-7b](https://huggingface.co/PygmalionAI/metharme-7b): This is an experiment to try and get a model that is usable for conversation, roleplaying and storywriting, but which can be guided using natural language like other instruct models.
+;; - [GPT4All](https://github.com/nomic-ai/gpt4all): GPT4All is an ecosystem to train and deploy powerful and customized large language models that run locally on consumer grade CPUs.
+;; - [OpenLLamMa](https://github.com/openlm-research/open_llama): we are releasing our public preview of OpenLLaMA, a permissively licensed open source reproduction of Meta AI’s LLaMA
+;; - [ALMA](https://huggingface.co/haoranxu/ALMA-7B-Pretrain): ALMA (Advanced Language Model-based trAnslator) is an LLM-based translation model, which adopts a new translation model paradigm: it begins with fine-tuning on monolingual data and is further optimized using high-quality parallel data. This two-step fine-tuning process ensures strong translation performance.
+;; - [LlaMa-2 Coder](https://huggingface.co/TheBloke/Llama-2-Coder-7B-GGUF): LlaMa-2 7b fine-tuned on the CodeAlpaca 20k instructions dataset by using the method QLoRA with PEFT library.
+
 ;; ## Conclusion
 
 ^{:nextjournal.clerk/visibility {:code :hide :result :show}}
