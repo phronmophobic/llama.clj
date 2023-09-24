@@ -44,7 +44,7 @@ jobs:
       - name: Download llama2-uncensored
         run: mkdir -p models && cd models && curl -L -O 'https://huggingface.co/TheBloke/llama2_7b_chat_uncensored-GGML/resolve/main/llama2_7b_chat_uncensored.ggmlv3.q4_0.bin'
       - name: Build static
-        run: clojure -X:generate-docs
+        run: clojure -J-Dclojure.main.report=stderr -X:generate-docs
       - name: Build Reference
         run: clojure -X:codox
       - name: Upload artifact
