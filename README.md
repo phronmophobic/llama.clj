@@ -17,6 +17,7 @@ clojure -M:mvn-llama -m com.phronemophobic.llama "models/llama-2-7b-chat.ggmlv3.
 ## Documentation
 
 [Overview Guide](https://phronmophobic.github.io/llama.clj/)  
+[Intro to Running LLMs Locally](https://phronmophobic.github.io/llama.clj/notebooks/intro.html)  
 [API Docs](https://phronmophobic.github.io/llama.clj/reference/)  
 
 ## Dependency
