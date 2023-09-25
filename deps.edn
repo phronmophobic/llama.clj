@@ -27,6 +27,7 @@
    :exec-fn nextjournal.clerk/build!
    :exec-args {:paths ["notebooks/*"]
                :index "notebooks/usage.clj"
+               :ssr true
                :out-path "docs/"
                ;;:bundle true
                }}
