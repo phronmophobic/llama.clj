@@ -144,7 +144,7 @@
 
   (into [] (llama/get-logits ctx)))
 
-;; Let's see take a look at the logits for the prompt "Clojure is a".
+;; Let's take a look at the logits for the prompt "Clojure is a".
 
 (def clojure-is-a-logits
   (get-logits llama-context "Clojure is a"))
