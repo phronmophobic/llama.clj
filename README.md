@@ -16,14 +16,18 @@ clojure -M:mvn-llama -m com.phronemophobic.llama "models/llama-2-7b-chat.ggmlv3.
 
 ## Documentation
 
-[Overview Guide](https://phronmophobic.github.io/llama.clj/)  
+[Getting Started](https://phronmophobic.github.io/llama.clj/)  
 [Intro to Running LLMs Locally](https://phronmophobic.github.io/llama.clj/notebooks/intro.html)  
-[API Docs](https://phronmophobic.github.io/llama.clj/reference/)  
+[API Reference Docs](https://phronmophobic.github.io/llama.clj/reference/)  
 
 ## Dependency
 
 ```clojure
 com.phronemophobic/llama-clj {:mvn/version "0.7"}
+;; native dependency, see below for more options and info
+com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
+com.phronemophobic.cljonda/llama-cpp-darwin-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
+com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
 ```
 
 ### Native Dependency
@@ -81,6 +85,9 @@ clojure -M -m com.phronemophobic.llama <path-to-model> <prompt>
 Example:
 
 ```bash
+mkdir -p models
+# Download 3.6Gb model to models/ directory
+(cd models && curl -L -O 'https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/resolve/main/llama-2-7b-chat.ggmlv3.q4_0.bin')
 clojure -M:mvn-llama -m com.phronemophobic.llama "models/llama-2-7b-chat.ggmlv3.q4_0.bin" "what is 2+2?"
 ```
 
@@ -110,9 +117,10 @@ cmake --build . --config Release
 
 - [ ] Pure clojure implementation for mirostatv2 and other useful samplers.
 - [ ] Provide reasonable default implementations for generating responses larger than the context size.
-- [ ] More docs!
-  - [ ] Reference docs
-  - [ ] Intro Guide to LLMs.
+- [ ] Update llama.cpp to [support gguf format](https://github.com/phronmophobic/llama.clj/issues/8)
+- [X] More docs!
+  - [X] Reference docs
+  - [X] Intro Guide to LLMs.
 
 ## License
 
