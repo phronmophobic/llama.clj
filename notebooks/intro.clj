@@ -115,7 +115,7 @@
 
 ;; Returning to the one basic operation, we now know how to translate between text and tokens. Let's now turn to how prediction works.
 
-;; While our description of the one basic operation says that LLMs calculates probabilities, that's not totally true. Instead,
+;; While our description of the one basic operation says that LLMs calculates probabilities, that's not completely accurate. Instead,
 ;; LLMs calculate [logits](https://en.wikipedia.org/wiki/Logit) which are slightly different.
 ;; Even though logits aren't actually probabilities, we can mostly ignore the details except
 ;; to say that larger logits indicate higher probability and smaller logits indicate lower probability.
@@ -181,27 +181,44 @@
 
 ;; Given that higher numbers are more probable, let's see what the top 10 candidates are:
 
-(->> clojure-is-a-logits
-     ;; keep track of index
-     (map-indexed (fn [idx p]
-                    [idx p]))
-     ;; take the top 10
-     (sort-by second >)
-     (take 10)
-     (map (fn [[idx _p]]
-            (llutil/untokenize llama-context [idx]))))
+(def highest-probability-candidates
+  (->> clojure-is-a-logits
+       ;; keep track of index
+       (map-indexed (fn [idx p]
+                      [idx p]))
+       ;; take the top 10
+       (sort-by second >)
+       (take 10)
+       (map (fn [[idx _p]]
+              (llutil/untokenize llama-context [idx])))))
+
+^{:nextjournal.clerk/visibility {:code :hide :result :show}}
+(clerk/table
+ (clerk/use-headers
+  (into [["Highest Probability Candidates"]]
+        (for [s highest-probability-candidates]
+          ["Clojure is a" s]))))
 
 ;; And for comparison, let's look at the 10 least probable candidates:
 
-(->> clojure-is-a-logits
-     ;; keep track of index]
-     (map-indexed (fn [idx p]
-                    [idx p]))
-     ;; take the bottom 10
-     (sort-by second)
-     (take 10)
-     (map (fn [[idx _p]]
-            (llutil/untokenize llama-context [idx]))))
+(def lowest-probability-candidates
+  (->> clojure-is-a-logits
+       ;; keep track of index]
+       (map-indexed (fn [idx p]
+                      [idx p]))
+       ;; take the bottom 10
+       (sort-by second)
+       (take 10)
+       (map (fn [[idx _p]]
+              (llutil/untokenize llama-context [idx])))))
+
+^{:nextjournal.clerk/visibility {:code :hide :result :show}}
+(clerk/table
+ (clerk/use-headers
+  (into [["Lowest Probability Candidates"]]
+        (for [s lowest-probability-candidates]
+          ["Clojure is a" s]))))
+
 
 ;; As you can see, the model does a pretty good job of finding likely and unlikely continuations.
 
@@ -479,8 +496,12 @@ If a question does not make any sense, or is not factually coherent, explain why
         sum-exp-values (reduce + exp-values)]
     (mapv #(/ % sum-exp-values) exp-values)))
 
-;; Our basic implementation is to construct a simple prompt asking the model to identify a sentence as "Happy" or "Sad" and then
-;; comparing the probabilities the LLM outputs for responding with either "Happy" or "Sad".
+;; Our implementation prompts the LLM to describe a sentence as either happy or sad using the following prompt:
+;; ```clojure
+;; (str "Give a one word answer of \"Happy\" or \"Sad\" for describing the following sentence: " sentence)
+;; ```
+;; We then compare the probability that the LLM predicts the response should be "Happy" vs
+;; the probablility that the LLM predicts the response should be "Sad".
 
 (defn happy-or-sad? [llama-context format-prompt sentence]
   (let [ ;; two tokens each
@@ -568,6 +589,17 @@ If a question does not make any sense, or is not factually coherent, explain why
 ;; Having direct access to LLMs provides flexibility in
 ;; cost, capability, and usage.
 
+;; ## Next Steps
+
+;; For more information on getting started, check out the [guide](https://phronmophobic.github.io/llama.clj/).
+
+
+^{:nextjournal.clerk/visibility {:code :hide :result :show}}
+(clerk/html
+ [:div
+  [:br]
+  [:br]
+  [:br]])
 
 ^{:nextjournal.clerk/visibility {:code :hide :result :hide}}
 (comment
