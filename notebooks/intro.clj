@@ -56,7 +56,7 @@
 (def tokens
   (llutil/tokenize llama-context sentence))
 
-;; One thing to notice is that are fewer tokens than letters:
+;; One thing to notice is that there are fewer tokens than letters:
 (count tokens)
 (count sentence)
 
@@ -231,7 +231,7 @@
 ;; Choosing a sampling method is an interesting topic unto itself, but for now, we'll go with the most obvious method. We'll choose the token with the highest likelihood given by the model. Sampling using the highest likelihood option is called **greedy sampling**. Conventionally, greedy sampling isn't the best sampling method, but it's easy to understand and works well enough.
 
 ;; Ok, so we now have a plan for generating a full response:
-;; 1. Feed out initial prompt into our model
+;; 1. Feed our initial prompt into our model
 ;; 2. Sample the next token using greedy sampling
 ;; 3. Return to step #1 with the sampled token appended to our previous prompt
 
