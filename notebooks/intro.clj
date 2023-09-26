@@ -261,14 +261,14 @@ If a question does not make any sense, or is not factually coherent, explain why
                                  (llama2-prompt "Describe Clojure in one sentence."))]
     (let [logits (get-logits llama-context tokens)
           ;; greedy sampling
-          tok (->> logits
-                   (map-indexed (fn [idx p]
-                                  [idx p]))
-                   (apply max-key second)
-                   first)]
-      (if (= tok (llama/eos))
+          token (->> logits
+                     (map-indexed (fn [idx p]
+                                    [idx p]))
+                     (apply max-key second)
+                     first)]
+      (if (= token (llama/eos))
         tokens
-        (recur (conj tokens tok))))))
+        (recur (conj tokens token))))))
 
 (def response
   (llutil/untokenize llama-context response-tokens))
@@ -295,14 +295,14 @@ If a question does not make any sense, or is not factually coherent, explain why
                                  )))]
     (let [logits (get-logits llama-context tokens)
           ;; greedy sampling
-          tok (->> logits
-                   (map-indexed (fn [idx p]
-                                  [idx p]))
-                   (apply max-key second)
-                   first)]
-      (if (= tok (llama/eos))
+          token (->> logits
+                     (map-indexed (fn [idx p]
+                                    [idx p]))
+                     (apply max-key second)
+                     first)]
+      (if (= token (llama/eos))
         tokens
-        (recur (conj tokens tok))))))
+        (recur (conj tokens token))))))
 
 (def response2
   (llutil/untokenize llama-context response-tokens2))
@@ -394,8 +394,8 @@ If a question does not make any sense, or is not factually coherent, explain why
               idx (->> top
                        (map first)
                        (map-indexed vector)
-                       (some (fn [[i tok]]
-                               (when (= tok and-token)
+                       (some (fn [[i token]]
+                               (when (= token and-token)
                                  i))))
               next-token
               ;; pick the and token if we haven't used it in the last
@@ -444,24 +444,24 @@ If a question does not make any sense, or is not factually coherent, explain why
               first-jsonable
               (->> sorted-logits
                    (map first)
-                   (some (fn [tok]
+                   (some (fn [token]
                            (when-let [s (try
-                                          (llutil/untokenize llama-context (conj @prev-tokens tok))
+                                          (llutil/untokenize llama-context (conj @prev-tokens token))
                                           (catch Exception e))]
                              (let [parse (insta/parse json-parser s)
-                                   toks (raw/llama_token_to_str llama-context tok)]
+                                   tokens (raw/llama_token_to_str llama-context token)]
                                (cond
                                  ;; ignore whitespace
-                                 (re-matches #"\s+" toks) false
+                                 (re-matches #"\s+" tokens) false
 
                                  (insta/failure? parse)
                                  (let [{:keys [index]} parse]
                                    (if (= index (count s))
                                      ;; potentially parseable
-                                     tok
+                                     token
                                      ;; return false to keep searching
                                      false))
-                                 :else tok))))))]
+                                 :else token))))))]
           (vswap! prev-tokens conj first-jsonable)
           (if (Thread/interrupted)
             (llama/eos)
