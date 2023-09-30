@@ -17,10 +17,11 @@
   "Tokenize the string s into a collection of int tokens."
   [ctx s]
   (let [ ;; tokens are int32s
-        max-tokens (alength (.getBytes s "utf-8"))
+        sbytes (.getBytes s "utf-8")
+        max-tokens (alength sbytes)
         buf-size (* 4 max-tokens)
         token-buf (Memory. buf-size)
-        num-tokens (raw/llama_tokenize ctx s token-buf max-tokens 0)]
+        num-tokens (raw/llama_tokenize (:model ctx) sbytes (alength sbytes) token-buf max-tokens 0)]
     (assert (pos? num-tokens) "Failed to tokenize.")
     (vec (.getIntArray token-buf 0 num-tokens))))
 
@@ -29,7 +30,8 @@
   [ctx tokens]
   (str/join
    (eduction
-    (llama/decode-token-to-char ctx)
+    #_(llama/decode-token-to-char ctx)
+    (llama/decode-token-to-str ctx)
     tokens)))
 
 (defn print-response
