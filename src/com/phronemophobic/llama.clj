@@ -54,8 +54,6 @@
   - `:seed`: RNG seed, -1 for random
   - `:n-ctx`: text context
   - `:n-batch`: prompt processing batch size
-  - `:n-threads`: number of threads to use for generation (gguf only).
-  - `:n-threads-batch`: number of threads to use for batch processing (gguf only)
   - `:n-gpu-layers`: number of layers to store in VRAM
   - `:main-gpu`: the GPU that is used for scratch and small tensors
   - `:tensor-split`: how to split layers across multiple GPUs
@@ -108,13 +106,7 @@
          libllama
          (case format
            :ggml @(requiring-resolve 'com.phronemophobic.llama.raw/llama-model)
-           :gguf @(requiring-resolve 'com.phronemophobic.llama.raw-gguf/llama-model))
-
-         params
-         (if (= :gguf format)
-           ;; for backwards compatibility
-           (assoc params :n-threads *num-threads*)
-           params)]
+           :gguf @(requiring-resolve 'com.phronemophobic.llama.raw-gguf/llama-model))]
     (model/create-context
      libllama
      model-path
