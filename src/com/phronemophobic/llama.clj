@@ -305,13 +305,10 @@
   ),
 
 (defn -main [model-path prompt]
-  (let [ctx (create-context model-path {:n-gpu-layers 1})
-        [prompt-token-count _] (tokenize ctx prompt true)]
+  (let [ctx (create-context model-path)]
     (transduce
-     (comp (take-while (fn [_]
-                         (not (Thread/interrupted))))
-           (take (- (raw/llama_n_ctx ctx)
-                    prompt-token-count)))
+     (take-while (fn [_]
+                   (not (Thread/interrupted))))
      (completing
       (fn [_ s]
         (print s)
