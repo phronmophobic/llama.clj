@@ -38,7 +38,19 @@
 (def libllama-options
   {com.sun.jna.Library/OPTION_STRING_ENCODING "UTF8"})
 (def ^:no-doc libllama
-  (com.sun.jna.NativeLibrary/getInstance "llama-gguf" libllama-options))
+  (try
+    (com.sun.jna.NativeLibrary/getInstance "llama-gguf" libllama-options)
+    (catch UnsatisfiedLinkError e
+      ;; to support local builds
+      (let [libllama (com.sun.jna.NativeLibrary/getInstance "llama" libllama-options)]
+        ;; Make sure it's not an old version
+        (try
+          (.getFunction ^com.sun.jna.NativeLibrary libllama
+                        "llama_token_to_piece")
+          (catch UnsatisfiedLinkError _
+            ;; throw original error
+            (throw e)))
+        libllama))))
 
 (defn ^:private dump-api []
   (let [outf (io/file
@@ -185,6 +197,8 @@
   ([ctx s]
    (llama-eval* ctx s nil))
   ([ctx s n-past]
+   (llama-eval* ctx s nil nil))
+  ([ctx s n-past num-threads]
    (let [n-past (or n-past (llama_get_kv_cache_token_count ctx))
          [total-tokens ^Memory token-buf]
          (cond
@@ -197,14 +211,20 @@
                   (.setInt 0 s))]))]
      (assert (< n-past (llama_n_ctx ctx))
              "Context size exceeded")
+     (when (and num-threads
+                (not= num-threads
+                      (:num-threads ctx)))
+       (.writeField ^llama_context_params
+                    (:context-params ctx)
+                    "n_threads"
+                    (int num-threads)))
 
      (let [batch-size (:n-batch ctx)]
        (loop [offset 0
               n-past n-past]
          (let [batch-buf (.share token-buf (* offset 4))
                num-batch-tokens (min batch-size (- total-tokens offset))]
-           (llama_eval  ctx batch-buf num-batch-tokens n-past ;; num-threads
-                            )
+           (llama_eval  ctx batch-buf num-batch-tokens n-past)
            (let [next-offset (+ offset num-batch-tokens)]
              (when (< next-offset total-tokens)
                (recur next-offset
@@ -218,20 +238,29 @@
 
 (defn decode-token-to-str*
   ([ctx]
-   (fn [rf]
-     (let [buf-length (int 255)
-           buf (Memory. buf-length)
-           model (:model ctx)]
-       (fn
-         ([] (rf))
-         ([result] (rf result))
-         ([result token]
-          (let [nbytes (.invoke llama-token-to-piece
-                                Integer/TYPE
-                                (to-array [model token buf buf-length]))]
-            (if (pos? nbytes)
-              (rf result (String. (.getByteArray buf 0 nbytes) "utf-8"))
-              result))))))))
+   (decode-token-to-str* ctx (Charset/forName "UTF-8")))
+  ([ctx opts]
+   (let [^Charset charset
+         (cond
+           (nil? opts) (Charset/forName "UTF-8")
+           (map? opts) (or (:charset opts)
+                           (Charset/forName "UTF-8"))
+           ;; for backwards compatibility
+           :else opts)]
+     (fn [rf]
+       (let [buf-length (int 255)
+             buf (Memory. buf-length)
+             model (:model ctx)]
+         (fn
+           ([] (rf))
+           ([result] (rf result))
+           ([result token]
+            (let [nbytes (.invoke llama-token-to-piece
+                                  Integer/TYPE
+                                  (to-array [model token buf buf-length]))]
+              (if (pos? nbytes)
+                (rf result (String. (.getByteArray buf 0 nbytes) charset))
+                result)))))))))
 
 (def ^:private token-data-size (.size (llama_token_data.)))
 
@@ -280,57 +309,10 @@
     (llama_backend_init 0)))
 
 (defn create-context
-  "Create and return an opaque llama context.
-
-  `model-path` should be an absolute or relative path to a F16, Q4_0, Q4_1, Q5_0, Q5_1, or Q8_0 ggml model.
-
-  An optional map of parameters may be passed for parameterizing the model. The following keys map to their corresponding llama.cpp equivalents:
-  - `:seed`: RNG seed, -1 for random
-  - `:n-ctx`: text context
-  - `:n-batch`: prompt processing batch size
-  - `:n-gpu-layers`: number of layers to store in VRAM
-  - `:main-gpu`: the GPU that is used for scratch and small tensors
-  - `:tensor-split`: how to split layers across multiple GPUs
-  - `:rope-freq-base`: RoPE base frequency
-  - `:rope-freq-scale`: RoPE frequency scaling factor
-  - `:low-vram`: if true, reduce VRAM usage at the cost of performance
-  - `:mul_mat_q`: if true, use experimental mul_mat_q kernels
-  - `:f16-kv`: use fp16 for KV cache
-  - `:logits-all`: the llama_eval() call computes all logits, not just the last one
-  - `:vocab-only`: only load the vocabulary, no weights
-  - `:use-mmap`: use mmap if possible
-  - `:use-mlock`: force system to keep model in RAM
-  - `:embedding`: embedding mode only
-  - `:gqa`: grouped-query attention factor (TEMP!!! use 8 for LLaMAv2 70B)
-  - `:rms-norm-eps`: rms norm eps (TEMP!!! use 1e-5 for LLaMAv2)
-
-  Resources can be freed by calling .close on the returned context.
-  Using a closed context is undefined and will probably crash the JVM.
-
-  Contexts are not thread-safe. Using the same context on multiple threads
-  is undefined and will probably crash the JVM.
-  "
+  "Create and return an opaque llama context."
   ([model-path]
    (create-context model-path nil))
-  ([model-path
-    {:keys [seed
-            n-ctx
-            n-batch
-            n-gpu-layers
-            main-gpu
-            tensor-split
-            rope-freq-base
-            rope-freq-scale
-            low-vram
-            f16-kv
-            logits-all
-            vocab-only
-            use-mmap
-            use-mlock
-            embedding
-            gqa
-            rms-norm-eps]
-     :as params}]
+  ([model-path params]
    @llm-init
    (let [
          llama-model-params (map->llama-model-params params)
@@ -381,16 +363,25 @@
                        (llama_token_bos this))
                      (tokenize [s add-bos?]
                        (tokenize* this s add-bos?))
-                     (untokenize [tokens])
                      (get_logits []
                        (get-logits* this))
-                     (decode_token_to_str []
-                       (decode-token-to-str* this))
+                     (decode_token_to_char
+                       ([]
+                        (comp cat
+                              (decode-token-to-str* this)))
+                       ([opts]
+                        (comp cat
+                              (decode-token-to-str* this opts))))
+                     (decode_token_to_str
+                       ([]
+                        (decode-token-to-str* this))
+                       ([opts]
+                        (decode-token-to-str* this opts)))
                      (sample_mirostat_v2 [candidates-buf* mu* tau eta]
                        (sample-mirostat-v2* this candidates-buf* mu* tau eta))
                      (set_rng_seed [seed]
                        (llama_set_rng_seed this seed))
-                     (n_this []
+                     (n_ctx []
                        (llama_n_ctx this))
                      (n_vocab []
                        (llama_n_vocab (:model this)))
@@ -400,14 +391,16 @@
                        ([s n-past]
                         (llama-eval* this s n-past))
                        ([s n-past num-threads]
-                        ;; ignore num-threads
-                        (llama-eval* this s n-past)))
+                        (llama-eval* this s n-past num-threads)))
 
                      (valAt [k]
                        (case k
                          :n-batch n-batch
                          :params params
                          :model @model-ref
+                         :context-params llama-context-params
+                         :model-params llama-model-params
+                         :n-threads (:n-threads params)
                          ;; else
                          nil))
                      (close []

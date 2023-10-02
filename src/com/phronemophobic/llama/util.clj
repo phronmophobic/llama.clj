@@ -17,23 +17,25 @@
 (defn tokenize
   "Tokenize the string s into a collection of int tokens."
   [ctx s]
+  (let [[num-tokens token-buf]
+        (model/tokenize ctx s false)]
+    (vec (.getIntArray token-buf 0 num-tokens)))
   #_(let [ ;; tokens are int32s
-        sbytes (.getBytes s "utf-8")
-        max-tokens (alength sbytes)
-        buf-size (* 4 max-tokens)
-        token-buf (Memory. buf-size)
-        num-tokens
-        (model/tokenize ctx s false)
-        (raw/llama_tokenize (:model ctx) sbytes (alength sbytes) token-buf max-tokens 0)]
-    (assert (pos? num-tokens) "Failed to tokenize.")
-    (vec (.getIntArray token-buf 0 num-tokens))))
+          sbytes (.getBytes s "utf-8")
+          max-tokens (alength sbytes)
+          buf-size (* 4 max-tokens)
+          token-buf (Memory. buf-size)
+          num-tokens
+          (model/tokenize ctx s false)
+          (raw/llama_tokenize (:model ctx) sbytes (alength sbytes) token-buf max-tokens 0)]
+      (assert (pos? num-tokens) "Failed to tokenize.")
+      (vec (.getIntArray token-buf 0 num-tokens))))
 
 (defn untokenize
   "Given a sequence of tokens, return the string representation."
   [ctx tokens]
   (str/join
    (eduction
-    #_(llama/decode-token-to-char ctx)
     (model/decode-token-to-str ctx)
     tokens)))
 

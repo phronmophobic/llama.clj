@@ -52,6 +52,8 @@ Clone https://github.com/ggerganov/llama.cpp and follow the instructions for bui
 
 _Note: The llama.cpp ffi bindings are based on the `4329d1acb01c353803a54733b8eef9d93d0b84b2` git commit. Future versions of llama.cpp might not be compatible if breaking changes are made. TODO: include instructions for updating ffi bindings._
 
+_Note: Dual wielding ggml and gguf llama.cpp versions is possible, but not currently supported for locally compiled builds. Please file an issue if you need this_
+
 For Example:
 
 ```sh

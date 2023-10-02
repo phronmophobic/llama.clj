@@ -89,68 +89,81 @@
   The transducer will buffer intermediate results until enough
   bytes to decode a character are available."
   ([ctx]
-   (decode-token-to-char ctx (Charset/forName "UTF-8")))
-  ([ctx ^Charset charset]
-   (fn [rf]
-     (let [decoder (doto (.newDecoder charset)
-                     (.onMalformedInput CodingErrorAction/REPLACE)
-                     (.onUnmappableCharacter CodingErrorAction/REPLACE))
+   (decode-token-to-char ctx nil))
+  ([ctx opts]
+   (let [^Charset charset
+         (cond
+           (nil? opts) (Charset/forName "UTF-8")
+           (map? opts) (or (:charset opts)
+                           (Charset/forName "UTF-8"))
+           ;; for backwards compatibility
+           :else opts)
+         flush? (:flush? opts)]
+     (fn [rf]
+       (let [decoder (doto (.newDecoder charset)
+                       (.onMalformedInput CodingErrorAction/REPLACE)
+                       (.onUnmappableCharacter CodingErrorAction/REPLACE))
 
-           input-buffer (ByteBuffer/allocate 256)
-           output-buffer (CharBuffer/allocate 256)
+             input-buffer (ByteBuffer/allocate 256)
+             output-buffer (CharBuffer/allocate 256)
 
-           rrf (preserving-reduced rf)]
-       (fn
-         ([] (rf))
-         ([result]
-          (.flip input-buffer)
-          (let [result
-                (let [ ;; Invoke the decode method one final time, passing true for the endOfInput argument; and then
-                      decoder-result1 (.decode decoder input-buffer output-buffer true)
-                      ;; Invoke the flush method so that the decoder can flush any internal state to the output buffer.
-                      decoder-result2 (.flush decoder output-buffer)]
-                  (if (and (.isUnderflow decoder-result1)
-                           (.isUnderflow decoder-result2))
-                    (do
-                      (.flip output-buffer)
-                      (let [result (reduce rrf result output-buffer)]
-                        (.clear output-buffer)
-                        result))
-                    ;; else
-                    (throw (Exception. "Unexpected decoder state."))))]
-            (rf result)))
-         ([result token]
-          (let [^Pointer p (.invoke
-                            ^com.sun.jna.Function llama-token-to-str
-                            Pointer (to-array [ctx (int token)]))
-                ;; p points to a c string
-                ;; find length by counting until null token is found
-                len (loop [i 0]
-                      (if (zero? (.getByte p i))
-                        i
-                        (recur (inc i))))]
-            (.put input-buffer (.getByteBuffer p 0 len))
-            (.flip input-buffer)
+             rrf (preserving-reduced rf)]
+         (fn
+           ([] (rf))
+           ([result]
+            (if flush?
+              (do
+                (.flip input-buffer)
+                (let [result
+                      (let [ ;; Invoke the decode method one final time, passing true for the endOfInput argument; and then
+                            decoder-result1 (.decode decoder input-buffer output-buffer true)
+                            ;; Invoke the flush method so that the decoder can flush any internal state to the output buffer.
+                            decoder-result2 (.flush decoder output-buffer)]
+                        (if (and (.isUnderflow decoder-result1)
+                                 (.isUnderflow decoder-result2))
+                          (do
+                            (.flip output-buffer)
+                            (let [result (reduce rrf result output-buffer)]
+                              (.clear output-buffer)
+                              result))
+                          ;; else
+                          (throw (Exception. "Unexpected decoder state."))))]
+                  (rf result)))
+              ;; else no flush
+              (rf result)))
+           ([result token]
+            (let [^Pointer p (.invoke
+                              ^com.sun.jna.Function llama-token-to-str
+                              Pointer (to-array [ctx (int token)]))
+                  ;; p points to a c string
+                  ;; find length by counting until null token is found
+                  len (loop [i 0]
+                        (if (zero? (.getByte p i))
+                          i
+                          (recur (inc i))))]
+              (.put input-buffer (.getByteBuffer p 0 len))
+              (.flip input-buffer)
 
-            ;; Invoke the decode method zero or more times, as long as additional input may be available, passing false for the endOfInput argument and filling the input buffer and flushing the output buffer between invocations;
-            (let [decoder-result (.decode decoder input-buffer output-buffer false)]
-              (cond
-                (.isUnderflow decoder-result)
-                (do
-                  (.compact input-buffer)
-                  (.flip output-buffer)
-                  (let [result (reduce rrf result output-buffer)]
-                    (.clear output-buffer)
-                    result))
+              ;; Invoke the decode method zero or more times, as long as additional input may be available, passing false for the endOfInput argument and filling the input buffer and flushing the output buffer between invocations;
+              (let [decoder-result (.decode decoder input-buffer output-buffer false)]
+                (cond
+                  (.isUnderflow decoder-result)
+                  (do
+                    (.compact input-buffer)
+                    (.flip output-buffer)
+                    (let [result (reduce rrf result output-buffer)]
+                      (.clear output-buffer)
+                      result))
 
-                (.isOverflow decoder-result)
-                (throw (ex-info "Decoder buffer too small" {}))
+                  (.isOverflow decoder-result)
+                  (throw (ex-info "Decoder buffer too small" {}))
 
-                (.isError decoder-result)
-                (throw (ex-info "Decoder Error" {:decoder decoder}))
+                  (.isError decoder-result)
+                  (throw (ex-info "Decoder Error" {:decoder decoder}))
 
-                :else
-                (throw (Exception. "Unexpected decoder state.")))))))))))
+                  :else
+                  (throw (Exception. "Unexpected decoder state."))))))))))))
+
 
 
 (defn ^:private char->str
@@ -480,16 +493,23 @@
                        (llama_token_bos))
                      (tokenize [s add-bos?]
                        (tokenize* this s add-bos?))
-                     (untokenize [tokens])
                      (get_logits []
                        (get-logits* this))
-                     (decode_token_to_str []
-                       (decode-token this))
+                     (decode_token_to_char
+                       ([]
+                        (decode-token-to-char this))
+                       ([opts]
+                        (decode-token-to-char this opts)))
+                     (decode_token_to_str
+                       ([]
+                        (decode-token this))
+                       ([opts]
+                        (decode-token this opts)))
                      (sample_mirostat_v2 [candidates-buf* mu* tau eta]
                        (sample-mirostat-v2* this candidates-buf* mu* tau eta))
                      (set_rng_seed [seed]
                        (llama_set_rng_seed this seed))
-                     (n_this []
+                     (n_ctx []
                        (llama_n_ctx this))
                      (n_vocab []
                        (llama_n_vocab (:model this)))

@@ -108,13 +108,23 @@
          libllama
          (case format
            :ggml @(requiring-resolve 'com.phronemophobic.llama.raw/llama-model)
-           :gguf @(requiring-resolve 'com.phronemophobic.llama.raw-gguf/llama-model))]
+           :gguf @(requiring-resolve 'com.phronemophobic.llama.raw-gguf/llama-model))
+
+         params
+         (if (= :gguf format)
+           ;; for backwards compatibility
+           (assoc params :n-threads *num-threads*)
+           params)]
     (model/create-context
      libllama
      model-path
      params))))
 
 
+(defn get-logits
+  "Returns a copy of the current context's logits as a float array."
+  [ctx]
+  (model/get-logits ctx))
 
 
 (defn llama-update
