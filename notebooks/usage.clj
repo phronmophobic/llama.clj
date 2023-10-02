@@ -76,7 +76,7 @@
 (wrap-seed
  (clojure.string/join
    (eduction
-    (map (fn [token] (raw/llama_token_to_str llama-context token)))
+    (llama/decode-token llama-context)
     (take 10)
     (llama/generate-tokens llama-context "Hello World"))))
 
