@@ -173,7 +173,7 @@
             (str " " s)
             s)
         sbytes (.getBytes s "utf-8")
-        max-tokens (+ add-bos (alength sbytes))
+        max-tokens (+ add-bos 1 (alength sbytes))
         token-buf (get-token-buf ctx max-tokens)
         num-tokens (llama_tokenize (:model ctx) sbytes (alength sbytes) token-buf max-tokens add-bos)]
     [num-tokens token-buf]))
@@ -236,9 +236,73 @@
   (.getFunction ^com.sun.jna.NativeLibrary libllama
                 "llama_token_to_piece"))
 
-(defn decode-token-to-str*
+(defn decode-token-to-buf
   ([ctx]
-   (decode-token-to-str* ctx (Charset/forName "UTF-8")))
+   (fn [rf]
+     (let [buf-length (int 255)
+           buf (Memory. buf-length)
+           model (:model ctx)
+           skip-whitespace* (volatile! true)]
+       (fn
+         ([] (rf))
+         ([result] (rf result))
+         ([result token]
+          (let [nbytes (.invoke llama-token-to-piece
+                                Integer/TYPE
+                                (to-array [model token buf buf-length]))
+                ]
+            #_(prn "nbytes" nbytes
+                   (into []
+                         (map #(format "%X" %))
+                         (.getByteArray buf 0 nbytes)))
+            ;; (vswap! offset* )
+            (if (pos? nbytes)
+              (let [bb
+                    (if @skip-whitespace*
+                      (do
+                        (vreset! skip-whitespace* false)
+                        (if (= 32 (.getByte buf 0))
+                          (let [len (dec nbytes)]
+                            (when (pos? len)
+                              (.getByteBuffer buf 1 (dec nbytes))))
+                          (.getByteBuffer buf 0 nbytes)))
+                      (.getByteBuffer buf 0 nbytes))]
+                (when bb
+                  (rf result bb)))
+              result))))))))
+
+(comment
+  (def buf (Memory. 255))
+  (def model (:model com.phronemophobic.llama/ctx))
+  (def toks [5255])
+  (def dog 3914)
+  (def happy [28705 30464])
+  (def nbytes (.invoke llama-token-to-piece
+                       Integer/TYPE
+                       (to-array [model 28705 buf 255])))
+
+  (def nbytes (.invoke llama-token-to-piece
+                       Integer/TYPE
+                       (to-array [model 30464 buf 255])))
+  (into [](.getByteArray buf 0 nbytes))
+  (String. (.getByteArray buf 0 nbytes))
+  ,)
+
+(defn ^:private preserving-reduced
+  [rf]
+  #(let [ret (rf %1 %2)]
+     (if (reduced? ret)
+       (reduced ret)
+       ret)))
+
+(defn decode-token-to-char
+  "Returns a transducer that expects a stream of llama tokens
+  and outputs a stream of decoded chars.
+
+  The transducer will buffer intermediate results until enough
+  bytes to decode a character are available."
+  ([ctx]
+   (decode-token-to-char ctx nil))
   ([ctx opts]
    (let [^Charset charset
          (cond
@@ -246,21 +310,111 @@
            (map? opts) (or (:charset opts)
                            (Charset/forName "UTF-8"))
            ;; for backwards compatibility
-           :else opts)]
-     (fn [rf]
-       (let [buf-length (int 255)
-             buf (Memory. buf-length)
-             model (:model ctx)]
-         (fn
-           ([] (rf))
-           ([result] (rf result))
-           ([result token]
-            (let [nbytes (.invoke llama-token-to-piece
-                                  Integer/TYPE
-                                  (to-array [model token buf buf-length]))]
-              (if (pos? nbytes)
-                (rf result (String. (.getByteArray buf 0 nbytes) charset))
-                result)))))))))
+           :else opts)
+         flush? (:flush? opts)]
+     (comp
+      (decode-token-to-buf ctx)
+      (fn [rf]
+        (let [model (:model ctx)
+
+              decoder (doto (.newDecoder charset)
+                        (.onMalformedInput CodingErrorAction/REPLACE)
+                        (.onUnmappableCharacter CodingErrorAction/REPLACE))
+
+              input-buffer (ByteBuffer/allocate 256)
+              output-buffer (CharBuffer/allocate 256)
+
+              buf-length (int 255)
+              buf (Memory. buf-length)
+              skip-whitespace* (volatile! true)
+
+              rrf (preserving-reduced rf)]
+          (fn
+            ([] (rf))
+            ([result]
+             (if flush?
+               (do
+                 (.flip input-buffer)
+                 (let [result
+                       (let [ ;; Invoke the decode method one final time, passing true for the endOfInput argument; and then
+                             decoder-result1 (.decode decoder input-buffer output-buffer true)
+                             ;; Invoke the flush method so that the decoder can flush any internal state to the output buffer.
+                             decoder-result2 (.flush decoder output-buffer)]
+                         (if (and (.isUnderflow decoder-result1)
+                                  (.isUnderflow decoder-result2))
+                           (do
+                             (.flip output-buffer)
+                             (let [result (reduce rrf result output-buffer)]
+                               (.clear output-buffer)
+                               result))
+                           ;; else
+                           (throw (Exception. "Unexpected decoder state."))))]
+                   (rf result)))
+               ;; else no flush
+               (rf result)))
+            ([result bb]
+             (.put input-buffer bb)
+             (.flip input-buffer)
+
+             ;; Invoke the decode method zero or more times, as long as additional input may be available, passing false for the endOfInput argument and filling the input buffer and flushing the output buffer between invocations;
+             (let [decoder-result (.decode decoder input-buffer output-buffer false)]
+               (cond
+                 (.isUnderflow decoder-result)
+                 (do
+                   (.compact input-buffer)
+                   (.flip output-buffer)
+                   (let [result (reduce rrf result output-buffer)]
+                     (.clear output-buffer)
+                     result))
+
+                 (.isOverflow decoder-result)
+                 (throw (ex-info "Decoder buffer too small" {}))
+
+                 (.isError decoder-result)
+                 (throw (ex-info "Decoder Error" {:decoder decoder}))
+
+                 :else
+                 (throw (Exception. "Unexpected decoder state."))))))))))))
+
+
+
+(defn ^:private char->str
+  "Transducer that expects a stream of chars. If a surrogate pair is detected,
+  wait until the full pair is available before emitting."
+  []
+  (fn [rf]
+    (let [v (volatile! nil)]
+      (fn
+        ([] (rf))
+        ([result]
+         (let [result (if-let [c @v]
+                        (unreduced (rf result c))
+                        result)]
+           (rf result)))
+        ([result c]
+         (if-let [c1 @v]
+           (do
+             (vreset! v nil)
+             (rf result (str c1 c)))
+           (if (Character/isHighSurrogate c)
+             (do
+               (vreset! v c)
+               result)
+             (rf result (str c)))))))))
+
+(defn decode-token-to-str*
+  "Returns a transducer that expects a stream of llama tokens
+  and outputs a stream of strings.
+
+  The transducer will buffer intermediate results until enough
+  bytes to decode a character are available. Also combines
+  surrogate pairs of characters."
+  ([ctx]
+   (decode-token-to-str* ctx (Charset/forName "UTF-8")))
+  ([ctx ^Charset charset]
+   (comp
+    (decode-token-to-char ctx charset)
+    (char->str))))
 
 (def ^:private token-data-size (.size (llama_token_data.)))
 
@@ -374,9 +528,9 @@
                               cat)))
                      (decode_token_to_str
                        ([]
-                        (decode-token-to-str* this))
+                        (decode-token-to-char this))
                        ([opts]
-                        (decode-token-to-str* this opts)))
+                        (decode-token-to-char this opts)))
                      (sample_mirostat_v2 [candidates-buf* mu* tau eta]
                        (sample-mirostat-v2* this candidates-buf* mu* tau eta))
                      (set_rng_seed [seed]
