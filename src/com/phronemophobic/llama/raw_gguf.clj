@@ -1,4 +1,4 @@
-(ns com.phronemophobic.llama.raw
+(ns com.phronemophobic.llama.raw-gguf
   (:require [com.phronemophobic.clong.gen.jna :as gen]
             [clojure.edn :as edn]
             [clojure.java.io :as io]
@@ -38,7 +38,7 @@
 (def libllama-options
   {com.sun.jna.Library/OPTION_STRING_ENCODING "UTF8"})
 (def ^:no-doc libllama
-  (com.sun.jna.NativeLibrary/getInstance "llama" libllama-options))
+  (com.sun.jna.NativeLibrary/getInstance "llama-gguf" libllama-options))
 
 (defn ^:private dump-api []
   (let [outf (io/file
@@ -46,7 +46,7 @@
               "com"
               "phronemophobic"
               "llama"
-              "api.edn")]
+              "api-raw.edn")]
     (.mkdirs (.getParentFile outf))
     (with-open [w (io/writer outf)]
       (write-edn w
@@ -59,7 +59,7 @@
   #_((requiring-resolve 'com.phronemophobic.clong.clang/easy-api) "/Users/adrian/workspace/llama.cpp/llama.h")
   (with-open [rdr (io/reader
                      (io/resource
-                      "com/phronemophobic/llama/api.edn"))
+                      "com/phronemophobic/llama/api-gguf.edn"))
                 rdr (java.io.PushbackReader. rdr)]
       (edn/read rdr)))
 
@@ -71,126 +71,68 @@
 
 (import-structs!)
 
-(def ^:private llama-token-to-str
-  (.getFunction ^com.sun.jna.NativeLibrary libllama
-                "llama_token_to_str"))
-
-(defn ^:private preserving-reduced
-  [rf]
-  #(let [ret (rf %1 %2)]
-     (if (reduced? ret)
-       (reduced ret)
-       ret)))
-
-(defn decode-token-to-char
-  "Returns a transducer that expects a stream of llama tokens
-  and outputs a stream of decoded chars.
-
-  The transducer will buffer intermediate results until enough
-  bytes to decode a character are available."
-  ([ctx]
-   (decode-token-to-char ctx (Charset/forName "UTF-8")))
-  ([ctx ^Charset charset]
-   (fn [rf]
-     (let [decoder (doto (.newDecoder charset)
-                     (.onMalformedInput CodingErrorAction/REPLACE)
-                     (.onUnmappableCharacter CodingErrorAction/REPLACE))
-
-           input-buffer (ByteBuffer/allocate 256)
-           output-buffer (CharBuffer/allocate 256)
-
-           rrf (preserving-reduced rf)]
-       (fn
-         ([] (rf))
-         ([result]
-          (.flip input-buffer)
-          (let [result
-                (let [ ;; Invoke the decode method one final time, passing true for the endOfInput argument; and then
-                      decoder-result1 (.decode decoder input-buffer output-buffer true)
-                      ;; Invoke the flush method so that the decoder can flush any internal state to the output buffer.
-                      decoder-result2 (.flush decoder output-buffer)]
-                  (if (and (.isUnderflow decoder-result1)
-                           (.isUnderflow decoder-result2))
-                    (do
-                      (.flip output-buffer)
-                      (let [result (reduce rrf result output-buffer)]
-                        (.clear output-buffer)
-                        result))
-                    ;; else
-                    (throw (Exception. "Unexpected decoder state."))))]
-            (rf result)))
-         ([result token]
-          (let [^Pointer p (.invoke
-                            ^com.sun.jna.Function llama-token-to-str
-                            Pointer (to-array [ctx (int token)]))
-                ;; p points to a c string
-                ;; find length by counting until null token is found
-                len (loop [i 0]
-                      (if (zero? (.getByte p i))
-                        i
-                        (recur (inc i))))]
-            (.put input-buffer (.getByteBuffer p 0 len))
-            (.flip input-buffer)
-
-            ;; Invoke the decode method zero or more times, as long as additional input may be available, passing false for the endOfInput argument and filling the input buffer and flushing the output buffer between invocations;
-            (let [decoder-result (.decode decoder input-buffer output-buffer false)]
-              (cond
-                (.isUnderflow decoder-result)
-                (do
-                  (.compact input-buffer)
-                  (.flip output-buffer)
-                  (let [result (reduce rrf result output-buffer)]
-                    (.clear output-buffer)
-                    result))
-
-                (.isOverflow decoder-result)
-                (throw (ex-info "Decoder buffer too small" {}))
-
-                (.isError decoder-result)
-                (throw (ex-info "Decoder Error" {:decoder decoder}))
-
-                :else
-                (throw (Exception. "Unexpected decoder state.")))))))))))
 
 
-(defn ^:private char->str
-  "Transducer that expects a stream of chars. If a surrogate pair is detected,
-  wait until the full pair is available before emitting."
-  []
-  (fn [rf]
-    (let [v (volatile! nil)]
-      (fn
-        ([] (rf))
-        ([result]
-         (let [result (if-let [c @v]
-                        (unreduced (rf result c))
-                        result)]
-           (rf result)))
-        ([result c]
-         (if-let [c1 @v]
-           (do
-             (vreset! v nil)
-             (rf result (str c1 c)))
-           (if (Character/isHighSurrogate c)
-             (do
-               (vreset! v c)
-               result)
-             (rf result (str c)))))))))
+(defn ^:private ->bool [b]
+  (if b
+    (byte 1)
+    (byte 0)))
 
-(defn decode-token
-  "Returns a transducer that expects a stream of llama tokens
-  and outputs a stream of strings.
+(defn ^:private ->float-array-by-reference [v]
+  (let [arr (float-array v)
+        arrlen (alength arr)
+        num-bytes (* arrlen 4)
+        mem (doto (Memory. num-bytes)
+              (.write 0 arr 0 arrlen))
+        fbr (doto (FloatByReference.)
+              (.setPointer mem))]
+    fbr))
 
-  The transducer will buffer intermediate results until enough
-  bytes to decode a character are available. Also combines
-  surrogate pairs of characters."
-  ([ctx]
-   (decode-token ctx (Charset/forName "UTF-8")))
-  ([ctx ^Charset charset]
-   (comp
-    (decode-token-to-char ctx charset)
-    (char->str))))
+(defn ^:private map->llama-context-params [m]
+  (reduce-kv
+   (fn [^llama_context_params
+        params k v]
+     (case k
+       :seed (.writeField params "seed" (int v))
+       :n-ctx (.writeField params "n_ctx" (int v))
+       :n-batch (.writeField params "n_batch" (int v))
+       :n-threads (.writeField params "n_threads" (int v))
+       :n-threads-batch (.writeField params "n_threads_batch" (int v))
 
+       :rope-freq-base (.writeField params "rope_freq_base" (float v))
+       :rope-freq-scale (.writeField params "rope_freq_scale" (float v))
+
+       :mul_mat_q (.writeField params "mul_mat_q" (->bool v))
+       :f16-kv (.writeField params "f16_kv" (->bool v))
+       :logits-all (.writeField params "logits_all" (->bool v))
+       :embedding (.writeField params "embedding" (->bool v))
+
+       ;; ignore unknown keys
+       nil)
+     ;; return params
+     params)
+   (llama_context_default_params)
+   m))
+
+(defn ^:private map->llama-model-params [m]
+  (reduce-kv
+   (fn [^llama_model_params
+        params k v]
+     (case k
+       :n-gpu-layers (.writeField params "n_gpu_layers" (int v))
+       :main-gpu (.writeField params "main_gpu" (int v))
+       :tensor-split (.writeField params "tensor_split" (->float-array-by-reference  v))
+
+       :vocab-only (.writeField params "vocab_only" (->bool v))
+       :use-mmap (.writeField params "use_mmap" (->bool v))
+       :use-mlock (.writeField params "use_mlock" (->bool v))
+
+       ;; ignore unknown keys
+       nil)
+     ;; return params
+     params)
+   (llama_model_default_params)
+   m))
 
 ;; todo use a soft cache
 (defonce ^:private
@@ -209,6 +151,7 @@
                 (assoc m ctx (Memory. (* 4 n)))))))
    ctx))
 
+
 (defn ^:private tokenize* [ctx s add-bos?]
   (let [add-bos (if add-bos?
                   1
@@ -217,15 +160,19 @@
         s (if add-bos?
             (str " " s)
             s)
-        max-tokens (+ add-bos (alength (.getBytes s "utf-8")))
+        sbytes (.getBytes s "utf-8")
+        max-tokens (+ add-bos (alength sbytes))
         token-buf (get-token-buf ctx max-tokens)
-        num-tokens (llama_tokenize ctx s token-buf max-tokens add-bos)]
+        num-tokens (llama_tokenize (:model ctx) sbytes (alength sbytes) token-buf max-tokens add-bos)]
     [num-tokens token-buf]))
 
-(def ^:dynamic
-  *num-threads*
-  "Number of threads used when generating tokens."
-  (.. Runtime getRuntime availableProcessors))
+(defn get-logits*
+  "Returns a copy of the current context's logits as a float array."
+  [ctx]
+  (let [n-vocab (llama_n_vocab (:model ctx))]
+    (-> ^FloatByReference (llama_get_logits ctx)
+        .getPointer
+        (.getFloatArray 0 n-vocab))))
 
 (defn llama-eval*
   "Adds `s` to the current context and updates the context's logits (see `get-logits`).
@@ -236,17 +183,13 @@
                  If not provided, or `nil`, defaults to `*num-threads*`.
   "
   ([ctx s]
-   (llama-eval* ctx s nil *num-threads*))
+   (llama-eval* ctx s nil))
   ([ctx s n-past]
-   (llama-eval* ctx s n-past *num-threads*))
-  ([ctx s n-past num-threads]
-   (let [num-threads (or num-threads *num-threads*)
-         n-past (or n-past
-                    (llama_get_kv_cache_token_count ctx))
+   (let [n-past (or n-past (llama_get_kv_cache_token_count ctx))
          [total-tokens ^Memory token-buf]
          (cond
            (string? s)
-           (tokenize* ctx s (zero? n-past))
+           (model/tokenize ctx s (zero? n-past))
 
            (integer? s)
            (let [^Memory buf (get-token-buf ctx 1)]
@@ -260,7 +203,8 @@
               n-past n-past]
          (let [batch-buf (.share token-buf (* offset 4))
                num-batch-tokens (min batch-size (- total-tokens offset))]
-           (llama_eval ctx batch-buf num-batch-tokens n-past num-threads)
+           (llama_eval  ctx batch-buf num-batch-tokens n-past ;; num-threads
+                            )
            (let [next-offset (+ offset num-batch-tokens)]
              (when (< next-offset total-tokens)
                (recur next-offset
@@ -268,10 +212,31 @@
 
      ctx)))
 
+(def ^:private llama-token-to-piece
+  (.getFunction ^com.sun.jna.NativeLibrary libllama
+                "llama_token_to_piece"))
+
+(defn decode-token-to-str*
+  ([ctx]
+   (fn [rf]
+     (let [buf-length (int 255)
+           buf (Memory. buf-length)
+           model (:model ctx)]
+       (fn
+         ([] (rf))
+         ([result] (rf result))
+         ([result token]
+          (let [nbytes (.invoke llama-token-to-piece
+                                Integer/TYPE
+                                (to-array [model token buf buf-length]))]
+            (if (pos? nbytes)
+              (rf result (String. (.getByteArray buf 0 nbytes) "utf-8"))
+              result))))))))
+
 (def ^:private token-data-size (.size (llama_token_data.)))
 
 (defn ^:private ctx->candidates [ctx candidates-buf*]
-  (let [n-vocab (llama_n_vocab ctx)
+  (let [n-vocab (model/n-vocab ctx)
         buf-size (* token-data-size n-vocab)
         candidates-buf @candidates-buf*
         ^Memory
@@ -309,61 +274,6 @@
         next-token (llama_sample_token_mirostat_v2 ctx candidates tau eta mu)]
     (vreset! mu* (.getValue mu))
     next-token))
-
-(defn get-logits*
-  "Returns a copy of the current context's logits as a float array."
-  [ctx]
-  (let [n-vocab (llama_n_vocab ctx)]
-    (-> ^FloatByReference (llama_get_logits ctx)
-        .getPointer
-        (.getFloatArray 0 n-vocab))))
-
-
-
-(defn ^:private ->bool [b]
-  (if b
-    (byte 1)
-    (byte 0)))
-
-(defn ^:private ->float-array-by-reference [v]
-  (let [arr (float-array v)
-        arrlen (alength arr)
-        num-bytes (* arrlen 4)
-        mem (doto (Memory. num-bytes)
-              (.write 0 arr 0 arrlen))
-        fbr (doto (FloatByReference.)
-              (.setPointer mem))]
-    fbr))
-
-(defn ^:private map->llama-params [m]
-  (reduce-kv
-   (fn [^llama_context_params
-        params k v]
-     (case k
-       :seed (.writeField params "seed" (int v))
-       :n-ctx (.writeField params "n_ctx" (int v))
-       :n-batch (.writeField params "n_batch" (int v))
-       :n-gpu-layers (.writeField params "n_gpu_layers" (int v))
-       :main-gpu (.writeField params "main_gpu" (int v))
-       :tensor-split (.writeField params "tensor_split" (->float-array-by-reference  v))
-       :rope-freq-base (.writeField params "rope_freq_base" (float v))
-       :rope-freq-scale (.writeField params "rope_freq_scale" (float v))
-       ;; :progress-callback (.writeField params "progress_callback" v)
-       ;; :progress-callback-user-data (.writeField params "progress_callback_user_data" v)
-       :low-vram (.writeField params "low_vram" (->bool v))
-       :mul_mat_q (.writeField params "mul_mat_q" (->bool v))
-       :f16-kv (.writeField params "f16_kv" (->bool v))
-       :logits-all (.writeField params "logits_all" (->bool v))
-       :vocab-only (.writeField params "vocab_only" (->bool v))
-       :use-mmap (.writeField params "use_mmap" (->bool v))
-       :use-mlock (.writeField params "use_mlock" (->bool v))
-       :embedding (.writeField params "embedding" (->bool v))
-       :gqa (.writeField params "n_gqa" (int v))
-       :rms-norm-eps (.writeField params "rms_norm_eps" (float v)))
-     ;; return params
-     params)
-   (llama_context_default_params)
-   m))
 
 (defonce ^:private llm-init
   (delay
@@ -423,25 +333,16 @@
      :as params}]
    @llm-init
    (let [
-         ;; llama-model-params (map->llama-model-params params)
-         ;; model (llama_load_model_from_file model-path llama-model-params)
-         ;; _ (when (nil? model)
-         ;;     (throw (ex-info "Error creating model"
-         ;;                     {:params params
-         ;;                      :model-path model-path})))
-
-         ;; ^llama_context_params
-         ;; llama-context-params (map->llama-context-params params)
-         ;; context (llama_new_context_with_model model llama-context-params)
-
-         ^llama_context_params
-         llama-params (map->llama-params params)
-         model (llama_load_model_from_file model-path llama-params)
+         llama-model-params (map->llama-model-params params)
+         model (llama_load_model_from_file model-path llama-model-params)
          _ (when (nil? model)
              (throw (ex-info "Error creating model"
                              {:params params
                               :model-path model-path})))
-         context (llama_new_context_with_model model llama-params)         
+
+         ^llama_context_params
+         llama-context-params (map->llama-context-params params)
+         context (llama_new_context_with_model model llama-context-params)
 
          ctx-ptr (atom (Pointer/nativeValue context))
          model-ptr (atom (Pointer/nativeValue model))
@@ -464,7 +365,7 @@
                           (when old
                             (llama_free_model (Pointer. old)))))
 
-         n-batch (.readField llama-params "n_batch")
+         n-batch (.readField llama-context-params "n_batch")
          ;; make context autocloseable and implement
          ;; some map lookup interfaces
          context (proxy [Pointer
@@ -475,16 +376,16 @@
 
                    ;; ILLamaContext
                      (token_eos []
-                       (llama_token_eos))
+                       (llama_token_eos this))
                      (token_bos []
-                       (llama_token_bos))
+                       (llama_token_bos this))
                      (tokenize [s add-bos?]
                        (tokenize* this s add-bos?))
                      (untokenize [tokens])
                      (get_logits []
                        (get-logits* this))
                      (decode_token_to_str []
-                       (decode-token this))
+                       (decode-token-to-str* this))
                      (sample_mirostat_v2 [candidates-buf* mu* tau eta]
                        (sample-mirostat-v2* this candidates-buf* mu* tau eta))
                      (set_rng_seed [seed]
@@ -499,7 +400,8 @@
                        ([s n-past]
                         (llama-eval* this s n-past))
                        ([s n-past num-threads]
-                        (llama-eval* this s n-past num-threads)))
+                        ;; ignore num-threads
+                        (llama-eval* this s n-past)))
 
                      (valAt [k]
                        (case k
@@ -523,4 +425,3 @@
     model/ILLama
     (create-context [_ model-path opts]
       (create-context model-path opts))))
-

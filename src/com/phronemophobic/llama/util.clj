@@ -1,6 +1,7 @@
 (ns com.phronemophobic.llama.util
   (:require [com.phronemophobic.llama :as llama]
-            [com.phronemophobic.llama.raw :as raw]
+            ;; [com.phronemophobic.llama.raw :as raw]
+            [com.phronemophobic.llama.impl.model :as model]
             [clojure.string :as str])
   (:import com.sun.jna.Memory))
 
@@ -11,17 +12,19 @@
                       (llama/llama-update ctx token))
                     (llama/llama-update ctx (first tokens) 0)
                     (rest tokens))]
-    (llama/sample-logits-greedy (llama/get-logits ctx))))
+    (llama/sample-logits-greedy (model/get-logits ctx))))
 
 (defn tokenize
   "Tokenize the string s into a collection of int tokens."
   [ctx s]
-  (let [ ;; tokens are int32s
+  #_(let [ ;; tokens are int32s
         sbytes (.getBytes s "utf-8")
         max-tokens (alength sbytes)
         buf-size (* 4 max-tokens)
         token-buf (Memory. buf-size)
-        num-tokens (raw/llama_tokenize (:model ctx) sbytes (alength sbytes) token-buf max-tokens 0)]
+        num-tokens
+        (model/tokenize ctx s false)
+        (raw/llama_tokenize (:model ctx) sbytes (alength sbytes) token-buf max-tokens 0)]
     (assert (pos? num-tokens) "Failed to tokenize.")
     (vec (.getIntArray token-buf 0 num-tokens))))
 
@@ -31,7 +34,7 @@
   (str/join
    (eduction
     #_(llama/decode-token-to-char ctx)
-    (llama/decode-token-to-str ctx)
+    (model/decode-token-to-str ctx)
     tokens)))
 
 (defn print-response
