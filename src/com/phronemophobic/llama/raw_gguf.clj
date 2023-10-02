@@ -367,11 +367,11 @@
                        (get-logits* this))
                      (decode_token_to_char
                        ([]
-                        (comp cat
-                              (decode-token-to-str* this)))
+                        (comp (decode-token-to-str* this)
+                              cat))
                        ([opts]
-                        (comp cat
-                              (decode-token-to-str* this opts))))
+                        (comp (decode-token-to-str* this opts)
+                              cat)))
                      (decode_token_to_str
                        ([]
                         (decode-token-to-str* this))
