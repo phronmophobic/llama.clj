@@ -70,6 +70,9 @@
   - `:gqa`: grouped-query attention factor (TEMP!!! use 8 for LLaMAv2 70B) (ggml only)
   - `:rms-norm-eps`: rms norm eps (TEMP!!! use 1e-5 for LLaMAv2) (ggml only)
 
+  The `:model-format` can be specified as either `:ggml` or `:gguf`. If not provided,
+  the model format will be guessed by looking at `model-path`.
+
   Resources can be freed by calling .close on the returned context.
   Using a closed context is undefined and will probably crash the JVM.
 
@@ -96,10 +99,12 @@
             use-mlock
             embedding
             gqa
-            rms-norm-eps]
+            rms-norm-eps
+            model-format]
      :as params}]
    (let [format
          (cond
+           model-format model-format
            (str/ends-with? model-path ".ggml") :ggml
            (str/ends-with? model-path ".gguf") :gguf
            (str/includes? model-path "ggml") :ggml
