@@ -88,6 +88,7 @@
             rope-freq-base
             rope-freq-scale
             low-vram
+            mul_mat_q
             f16-kv
             logits-all
             vocab-only
