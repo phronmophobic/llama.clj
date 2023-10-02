@@ -372,7 +372,9 @@
        :use-mlock (.writeField params "use_mlock" (->bool v))
        :embedding (.writeField params "embedding" (->bool v))
        :gqa (.writeField params "n_gqa" (int v))
-       :rms-norm-eps (.writeField params "rms_norm_eps" (float v)))
+       :rms-norm-eps (.writeField params "rms_norm_eps" (float v))
+       ;; else ignore
+       params)
      ;; return params
      params)
    (llama_context_default_params)
