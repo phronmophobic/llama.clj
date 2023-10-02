@@ -293,8 +293,7 @@
   ;; https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.1-GGUF/resolve/main/mistral-7b-instruct-v0.1.Q4_0.gguf
   (def model-path "models/mistral-7b-instruct-v0.1.Q4_0.gguf")
 
-  (def ctx (create-context model-path {:n-gpu-layers 0
-                                       :n-ctx 2048}))
+  (def ctx (create-context model-path {:n-ctx 2048}))
 
   (require '[com.phronemophobic.llama.util.prompt :as prompt])
   (require '[com.phronemophobic.llama.util :as llutil])
