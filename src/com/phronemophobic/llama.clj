@@ -26,14 +26,18 @@
 ;; (def ^:private token-data-size (.size (llama_token_data.)))
 
 (defn eos
-  "Returns the llama end of sentence token."
+  "Returns the llama end of sentence token.
+
+  Calling `eos` without a context is deprecated as not all models use the same bos token."
   ;; only for backwards compatibility
   ([]
    (int 2))
   ([ctx]
    (model/token-eos ctx)))
 (defn bos
-  "Returns the llama beginning of sentence token."
+  "Returns the llama beginning of sentence token.
+
+  Calling `bos` without a context is deprecated as not all models use the same bos token."
   ;; only for backwards compatibility
   ([]
    (int 1))
@@ -44,18 +48,20 @@
 (defn create-context
   "Create and return an opaque llama context.
 
-  `model-path` should be an absolute or relative path to a F16, Q4_0, Q4_1, Q5_0, Q5_1, or Q8_0 ggml model.
+  `model-path` should be an absolute or relative path to a ggml or gguf model.
 
   An optional map of parameters may be passed for parameterizing the model. The following keys map to their corresponding llama.cpp equivalents:
   - `:seed`: RNG seed, -1 for random
   - `:n-ctx`: text context
   - `:n-batch`: prompt processing batch size
+  - `:n-threads`: number of threads to use for generation (gguf only).
+  - `:n-threads-batch`: number of threads to use for batch processing (gguf only)
   - `:n-gpu-layers`: number of layers to store in VRAM
   - `:main-gpu`: the GPU that is used for scratch and small tensors
   - `:tensor-split`: how to split layers across multiple GPUs
   - `:rope-freq-base`: RoPE base frequency
   - `:rope-freq-scale`: RoPE frequency scaling factor
-  - `:low-vram`: if true, reduce VRAM usage at the cost of performance
+  - `:low-vram`: if true, reduce VRAM usage at the cost of performance (ggml only)
   - `:mul_mat_q`: if true, use experimental mul_mat_q kernels
   - `:f16-kv`: use fp16 for KV cache
   - `:logits-all`: the llama_eval() call computes all logits, not just the last one
@@ -63,8 +69,8 @@
   - `:use-mmap`: use mmap if possible
   - `:use-mlock`: force system to keep model in RAM
   - `:embedding`: embedding mode only
-  - `:gqa`: grouped-query attention factor (TEMP!!! use 8 for LLaMAv2 70B)
-  - `:rms-norm-eps`: rms norm eps (TEMP!!! use 1e-5 for LLaMAv2)
+  - `:gqa`: grouped-query attention factor (TEMP!!! use 8 for LLaMAv2 70B) (ggml only)
+  - `:rms-norm-eps`: rms norm eps (TEMP!!! use 1e-5 for LLaMAv2) (ggml only)
 
   Resources can be freed by calling .close on the returned context.
   Using a closed context is undefined and will probably crash the JVM.
@@ -185,9 +191,28 @@
                result)
              (rf result (str c)))))))))
 
-(defn decode-token2
-  [ctx]
-  (model/decode-token-to-str ctx))
+(defn decode-token-to-char
+  "Returns a transducer that expects a stream of llama tokens
+  and outputs a stream of decoded chars.
+
+  The transducer will buffer intermediate results until enough
+  bytes to decode a character are available."
+  ([ctx]
+   (model/decode-token-to-char ctx nil))
+  ([ctx opts]
+   (model/decode-token-to-char ctx opts)))
+
+(defn decode-token
+  "Returns a transducer that expects a stream of llama tokens
+  and outputs a stream of strings.
+
+  The transducer will buffer intermediate results until enough
+  bytes to decode a character are available. Also combines
+  surrogate pairs of characters."
+  ([ctx]
+   (model/decode-token-to-str ctx nil))
+  ([ctx opts]
+   (model/decode-token-to-str ctx opts)))
 
 (defn generate-tokens
   "Returns a seqable/reducible sequence of tokens from ctx with prompt."
@@ -233,7 +258,7 @@
    (generate ctx prompt nil))
   ([ctx prompt opts]
    (eduction
-    (decode-token2 ctx)
+    (decode-token ctx)
     (generate-tokens ctx prompt opts))))
 
 
