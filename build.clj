@@ -59,11 +59,12 @@
                                 (merge
                                  {lib {:mvn/version version}}
                                  ggml-deps
-                                 gguf-deps)}})]
+                                 gguf-deps)}})
+        combined-lib 'com.phronemophobic/llama-clj-all]
     (clean opts)
     (b/write-pom {:class-dir class-dir
                   :src-pom src-pom
-                  :lib 'com.phronemophobic/llama-clj-all
+                  :lib combined-lib
                   :version version
                   :basis basis})
     (b/jar {:jar-file jar-file
@@ -71,7 +72,8 @@
     (try ((requiring-resolve 'deps-deploy.deps-deploy/deploy)
           (merge {:installer :remote
                   :artifact jar-file
-                  :pom-file (b/pom-path {:lib lib :class-dir class-dir})}
+                  :pom-file (b/pom-path {:lib combined-lib
+                                         :class-dir class-dir})}
                  opts))
          (catch Exception e
            (if-not (str/includes? (ex-message e) "redeploying non-snapshots is not allowed")
