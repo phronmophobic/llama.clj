@@ -22,7 +22,7 @@ clojure -M:mvn-llama -m com.phronemophobic.llama "models/llama-2-7b-chat.ggmlv3.
 
 ## Dependency
 
-For llama.clj and required native dependencies:
+For llama.clj with required native dependencies:
 
 ```clojure
 com.phronemophobic/llama-clj-combined {:mvn/version "0.8-alpha1"}
