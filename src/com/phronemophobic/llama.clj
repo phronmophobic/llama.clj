@@ -292,6 +292,7 @@
 
   ;; https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.1-GGUF/resolve/main/mistral-7b-instruct-v0.1.Q4_0.gguf
   (def model-path "models/mistral-7b-instruct-v0.1.Q4_0.gguf")
+  (def model-path "models/llama-2-7b-chat.Q4_0.gguf")
 
   (def ctx (create-context model-path {:n-ctx 2048}))
 
