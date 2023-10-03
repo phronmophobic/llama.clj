@@ -44,6 +44,12 @@
   ([ctx]
    (model/token-bos ctx)))
 
+(def ^:private ggml-model
+  (delay
+    @(requiring-resolve 'com.phronemophobic.llama.raw/llama-model)))
+(def ^:private gguf-model
+  (delay
+    @(requiring-resolve 'com.phronemophobic.llama.raw-gguf/llama-model)))
 
 (defn create-context
   "Create and return an opaque llama context.
@@ -111,12 +117,12 @@
            :else :gguf)
          libllama
          (case format
-           :ggml @(requiring-resolve 'com.phronemophobic.llama.raw/llama-model)
-           :gguf @(requiring-resolve 'com.phronemophobic.llama.raw-gguf/llama-model))]
-    (model/create-context
-     libllama
-     model-path
-     params))))
+           :ggml @ggml-model
+           :gguf @gguf-model)]
+     (model/create-context
+      libllama
+      model-path
+      params))))
 
 
 (defn get-logits
