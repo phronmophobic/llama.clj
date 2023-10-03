@@ -45,3 +45,35 @@
            (println "This release was already deployed."))))
   opts)
 
+(defn deploy-combined [opts]
+  (let [ggml-deps
+        '{com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
+          com.phronemophobic.cljonda/llama-cpp-darwin-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
+          com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}}
+        gguf-deps
+        '{com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version "c3f197912f1ce858ac114d70c40db512de02e2e0"}
+          com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "c3f197912f1ce858ac114d70c40db512de02e2e0"}
+          com.phronemophobic.cljonda/llama-cpp-gguf-darwin-x86-64 {:mvn/version "c3f197912f1ce858ac114d70c40db512de02e2e0"}}
+        basis (b/create-basis {:project
+                               {:deps
+                                (merge
+                                 {lib {:mvn/version version}}
+                                 ggml-deps
+                                 gguf-deps)}})]
+    (clean opts)
+    (b/write-pom {:class-dir class-dir
+                  :src-pom src-pom
+                  :lib 'com.phronemophobic/llama-clj-all
+                  :version version
+                  :basis basis})
+    (b/jar {:jar-file jar-file
+            :class-dir class-dir})
+    (try ((requiring-resolve 'deps-deploy.deps-deploy/deploy)
+          (merge {:installer :remote
+                  :artifact jar-file
+                  :pom-file (b/pom-path {:lib lib :class-dir class-dir})}
+                 opts))
+         (catch Exception e
+           (if-not (str/includes? (ex-message e) "redeploying non-snapshots is not allowed")
+             (throw e)
+             (println "This release was already deployed."))))))
