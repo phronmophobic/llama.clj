@@ -60,7 +60,7 @@
                                  {lib {:mvn/version version}}
                                  ggml-deps
                                  gguf-deps)}})
-        combined-lib 'com.phronemophobic/llama-clj-all]
+        combined-lib 'com.phronemophobic/llama-clj-combined]
     (clean opts)
     (b/write-pom {:class-dir class-dir
                   :src-pom src-pom
