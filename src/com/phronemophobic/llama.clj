@@ -300,7 +300,9 @@
   (def model-path "models/mistral-7b-instruct-v0.1.Q4_0.gguf")
   (def model-path "models/llama-2-7b-chat.Q4_0.gguf")
 
-  (def ctx (create-context model-path {:n-ctx 2048}))
+  (def ctx (create-context model-path {:n-ctx 2048
+                                       ;;:n-gpu-layers 1
+                                       }))
 
   (require '[com.phronemophobic.llama.util.prompt :as prompt])
   (require '[com.phronemophobic.llama.util :as llutil])
