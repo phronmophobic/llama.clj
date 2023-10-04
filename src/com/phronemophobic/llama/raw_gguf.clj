@@ -178,7 +178,7 @@
         num-tokens (llama_tokenize (:model ctx) sbytes (alength sbytes) token-buf max-tokens add-bos)]
     [num-tokens token-buf]))
 
-(defn get-logits*
+(defn ^:private get-logits*
   "Returns a copy of the current context's logits as a float array."
   [ctx]
   (let [n-vocab (llama_n_vocab (:model ctx))]
@@ -186,7 +186,7 @@
         .getPointer
         (.getFloatArray 0 n-vocab))))
 
-(defn llama-eval*
+(defn ^:private llama-eval*
   "Adds `s` to the current context and updates the context's logits (see `get-logits`).
 
   `s`: either be a string or an integer token.
@@ -236,7 +236,7 @@
   (.getFunction ^com.sun.jna.NativeLibrary libllama
                 "llama_token_to_piece"))
 
-(defn decode-token-to-buf
+(defn ^:private decode-token-to-buf
   ([ctx]
    (fn [rf]
      (let [buf-length (int 255)
@@ -295,7 +295,7 @@
        (reduced ret)
        ret)))
 
-(defn decode-token-to-char
+(defn ^:private decode-token-to-char
   "Returns a transducer that expects a stream of llama tokens
   and outputs a stream of decoded chars.
 
@@ -402,7 +402,7 @@
                result)
              (rf result (str c)))))))))
 
-(defn decode-token-to-str*
+(defn ^:private decode-token-to-str*
   "Returns a transducer that expects a stream of llama tokens
   and outputs a stream of strings.
 
@@ -462,7 +462,7 @@
   (delay
     (llama_backend_init 0)))
 
-(defn create-context
+(defn ^:private create-context
   "Create and return an opaque llama context."
   ([model-path]
    (create-context model-path nil))

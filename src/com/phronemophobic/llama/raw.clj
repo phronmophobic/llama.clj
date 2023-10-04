@@ -82,7 +82,7 @@
        (reduced ret)
        ret)))
 
-(defn decode-token-to-char
+(defn ^:private decode-token-to-char
   "Returns a transducer that expects a stream of llama tokens
   and outputs a stream of decoded chars.
 
@@ -190,7 +190,7 @@
                result)
              (rf result (str c)))))))))
 
-(defn decode-token
+(defn ^:private decode-token
   "Returns a transducer that expects a stream of llama tokens
   and outputs a stream of strings.
 
@@ -240,7 +240,7 @@
   "Number of threads used when generating tokens."
   (.. Runtime getRuntime availableProcessors))
 
-(defn llama-eval*
+(defn ^:private llama-eval*
   "Adds `s` to the current context and updates the context's logits (see `get-logits`).
 
   `s`: either be a string or an integer token.
@@ -323,7 +323,7 @@
     (vreset! mu* (.getValue mu))
     next-token))
 
-(defn get-logits*
+(defn ^:private get-logits*
   "Returns a copy of the current context's logits as a float array."
   [ctx]
   (let [n-vocab (llama_n_vocab ctx)]
@@ -384,7 +384,7 @@
   (delay
     (llama_backend_init 0)))
 
-(defn create-context
+(defn ^:private create-context
   "Create and return an opaque llama context.
 
   `model-path` should be an absolute or relative path to a F16, Q4_0, Q4_1, Q5_0, Q5_1, or Q8_0 ggml model.
