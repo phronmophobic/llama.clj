@@ -61,8 +61,6 @@ Clone https://github.com/ggerganov/llama.cpp and follow the instructions for bui
 
 _Note: The llama.cpp ffi bindings are based on the `4329d1acb01c353803a54733b8eef9d93d0b84b2` git commit for ggml models and `40e07a60f9ce06e79f3ccd4c903eba300fb31b5e` for gguf models. Future versions of llama.cpp might not be compatible if breaking changes are made. TODO: include instructions for updating ffi bindings._
 
-_Note: Dual wielding ggml and gguf llama.cpp versions is possible, but not currently supported for locally compiled builds. Please file an issue if you need this_
-
 For Example:
 
 ```sh
@@ -80,6 +78,23 @@ Next, include an alias that includes the path to the directory where the shared 
 ;; in aliases
 ;; add jvm opt for local llama build.
 :local-llama {:jvm-opts ["-Djna.library.path=/path/to/llama.cpp/build/"]}
+```
+
+##### Dual wielding with local builds
+
+It's possible to use both ggml and gguf models in the same process (ie. "dual wielding"). The trick is to treat the older ggml llama.cpp version and the newer gguf llama.cpp versions as separate libraries. Each shared library must have a unique name. If using only one of the ggml or gguf formats is required, then using the libllama.(so,dylib) is sufficient. For dual wielding, the ggml version should be called libllama.(so,dylib) and the gguf version should be renamed to libllama-gguf.(so,dylib). Further, the soname of the gguf version must also be updated. For example:
+
+Linux
+```bash
+mv libllama.so libllama-gguf.so
+sudo apt-get install patchelf
+patchelf --set-soname libllama-gguf.so libllama-gguf.so
+```
+
+Mac OSX
+```bash
+mv libllama.dylib libllama-gguf.dylib
+install_name_tool -id libllama-gguf.dylib libllama-gguf.dylib
 ```
 
 ### Obtaining models
