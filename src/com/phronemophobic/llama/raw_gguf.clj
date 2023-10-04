@@ -555,6 +555,7 @@
                          :context-params llama-context-params
                          :model-params llama-model-params
                          :n-threads (:n-threads params)
+                         :model-format :gguf
                          ;; else
                          nil))
                      (close []

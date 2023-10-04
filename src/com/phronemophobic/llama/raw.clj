@@ -528,6 +528,7 @@
                          :n-batch n-batch
                          :params params
                          :model @model-ref
+                         :model-format :ggml
                          ;; else
                          nil))
                      (close []
