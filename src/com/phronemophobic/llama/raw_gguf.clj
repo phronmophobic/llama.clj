@@ -35,7 +35,8 @@
             *out* w]
     (pr obj)))
 
-(def libllama-options
+(def ^java.util.Map
+  libllama-options
   {com.sun.jna.Library/OPTION_STRING_ENCODING "UTF8"})
 (def ^:no-doc libllama
   (try
@@ -164,7 +165,7 @@
    ctx))
 
 
-(defn ^:private tokenize* [ctx s add-bos?]
+(defn ^:private tokenize* [ctx ^String s add-bos?]
   (let [add-bos (if add-bos?
                   1
                   0)
@@ -232,7 +233,10 @@
 
      ctx)))
 
-(def ^:private llama-token-to-piece
+(def
+  ^:private
+  ^com.sun.jna.Function
+  llama-token-to-piece
   (.getFunction ^com.sun.jna.NativeLibrary libllama
                 "llama_token_to_piece"))
 
@@ -352,7 +356,7 @@
                    (rf result)))
                ;; else no flush
                (rf result)))
-            ([result bb]
+            ([result ^java.nio.ByteBuffer bb]
              (.put input-buffer bb)
              (.flip input-buffer)
 

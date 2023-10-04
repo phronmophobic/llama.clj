@@ -35,7 +35,9 @@
             *out* w]
     (pr obj)))
 
-(def libllama-options
+(def
+  ^java.util.Map
+  libllama-options
   {com.sun.jna.Library/OPTION_STRING_ENCODING "UTF8"})
 (def ^:no-doc libllama
   (com.sun.jna.NativeLibrary/getInstance "llama" libllama-options))
@@ -222,7 +224,7 @@
                 (assoc m ctx (Memory. (* 4 n)))))))
    ctx))
 
-(defn ^:private tokenize* [ctx s add-bos?]
+(defn ^:private tokenize* [ctx ^String s add-bos?]
   (let [add-bos (if add-bos?
                   1
                   0)
