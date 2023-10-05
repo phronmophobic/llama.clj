@@ -10,9 +10,15 @@
 
   :mvn-llama
   {:extra-deps
-   {com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
+   {;; ggml dependencies
+    com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
     com.phronemophobic.cljonda/llama-cpp-darwin-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
-    com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}}}
+    com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
+
+    ;; gguf dependencies
+    com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version "c3f197912f1ce858ac114d70c40db512de02e2e0"}
+    com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "c3f197912f1ce858ac114d70c40db512de02e2e0"}
+    com.phronemophobic.cljonda/llama-cpp-gguf-darwin-x86-64 {:mvn/version "c3f197912f1ce858ac114d70c40db512de02e2e0"}}}
 
   :clerk {:extra-paths ["notebooks"]
           :extra-deps
