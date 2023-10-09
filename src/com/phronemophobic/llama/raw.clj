@@ -531,6 +531,7 @@
                          :params params
                          :model @model-ref
                          :model-format :ggml
+                         :impl ::impl
                          ;; else
                          nil))
                      (close []

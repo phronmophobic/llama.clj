@@ -560,6 +560,7 @@
                          :model-params llama-model-params
                          :n-threads (:n-threads params)
                          :model-format :gguf
+                         :impl ::impl
                          ;; else
                          nil))
                      (close []
