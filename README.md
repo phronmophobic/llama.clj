@@ -144,7 +144,7 @@ cmake --build . --config Release
 - [ ] Add convenience namespace for obtaining and using models.
 - [ ] Pure clojure implementation for mirostatv2 and other useful samplers.
 - [ ] Provide reasonable default implementations for generating responses larger than the context size.
-- [ ] Update llama.cpp to [support gguf format](https://github.com/phronmophobic/llama.clj/issues/8)
+- [X] Update llama.cpp to [support gguf format](https://github.com/phronmophobic/llama.clj/issues/8)
 - [X] More docs!
   - [X] Reference docs
   - [X] Intro Guide to LLMs.
