@@ -14,6 +14,8 @@ mkdir -p models
 clojure -M:mvn-llama -m com.phronemophobic.llama "models/llama-2-7b-chat.ggmlv3.q4_0.bin" "what is 2+2?"
 ```
 
+_Note: For best results, prompts should be formatted using the correct prompt format for the particular model being used (eg. [llama2 chat prompt format](https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML#prompt-template-llama-2-chat))._
+
 ## Documentation
 
 [Getting Started](https://phronmophobic.github.io/llama.clj/)  
