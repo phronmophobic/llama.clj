@@ -3,7 +3,7 @@
             [clojure.string :as str]))
 
 (def lib 'com.phronemophobic/llama-clj)
-(def version "0.8")
+(def version "0.8.1-SNAPSHOT")
 
 (def class-dir "target/classes")
 (def basis (b/create-basis {:project "deps.edn"}))
@@ -51,9 +51,9 @@
           com.phronemophobic.cljonda/llama-cpp-darwin-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
           com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}}
         gguf-deps
-        '{com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version "c3f197912f1ce858ac114d70c40db512de02e2e0"}
-          com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "c3f197912f1ce858ac114d70c40db512de02e2e0"}
-          com.phronemophobic.cljonda/llama-cpp-gguf-darwin-x86-64 {:mvn/version "c3f197912f1ce858ac114d70c40db512de02e2e0"}}
+        '{com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version "6bbd0474c9be6cfbd4330c0f2d4307a4889affbc-SNAPSHOT"}
+          com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "6bbd0474c9be6cfbd4330c0f2d4307a4889affbc-SNAPSHOT"}
+          com.phronemophobic.cljonda/llama-cpp-gguf-darwin-x86-64 {:mvn/version "6bbd0474c9be6cfbd4330c0f2d4307a4889affbc-SNAPSHOT"}}
         basis (b/create-basis {:project
                                {:deps
                                 (merge
