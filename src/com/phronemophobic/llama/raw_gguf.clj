@@ -53,28 +53,52 @@
             (throw e)))
         libllama))))
 
+(def default-arguments
+  [ "-resource-dir"
+ "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0"
+ "-isysroot"
+ "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+ "-I/usr/local/include"
+ "-internal-isystem"
+ "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/local/include"
+ "-internal-isystem"
+ "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include"
+ "-internal-externc-isystem"
+ "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include"
+ "-internal-externc-isystem"
+ "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"
+])
+
 (defn ^:private dump-api []
   (let [outf (io/file
               "resources"
               "com"
               "phronemophobic"
               "llama"
-              "api-raw.edn")]
+              "api-gguf.edn")]
     (.mkdirs (.getParentFile outf))
     (with-open [w (io/writer outf)]
       (write-edn w
                  ((requiring-resolve 'com.phronemophobic.clong.clang/easy-api)
-                  "/Users/adrian/workspace/llama.cpp/llama.h")
-                 ))))
+                  "/Users/adrian/workspace/llama.cpp/llama.h"
+                  default-arguments)))))
 
 
-(def api
+(def raw-api
   #_((requiring-resolve 'com.phronemophobic.clong.clang/easy-api) "/Users/adrian/workspace/llama.cpp/llama.h")
   (with-open [rdr (io/reader
                      (io/resource
                       "com/phronemophobic/llama/api-gguf.edn"))
                 rdr (java.io.PushbackReader. rdr)]
       (edn/read rdr)))
+
+(def api
+  (update raw-api
+          :structs
+          (fn [structs#]
+            (remove #(#{:clong/ggml_backend_graph_copy}
+                      (:id %))
+                    structs#))))
 
 (gen/def-api libllama api)
 
@@ -103,7 +127,7 @@
 
 (defn ^:private map->llama-context-params [m]
   (reduce-kv
-   (fn [^llama_context_params
+   (fn [^Structure
         params k v]
      (case k
        :seed (.writeField params "seed" (int v))
@@ -129,7 +153,7 @@
 
 (defn ^:private map->llama-model-params [m]
   (reduce-kv
-   (fn [^llama_model_params
+   (fn [^Structure
         params k v]
      (case k
        :n-gpu-layers (.writeField params "n_gpu_layers" (int v))
@@ -176,7 +200,7 @@
         sbytes (.getBytes s "utf-8")
         max-tokens (+ add-bos 1 (alength sbytes))
         token-buf (get-token-buf ctx max-tokens)
-        num-tokens (llama_tokenize (:model ctx) sbytes (alength sbytes) token-buf max-tokens add-bos)]
+        num-tokens (llama_tokenize (:model ctx) sbytes (alength sbytes) token-buf max-tokens add-bos 0)]
     [num-tokens token-buf]))
 
 (defn ^:private get-logits*
@@ -215,7 +239,7 @@
      (when (and num-threads
                 (not= num-threads
                       (:num-threads ctx)))
-       (.writeField ^llama_context_params
+       (.writeField ^Structure
                     (:context-params ctx)
                     "n_threads"
                     (int num-threads)))
@@ -464,7 +488,7 @@
 
 (defonce ^:private llm-init
   (delay
-    (llama_backend_init 0)))
+    (llama_backend_init)))
 
 (defn ^:private create-context
   "Create and return an opaque llama context."
@@ -516,9 +540,9 @@
 
                    ;; ILLamaContext
                      (token_eos []
-                       (llama_token_eos this))
+                       (llama_token_eos (:model this)))
                      (token_bos []
-                       (llama_token_bos this))
+                       (llama_token_bos (:model this)))
                      (tokenize [s add-bos?]
                        (tokenize* this s add-bos?))
                      (get_logits []
