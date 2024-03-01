@@ -6,19 +6,7 @@
    `(wrap-seed ~form nil))
   ([form visibility]
    `(do
-      (raw/llama_set_rng_seed llama-context seed)
-      (let [~'result ~form]
-        {::llama-view
-         {:form (quote ~form)
-          :result ~'result
-          :visibility ~visibility}}))))
-
-(defmacro wrap-seed
-  ([form]
-   `(wrap-seed ~form nil))
-  ([form visibility]
-   `(do
-      (raw/llama_set_rng_seed ~'llama-context ~'seed)
+      (llama/set-rng-seed ~'llama-context ~'seed)
       (let [~'result ~form]
         {::llama-view
          {:form (quote ~form)
