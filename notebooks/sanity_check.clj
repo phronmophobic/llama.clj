@@ -27,12 +27,12 @@
    (keep (fn [[k path opts]]
            (when (.exists (io/file path))
              [k (llama/create-context path opts)])))
-   [[:llama7b-ggml llama7b-path {:n-gpu-layers 100}]
-    [:llama7b-ggml-embedding llama7b-path {:embedding true :n-gpu-layers 100}]
-    [:llama7b-gguf llama7b-gguf-path {:n-gpu-layers 100}]
-    [:llama7b-gguf-embedding llama7b-gguf-path {:n-gpu-layers 100 :embedding true}]
+   [[:llama7b-ggml llama7b-path {:n-gpu-layers 1}]
+    [:llama7b-ggml-embedding llama7b-path {:embedding true :n-gpu-layers 1}]
+    [:llama7b-gguf llama7b-gguf-path {:n-gpu-layers 1}]
+    [:llama7b-gguf-embedding llama7b-gguf-path {:n-gpu-layers 1 :embedding true}]
     [:gemma gemma-2b-path {:n-gpu-layers 100}]
-    [:bge bge-large-path {:embedding true :n-gpu-layers 100}]])
+    [:bge bge-large-path {:embedding true :n-gpu-layers 1}]])
 )
 
 
