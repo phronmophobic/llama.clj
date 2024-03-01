@@ -43,6 +43,9 @@
   {:main-opts ["-m" "sanity-check"]
    :extra-paths ["notebooks"]
    :extra-deps {com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b2291-SNAPSHOT"}
+                com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
+
+                com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
                 com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version "b2291-SNAPSHOT"}}}
 
   :codox
