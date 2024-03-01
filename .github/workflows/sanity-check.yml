@@ -1,0 +1,28 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Sanity Check
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Setup Clojure
+        uses: DeLaGuardo/setup-clojure@9.5
+        with:
+          cli: 1.11.1.1208
+      - name: Download llama2
+        run: mkdir -p models && cd models && curl -L -O 'https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/resolve/main/llama-2-7b-chat.ggmlv3.q4_0.bin'
+      - name: Download llama2 gguf
+        run: mkdir -p models && cd models && curl -L -O 'https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGUF/resolve/main/llama-2-7b-chat.Q4_0.gguf'
+      - name: Download bge-large
+        run: mkdir -p models && cd models && curl -L -O 'https://huggingface.co/CompendiumLabs/bge-large-en-v1.5-gguf/resolve/main/bge-large-en-v1.5-q4_k_m.gguf'
+      - name: Build static
+        run: clojure -J-Dclojure.main.report=stderr -X:sanity-check

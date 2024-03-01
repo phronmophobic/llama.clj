@@ -31,12 +31,19 @@
                 com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "CUBLAS-6e88a462d7d2d281e33f35c3c41df785ef633bc1"}}
    :extra-paths ["notebooks"]
    :exec-fn nextjournal.clerk/build!
-   :exec-args {:paths ["notebooks/*"]
+   :exec-args {:paths ["notebooks/intro.clj"
+                       "notebooks/usage.clj"]
                :index "notebooks/usage.clj"
                :ssr true
                :out-path "docs/"
                ;;:bundle true
                }}
+
+  :sanity-check
+  {:main-opts ["-m" "sanity-check"]
+   :extra-paths ["notebooks"]
+   :extra-deps {com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b2291-SNAPSHOT"}
+                com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "b2291-SNAPSHOT"}}}
 
   :codox
   {:extra-deps {codox-theme-rdash/codox-theme-rdash {:mvn/version "0.1.2"}
