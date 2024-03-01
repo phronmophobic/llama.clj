@@ -131,6 +131,11 @@
   (model/get-logits ctx))
 
 
+(defn set-rng-seed
+  "Manually set the rng seed for a context."
+  [ctx seed]
+  (model/set-rng-seed ctx seed))
+
 (defn llama-update
   "Adds `s` to the current context and updates the context's logits (see `get-logits`).
 
