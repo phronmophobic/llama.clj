@@ -325,6 +325,16 @@
     (vreset! mu* (.getValue mu))
     next-token))
 
+(defn ^:private get-embedding*
+  [ctx]
+  (let [^com.sun.jna.ptr.FloatByReference
+        fbr (llama_get_embeddings ctx)
+        p (.getPointer fbr)
+        arr (float-array
+             (llama_n_embd ctx))]
+    (.read p 0 arr 0 (alength arr))
+    arr))
+
 (defn ^:private get-logits*
   "Returns a copy of the current context's logits as a float array."
   [ctx]
@@ -497,6 +507,8 @@
                        (llama_token_bos))
                      (tokenize [s add-bos?]
                        (tokenize* this s add-bos?))
+                     (get_embedding []
+                       (get-embedding* this))
                      (get_logits []
                        (get-logits* this))
                      (decode_token_to_char

@@ -45,3 +45,22 @@
        (flush)))
     nil
     (llama/generate ctx prompt opts))))
+
+(defn normalize-embedding
+  "Normalize the embedding `emb` so that it matches output from llama.cpp's ./embedding example."
+  [emb]
+  (let [n (alength emb)
+        norm (loop [norm (float 0)
+                    i 0]
+               (if (< i n)
+                 (let [x (aget emb i)]
+                   (recur (+ norm (* x x))
+                          (inc i)))
+                 norm))
+        norm (Math/sqrt norm)]
+    (float-array
+     (eduction
+      (map (fn [i]
+             (/ (aget emb i)
+                norm)))
+      (range n)))))

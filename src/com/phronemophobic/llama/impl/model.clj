@@ -8,6 +8,7 @@
   (token-eos [ctx])
   (token-bos [ctx])  
   (tokenize [ctx s add-bos?])
+  (get-embedding [ctx])
   (get-logits [ctx])
   (sample-mirostat-v2 [ctx candidates-buf* mu* tau eta])
   (decode-token-to-str [ctx] [ctx opts])

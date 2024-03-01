@@ -130,6 +130,12 @@
   [ctx]
   (model/get-logits ctx))
 
+(defn get-embedding
+  "Returns a copy of the current context's embedding as a float array.
+
+  The context should have been created with the `:embedding` option set to true."
+  [ctx]
+  (model/get-embedding ctx))
 
 (defn set-rng-seed
   "Manually set the rng seed for a context."
@@ -293,6 +299,20 @@
                 prompt-token-count))
        (model/decode-token-to-str ctx)
        (generate-tokens ctx prompt opts))))))
+
+
+(defn generate-embedding
+  "Returns the embedding for a given input prompt.
+
+  The context should have been created with the `:embedding` option set to true.
+
+  Note: embeddings are not normailzed. See `com.phronemophobic.llama.util/normalize-embedding.`"
+  ([ctx prompt opts]
+   (llama-update ctx prompt 0 (:num-threads opts))
+   (get-embedding ctx))
+  ([ctx prompt]
+   (llama-update ctx prompt 0 *num-threads*)
+   (get-embedding ctx)))
 
 (comment
   (def model-path "models/llama-2-7b-chat.ggmlv3.q4_0.bin")
