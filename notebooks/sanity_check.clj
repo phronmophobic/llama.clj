@@ -40,8 +40,8 @@
 
 (def embeddings
   (into {}
-        (map (fn [k]
-               (let [ctx (get contexts k)]
+        (keep (fn [k]
+               (when-let [ctx (get contexts k)]
                  (prn k)
                  (llama/llama-update ctx "banana" 0)
                  ;; use same normalization as llama.cpp embedding example.
@@ -53,15 +53,15 @@
 
 (def responses
   (into {}
-        (map (fn [k]
-               (let [ctx (get contexts k)]
-                 (prn k)
-                 (llama/set-rng-seed ctx seed)
-                 [k (llama/generate-string
-                     ctx
-                     "Hello there"
-                     {:seed seed
-                      :samplef llama/sample-logits-greedy})])))
+        (keep (fn [k]
+                (when-let [ctx (get contexts k)]
+                  (prn k)
+                  (llama/set-rng-seed ctx seed)
+                  [k (llama/generate-string
+                      ctx
+                      "Hello there"
+                      {:seed seed
+                       :samplef llama/sample-logits-greedy})])))
 
         [:llama7b-ggml
          :llama7b-gguf
