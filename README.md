@@ -14,6 +14,8 @@ mkdir -p models
 clojure -M:mvn-llama -m com.phronemophobic.llama "models/llama-2-7b-chat.ggmlv3.q4_0.bin" "what is 2+2?"
 ```
 
+_Note: For best results, prompts should be formatted using the correct prompt format for the particular model being used (eg. [llama2 chat prompt format](https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML#prompt-template-llama-2-chat))._
+
 ## Documentation
 
 [Getting Started](https://phronmophobic.github.io/llama.clj/)  
@@ -144,7 +146,7 @@ cmake --build . --config Release
 - [ ] Add convenience namespace for obtaining and using models.
 - [ ] Pure clojure implementation for mirostatv2 and other useful samplers.
 - [ ] Provide reasonable default implementations for generating responses larger than the context size.
-- [ ] Update llama.cpp to [support gguf format](https://github.com/phronmophobic/llama.clj/issues/8)
+- [X] Update llama.cpp to [support gguf format](https://github.com/phronmophobic/llama.clj/issues/8)
 - [X] More docs!
   - [X] Reference docs
   - [X] Intro Guide to LLMs.
