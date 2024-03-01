@@ -28,7 +28,7 @@
   {:extra-deps {io.github.nextjournal/clerk {:mvn/version "0.14.919"}
                 instaparse/instaparse {:mvn/version "1.4.12"}
                 com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
-                com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "CUBLAS-6e88a462d7d2d281e33f35c3c41df785ef633bc1"}}
+                com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}}
    :extra-paths ["notebooks"]
    :exec-fn nextjournal.clerk/build!
    :exec-args {:paths ["notebooks/intro.clj"
@@ -93,10 +93,7 @@
                 com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"
                                                                      ;;:local/root "/Users/adrian/workspace/cljonda/build/llama-cpp.jar"
                                                                      }
-                com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 { ;; :mvn/version "c3f197912f1ce858ac114d70c40db512de02e2e0"
-                                                                          :mvn/version "6bbd0474c9be6cfbd4330c0f2d4307a4889affbc-SNAPSHOT"
-                                                                          ;; :local/root "/Users/adrian/workspace/cljonda/build/llama-cpp-gguf.jar"
-                                                                          }
+                com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b2291"}
                 io.github.nextjournal/clerk {:mvn/version "0.14.919"}
                 org.clojure/test.check {:mvn/version "1.1.1"}
                 }}}}
