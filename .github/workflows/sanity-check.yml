@@ -25,4 +25,4 @@ jobs:
       - name: Download bge-large
         run: mkdir -p models && cd models && curl -L -O 'https://huggingface.co/CompendiumLabs/bge-large-en-v1.5-gguf/resolve/main/bge-large-en-v1.5-q4_k_m.gguf'
       - name: Build static
-        run: clojure -J-Dclojure.main.report=stderr -X:sanity-check
+        run: clojure -J-Dclojure.main.report=stderr -M:sanity-check
