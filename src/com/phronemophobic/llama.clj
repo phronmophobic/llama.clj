@@ -159,7 +159,7 @@
                   r1
                   r2))
               first)
-             [nil Float/MIN_VALUE]
+             [nil Float/NEGATIVE_INFINITY]
              logits))
 
 
