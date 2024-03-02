@@ -48,7 +48,7 @@
 (defn deploy-combined [opts]
   (let [ggml-version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"
         ggml-deps
-        '{com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version }
+        '{com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version ggml-version}
           com.phronemophobic.cljonda/llama-cpp-darwin-x86-64 {:mvn/version ggml-version}
           com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version ggml-version}}
 
