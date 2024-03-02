@@ -27,12 +27,12 @@ _Note: For best results, prompts should be formatted using the correct prompt fo
 For llama.clj with required native dependencies:
 
 ```clojure
-com.phronemophobic/llama-clj-combined {:mvn/version "0.8"}
+com.phronemophobic/llama-clj-combined {:mvn/version "0.8.1"}
 ```
 
 For llama.clj only _(see below for various alternatives for specifying native dependencies)_:
 ```clojure
-com.phronemophobic/llama-clj {:mvn/version "0.8"}
+com.phronemophobic/llama-clj {:mvn/version "0.8.1"}
 ```
 
 ### Native Dependency
