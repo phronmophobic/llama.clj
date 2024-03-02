@@ -35,9 +35,9 @@
             *out* w]
     (pr obj)))
 
-(def RTLD_LOCAL 0)
-(def RTLD_MEMBER 0x40000)
-(def RTLD_LAZY 0x00001)
+(def ^:private RTLD_LOCAL 0)
+(def ^:private RTLD_MEMBER 0x40000)
+(def ^:private RTLD_LAZY 0x00001)
 
 (def ^java.util.Map
   libllama-options

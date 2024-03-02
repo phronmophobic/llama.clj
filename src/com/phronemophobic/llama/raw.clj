@@ -42,9 +42,9 @@
  ;; int RTLD_MEMBER = 0x40000; // allows "lib.a(obj.o)" syntax
 ;; suggestion: https://github.com/java-native-access/jna/issues/724#issuecomment-258937700
 ;; options.put(Library.OPTION_OPEN_FLAGS,  RTLD_NOW | RTLD_DEEPBIND);
-(def RTLD_LOCAL 0)
-(def RTLD_MEMBER 0x40000)
-(def RTLD_LAZY 0x00001)
+(def ^:private RTLD_LOCAL 0)
+(def ^:private RTLD_MEMBER 0x40000)
+(def ^:private RTLD_LAZY 0x00001)
 
 (def
   ^java.util.Map
