@@ -42,8 +42,6 @@
  ;; int RTLD_MEMBER = 0x40000; // allows "lib.a(obj.o)" syntax
 ;; suggestion: https://github.com/java-native-access/jna/issues/724#issuecomment-258937700
 ;; options.put(Library.OPTION_OPEN_FLAGS,  RTLD_NOW | RTLD_DEEPBIND);
-;; defaults: https://github.com/java-native-access/jna/blob/83f2fc875e736308f418e8e99ff714ec054d8af4/contrib/platform/src/com/sun/jna/platform/unix/aix/SharedObjectLoader.java#L59C9-L59C87
-;; options.put(Library.OPTION_OPEN_FLAGS, RTLD_MEMBER | RTLD_GLOBAL | RTLD_LAZY);
 (def RTLD_LOCAL 0)
 (def RTLD_MEMBER 0x40000)
 (def RTLD_LAZY 0x00001)
@@ -54,7 +52,6 @@
   {com.sun.jna.Library/OPTION_STRING_ENCODING "UTF8"
    com.sun.jna.Library/OPTION_OPEN_FLAGS (bit-or
                                           RTLD_LOCAL
-                                          RTLD_MEMBER
                                           RTLD_LAZY)})
 (def ^:no-doc libllama
   (com.sun.jna.NativeLibrary/getInstance "llama" libllama-options))

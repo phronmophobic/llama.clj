@@ -35,9 +35,16 @@
             *out* w]
     (pr obj)))
 
+(def RTLD_LOCAL 0)
+(def RTLD_MEMBER 0x40000)
+(def RTLD_LAZY 0x00001)
+
 (def ^java.util.Map
   libllama-options
-  {com.sun.jna.Library/OPTION_STRING_ENCODING "UTF8"})
+  {com.sun.jna.Library/OPTION_STRING_ENCODING "UTF8"
+   com.sun.jna.Library/OPTION_OPEN_FLAGS (bit-or
+                                          RTLD_LOCAL
+                                          RTLD_LAZY)})
 (def ^:no-doc libllama
   (try
     (com.sun.jna.NativeLibrary/getInstance "llama-gguf" libllama-options)
