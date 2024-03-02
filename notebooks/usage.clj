@@ -94,6 +94,18 @@
 (wrap-seed
  (llama/generate-string llama-context "Write a haiku about documentation."))
 
+
+;; ## Generating Embeddings
+
+{:nextjournal.clerk/visibility {:code :show :result :show}}
+
+;; To generate embeddings, contexts must be created with `:embedding` set to `true`.
+(def llama-embedding-context
+  (llama/create-context llama7b-path {:n-gpu-layers 1
+                                      :embedding true}))
+
+(llama/generate-embedding llama-embedding-context "some text")
+
 ^{:nextjournal.clerk/visibility {:code :hide :result :hide}}
 (comment
   (clerk/serve! {:watch-paths ["notebooks/usage.clj"]})
