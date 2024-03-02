@@ -16,9 +16,9 @@
     com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
 
     ;; gguf dependencies
-    com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version "c3f197912f1ce858ac114d70c40db512de02e2e0"}
-    com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "c3f197912f1ce858ac114d70c40db512de02e2e0"}
-    com.phronemophobic.cljonda/llama-cpp-gguf-darwin-x86-64 {:mvn/version "c3f197912f1ce858ac114d70c40db512de02e2e0"}}}
+    com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version "b2291"}
+    com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b2291"}
+    com.phronemophobic.cljonda/llama-cpp-gguf-darwin-x86-64 {:mvn/version "b2291"}}}
 
   :clerk {:extra-paths ["notebooks"]
           :extra-deps
@@ -72,7 +72,7 @@
          {com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"
                                                                      ;;:local/root "/Users/adrian/workspace/cljonda/build/llama-cpp.jar"
                                                                      }
-          com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "c3f197912f1ce858ac114d70c40db512de02e2e0"}
+          com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b2291"}
           io.github.cognitect-labs/test-runner
           {:git/tag "v0.5.1" :git/sha "dfb30dd"}
           org.clojure/test.check {:mvn/version "1.1.1"}}

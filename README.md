@@ -4,14 +4,14 @@ Run LLMs locally. A clojure wrapper for [llama.cpp](https://github.com/ggerganov
 
 ## Quick Start
 
-If you're just looking for a model to try things out, try the 3.6Gb [llama2 7B chat model](https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/tree/main)  from TheBloke. Make sure to check the link for important info like license and use policy.
+If you're just looking for a model to try things out, try the 3.6Gb [llama2 7B chat model](https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGUF)  from TheBloke. Make sure to check the link for important info like license and use policy.
 
 ```sh
 mkdir -p models
 # Download 3.6Gb model to models/ directory
-(cd models && curl -L -O 'https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/resolve/main/llama-2-7b-chat.ggmlv3.q4_0.bin')
+(cd models && curl -L -O 'https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGUF/resolve/main/llama-2-7b-chat.Q4_0.gguf')
 # mvn-llama alias pulls precompiled llama.cpp libs from maven
-clojure -M:mvn-llama -m com.phronemophobic.llama "models/llama-2-7b-chat.ggmlv3.q4_0.bin" "what is 2+2?"
+clojure -M:mvn-llama -m com.phronemophobic.llama "models/llama-2-7b-chat.Q4_0.gguf" "what is 2+2?"
 ```
 
 _Note: For best results, prompts should be formatted using the correct prompt format for the particular model being used (eg. [llama2 chat prompt format](https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML#prompt-template-llama-2-chat))._
@@ -47,9 +47,9 @@ The easiest method is to include the corresponding native dependency for your pl
 
 ```clojure
 ;; gguf dependencies
-com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version "c3f197912f1ce858ac114d70c40db512de02e2e0"}
-com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "c3f197912f1ce858ac114d70c40db512de02e2e0"}
-com.phronemophobic.cljonda/llama-cpp-gguf-darwin-x86-64 {:mvn/version "c3f197912f1ce858ac114d70c40db512de02e2e0"}
+com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version "b2291"}
+com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b2291"}
+com.phronemophobic.cljonda/llama-cpp-gguf-darwin-x86-64 {:mvn/version "b2291"}
 
 ;; ggml dependencies
 com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
@@ -61,7 +61,7 @@ com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "6e88a462d7d2d28
 
 Clone https://github.com/ggerganov/llama.cpp and follow the instructions for building. Make sure to include the shared library options.
 
-_Note: The llama.cpp ffi bindings are based on the `4329d1acb01c353803a54733b8eef9d93d0b84b2` git commit for ggml models and `40e07a60f9ce06e79f3ccd4c903eba300fb31b5e` for gguf models. Future versions of llama.cpp might not be compatible if breaking changes are made. TODO: include instructions for updating ffi bindings._
+_Note: The llama.cpp ffi bindings are based on the `4329d1acb01c353803a54733b8eef9d93d0b84b2` git commit for ggml models and the `b2291` release for gguf models. Future versions of llama.cpp might not be compatible if breaking changes are made. TODO: include instructions for updating ffi bindings._
 
 For Example:
 
