@@ -39,6 +39,22 @@
                ;;:bundle true
                }}
 
+  :generate-docs2
+  {:extra-deps {io.github.nextjournal/clerk {:mvn/version "0.14.919"}
+                instaparse/instaparse {:mvn/version "1.4.12"}
+                com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
+                com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
+                com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version "b2291"}
+                com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b2291"}}
+   :extra-paths ["notebooks"]
+   :exec-fn nextjournal.clerk/build!
+   :exec-args {:paths ["notebooks/usage.clj"]
+               :index "notebooks/usage.clj"
+               :ssr true
+               :out-path "docs/"
+               ;;:bundle true
+               }}
+
   :sanity-check
   {:main-opts ["-m" "sanity-check"]
    :extra-paths ["notebooks"]
