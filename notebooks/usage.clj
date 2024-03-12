@@ -1,4 +1,5 @@
 ^{:nextjournal.clerk/visibility {:code :hide :result :hide}
+  :nextjournal.clerk/no-cache true
   :nextjournal.clerk/toc true}
 (ns usage
   (:require [nextjournal.clerk :as clerk]
@@ -41,7 +42,9 @@
 
 ^{:nextjournal.clerk/visibility {:code :hide :result :hide}}
 (do
-  (def llama7b-path "models/llama-2-7b-chat.ggmlv3.q4_0.bin")
+  ;; (def llama7b-path "models/llama-2-7b-chat.ggmlv3.q4_0.bin")
+  (def llama7b-path "models/llama-2-7b-chat.Q4_0.gguf")
+  
   (def llama-context (llama/create-context llama7b-path {:n-gpu-layers 1}))
   (def seed 4321))
 
