@@ -80,6 +80,9 @@
          :main-opts ["-m" "cognitect.test-runner"]
          :exec-fn cognitect.test-runner.api/test}
 
+  :native-image
+  {:extra-deps {com.github.clj-easy/graal-build-time {:mvn/version "1.0.5"}}}
+
   :project
   {:extra-paths ["notebooks" "tests"]
    :jvm-opts ["-XX:+UnlockDiagnosticVMOptions"

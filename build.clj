@@ -82,3 +82,22 @@
            (if-not (str/includes? (ex-message e) "redeploying non-snapshots is not allowed")
              (throw e)
              (println "This release was already deployed."))))))
+
+;; doesn't work
+;; need to lazy load native lib
+(defn uber [_]
+  (let [basis (b/create-basis {:project "deps.edn"
+                               :aliases [:mvn-llama
+                                         :native-image]})]
+    (clean nil)
+    (b/copy-dir {:src-dirs ["src" "resources"]
+                 :target-dir class-dir})
+    (b/compile-clj {:basis basis
+                    :src-dirs ["src"]
+                    :compile-opts {:direct-linking true}
+                    :ns-compile ['com.phronemophobic.llama.cli]
+                    :class-dir class-dir})
+    (b/uber {:class-dir class-dir
+             :uber-file "target/uber.jar"
+             :basis basis
+             :main 'com.phronemophobic.llama.cli})))
