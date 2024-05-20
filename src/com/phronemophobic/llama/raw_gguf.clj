@@ -17,10 +17,12 @@
            com.sun.jna.Pointer
            com.sun.jna.ptr.IntByReference
            com.sun.jna.ptr.FloatByReference
-           com.sun.jna.Structure)
+           com.sun.jna.Structure
+           com.sun.jna.Platform)
   (:gen-class))
 
 (def cleaner (Cleaner/create))
+
 
 (defn ^:private write-edn [w obj]
   (binding [*print-length* nil
@@ -41,10 +43,12 @@
 
 (def ^java.util.Map
   libllama-options
-  {com.sun.jna.Library/OPTION_STRING_ENCODING "UTF8"
-   com.sun.jna.Library/OPTION_OPEN_FLAGS (bit-or
-                                          RTLD_LOCAL
-                                          RTLD_LAZY)})
+  (merge
+   {com.sun.jna.Library/OPTION_STRING_ENCODING "UTF8"}
+   (when (not (Platform/isWindows))
+     {com.sun.jna.Library/OPTION_OPEN_FLAGS (bit-or
+                                             RTLD_LOCAL
+                                             RTLD_LAZY)})))
 (def ^:no-doc libllama
   (try
     (com.sun.jna.NativeLibrary/getInstance "llama-gguf" libllama-options)
