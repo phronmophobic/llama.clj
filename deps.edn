@@ -83,6 +83,18 @@
   :native-image
   {:extra-deps {com.github.clj-easy/graal-build-time {:mvn/version "1.0.5"}}}
 
+  :windows
+  {:jvm-opts ["-XX:+UnlockDiagnosticVMOptions"
+              "-XX:+DebugNonSafepoints"
+              "-XX:-HeapDumpOnOutOfMemoryError"
+              "-Djna.library.path=C:\\Users\\adrian\\Documents\\Github\\llama.cpp\\build3\\bin\\Release"
+              ]
+   #_#_:extra-deps {org.bytedeco/llvm-platform {:mvn/version "16.0.4-1.5.9"}
+                instaparse/instaparse {:mvn/version "1.4.12"}
+                com.phronemophobic/clong {;; :mvn/version "1.1"
+                                          :local/root "..\\clong"
+                                          }}}
+
   :project
   {:extra-paths ["notebooks" "tests"]
    :jvm-opts ["-XX:+UnlockDiagnosticVMOptions"
