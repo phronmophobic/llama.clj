@@ -23,6 +23,7 @@
   (set-rng-seed [ctx seed])
   (n-ctx [ctx])
   (n-vocab [ctx])
+  (n-embd [ctx])
   (eval
     [ctx s]
     [ctx s n-past]

@@ -69,6 +69,16 @@
   [ctx]
   (model/model-n-params ctx))
 
+(defn n-vocab
+  "The number of available tokens for the associated model."
+  [ctx]
+  (model/n-vocab ctx))
+
+(defn n-embd
+  "The length of the embedding vector for the associated model."
+  [ctx]
+  (model/n-embd ctx))
+
 (def ^:private ggml-model
   (delay
     @(requiring-resolve 'com.phronemophobic.llama.raw/llama-model)))

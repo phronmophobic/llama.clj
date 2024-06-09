@@ -546,7 +546,9 @@
                      (n_ctx []
                        (llama_n_ctx this))
                      (n_vocab []
-                       (llama_n_vocab (:model this)))
+                       (llama_n_vocab this))
+                     (n_embd []
+                       (llama_n_embd this))
                      (eval
                        ([s]
                         (llama-eval* this s))

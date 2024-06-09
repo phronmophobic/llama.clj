@@ -262,7 +262,7 @@
                                     -1))
          p (.getPointer fbr)
          arr (float-array
-             (llama_n_embd (:model ctx)))]
+              (llama_n_embd (:model ctx)))]
      (.read p 0 arr 0 (alength arr))
      arr)))
 
@@ -717,6 +717,8 @@
                        (llama_n_ctx this))
                      (n_vocab []
                        (llama_n_vocab (:model this)))
+                     (n_embd []
+                       (llama_n_embd (:model this)))
                      (eval
                        ([s]
                         (llama-eval* this s))
