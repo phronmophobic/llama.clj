@@ -390,7 +390,7 @@
 
   The context should have been created with the `:embedding` option set to true.
 
-  Note: embeddings are not normailzed. See `com.phronemophobic.llama.util/normalize-embedding.`"
+  Note: embeddings are not normalized. See `com.phronemophobic.llama.util/normalize-embedding.`"
   ([ctx prompt opts]
    (llama-update ctx prompt 0 (:num-threads opts))
    (get-embedding ctx))
