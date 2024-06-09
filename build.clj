@@ -52,7 +52,7 @@
          'com.phronemophobic.cljonda/llama-cpp-darwin-x86-64 {:mvn/version ggml-version}
          'com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version ggml-version}}
 
-        gguf-version "b2291"
+        gguf-version "b3040"
         gguf-deps
         {'com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version gguf-version}
          'com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version gguf-version}
