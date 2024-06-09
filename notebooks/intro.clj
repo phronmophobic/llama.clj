@@ -6,17 +6,18 @@
             [instaparse.core :as insta]
             [util.viewers :refer [wrap-seed]]
             [com.phronemophobic.llama :as llama]
-            [com.phronemophobic.llama.raw :as raw]
+            ;; required to make clerk work.
+            [com.phronemophobic.llama.raw-gguf :as raw]
             [com.phronemophobic.llama.util :as llutil]
             [clojure.java.io :as io]
             [clojure.string :as str]))
 
 ^{:nextjournal.clerk/visibility {:code :hide :result :hide}}
 (do
-  (def llama7b-path "models/llama-2-7b-chat.ggmlv3.q4_0.bin")
-  (def llama7b-uncensored-path "models/llama2_7b_chat_uncensored.ggmlv3.q4_0.bin")
-  (def llama-context (llama/create-context llama7b-path {:n-gpu-layers 1}))
-  (def llama-uncensored-context (llama/create-context llama7b-uncensored-path {:n-gpu-layers 1}))
+  (def llama7b-path "models/llama-2-7b-chat.Q4_0.gguf")
+  (def llama2-uncensored-path "models/llama2_7b_chat_uncensored.Q4_0.gguf")
+  (def llama-context (llama/create-context llama7b-path))
+  (def llama2-uncensored-context (llama/create-context llama2-uncensored-path))
   (def seed 4321))
 
 {:nextjournal.clerk/visibility {:code :show :result :show}}
@@ -62,8 +63,7 @@
 
 ;; If we untokenize each token, we can see that tokens are often whole words, but not always.
 
-(mapv #(raw/llama_token_to_str llama-context %)
-      tokens)
+(llutil/untokenize llama-context tokens)
 
 ;; Just to get a feel for a typical tokenizer, we'll look at some basic stats.
 ^{:nextjournal.clerk/visibility {:code :hide :result :hide}}
@@ -71,10 +71,8 @@
   (into (sorted-map)
         (comp (map
                (fn [token]
-                 [token (raw/llama_token_to_str llama-context token)]))
-              (take-while (fn [[token untoken]]
-                            untoken)))
-        (range 0 Integer/MAX_VALUE)))
+                 [token (llutil/untokenize llama-context [token])])))
+        (range 0 (llama/n-vocab llama-context))))
 
 ;; Number of tokens:
 ^{:nextjournal.clerk/visibility {:code :hide :result :show}}
@@ -96,12 +94,16 @@
    (count (filter #{\space} untoken )))
  token->str)
 
-;; One last caveat to watch out for when converting between tokens and text is that not every token produces a valid utf-8 string. It may require multiple tokens before a valid utf-8 string is available. 
+;; One last caveat to watch out for when converting between tokens and text is that not every individual token produces a valid utf-8 string. It may require multiple tokens before a valid utf-8 string is available. 
 
 (def smiley-tokens (llutil/tokenize llama-context "😊"))
 
-(def smiley-untokens (mapv #(raw/llama_token_to_str llama-context %)
-                           smiley-tokens))
+(def smiley-untokens
+  (into []
+        (map
+         (fn [token]
+           [token (llutil/untokenize llama-context [token])]))
+        smiley-tokens))
 
 ;; Fortunately, llama.clj has a utility for untokenizing that will take care of the issue:
 (llutil/untokenize llama-context smiley-tokens)
@@ -124,7 +126,7 @@
 (defonce previous* (atom nil))
 ^{:nextjournal.clerk/visibility {:code :hide :result :hide}}
 (defn get-logits [ctx s]
-  (raw/llama_set_rng_seed ctx 1234)
+  (llama/set-rng-seed ctx 1234)
   (cond
 
     (string? s)
@@ -242,7 +244,7 @@
 ;; Since, we're using llama2's 7b chat model, the prompt format is as follows:
 
 (defn llama2-prompt
-  "Meant to work with llama-2-7b-chat.ggmlv3.q4_0.bin"
+  "Meant to work with llama-2-7b-chat"
   [prompt]
   (str
    "[INST] <<SYS>>
@@ -378,7 +380,7 @@ If a question does not make any sense, or is not factually coherent, explain why
 ;; It's possible to arbitrarily select tokens. As an example, let's pretend we want our LLM to generate run-on sentences. We can artificially choose "and" tokens more often.
 
 (def run-on-response
-  (let [and-token (first (llutil/tokenize llama-context " and"))
+  (let [and-token (first (llutil/tokenize llama-context "and"))
         prev-tokens (volatile! [])]
     (llama/generate-string
      llama-context
@@ -402,7 +404,7 @@ If a question does not make any sense, or is not factually coherent, explain why
               ;; 5 tokens and if it's in the top 30 results
               (if (and (not (some #{and-token} (take-last 5 @prev-tokens)))
                        (< idx 30)
-                       (not= (llama/eos) greedy-token))
+                       (not= (llama/eos llama-context) greedy-token))
                 and-token
                 greedy-token)]
           (vswap! prev-tokens conj next-token)
@@ -432,40 +434,45 @@ If a question does not make any sense, or is not factually coherent, explain why
                  (io/resource "resources/json.peg"))))
 
 (def json-response
-  (let [prev-tokens (volatile! [])]
+  (let [prev-tokens (volatile! [])
+        done? (volatile! false)]
     (llama/generate-string
      llama-context
      (llama2-prompt "Describe some pizza toppings using JSON.")
      {:samplef
       (fn [logits]
-        (let [sorted-logits (->> logits
-                                 (map-indexed vector)
-                                 (sort-by second >))
-              first-jsonable
-              (->> sorted-logits
-                   (map first)
-                   (some (fn [token]
-                           (when-let [s (try
-                                          (llutil/untokenize llama-context (conj @prev-tokens token))
-                                          (catch Exception e))]
-                             (let [parse (insta/parse json-parser s)
-                                   tokens (raw/llama_token_to_str llama-context token)]
-                               (cond
-                                 ;; ignore whitespace
-                                 (re-matches #"\s+" tokens) false
+        (if @done?
+          (llama/eos llama-context)
+          (let [sorted-logits (->> logits
+                                   (map-indexed vector)
+                                   (sort-by second >))
+                first-jsonable
+                (->> sorted-logits
+                     (map first)
+                     (some (fn [token]
+                             (when-let [s (try
+                                            (llutil/untokenize llama-context (conj @prev-tokens token))
+                                            (catch Exception e))]
+                               (let [parse (insta/parse json-parser s)
+                                     tokens (llutil/untokenize llama-context [token])]
+                                 (cond
+                                   ;; ignore whitespace
+                                   (re-matches #"\s+" tokens) false
 
-                                 (insta/failure? parse)
-                                 (let [{:keys [index]} parse]
-                                   (if (= index (count s))
-                                     ;; potentially parseable
-                                     token
-                                     ;; return false to keep searching
-                                     false))
-                                 :else token))))))]
-          (vswap! prev-tokens conj first-jsonable)
-          (if (Thread/interrupted)
-            (llama/eos)
-            first-jsonable)))})))
+                                   (insta/failure? parse)
+                                   (let [{:keys [index]} parse]
+                                     (if (= index (count s))
+                                       ;; potentially parseable
+                                       token
+                                       ;; return false to keep searching
+                                       false))
+                                   :else (do
+                                           (vreset! done? true)
+                                           token)))))))]
+            (vswap! prev-tokens conj first-jsonable)
+            (if (Thread/interrupted)
+              (llama/eos llama-context)
+              first-jsonable))))})))
 
 ^{:nextjournal.clerk/visibility {:code :hide :result :show}}
 (clerk/code
@@ -482,7 +489,7 @@ If a question does not make any sense, or is not factually coherent, explain why
 ;; to show how model choice impacts the results for certain tasks.
 
 (defn llama2-uncensored-prompt
-  "Meant to work with models/llama2_7b_chat_uncensored.ggmlv3.q4_0.bin"
+  "Meant to work with models/llama2_7b_chat_uncensored"
   [prompt]
   (str "### HUMAN:
 " prompt "
@@ -505,47 +512,34 @@ If a question does not make any sense, or is not factually coherent, explain why
 
 (defn happy-or-sad? [llama-context format-prompt sentence]
   (let [ ;; two tokens each
-        [h1 h2] (llutil/tokenize llama-context "Happy")
-        [s1 s2] (llutil/tokenize llama-context "Sad")
+        happy-token (first (llutil/tokenize llama-context "Happy"))
+        sad-token (first (llutil/tokenize llama-context "Sad"))
 
         prompt (format-prompt
-                (str "Give a one word answer of \"Happy\" or \"Sad\" for describing the following sentence: " sentence))
-        _ (llama/llama-update llama-context prompt 0)
+                (str "Give a one word answer of \"Happy\" or \"Sad\" for describing the following sentence: " sentence " "))
+        prompt-tokens (llutil/tokenize llama-context prompt)
+
+        _ (llama/llama-update llama-context (llama/bos) 0)
+        _ (doseq [token prompt-tokens]
+            (llama/llama-update llama-context token))
 
         ;; check happy and sad probabilities for first tokens
         logits (llama/get-logits llama-context)
         probs (softmax logits)
-        hp1 (nth probs h1)
-        sp1 (nth probs s1)
-
-        ;; check happy second token
-        _ (llama/llama-update llama-context h1)
-        logits (llama/get-logits llama-context)
-        probs (softmax logits)
-        hp2 (nth probs h2)
-
-        ;; check sad second token
-        _ (llama/llama-update llama-context s1
-                              ;; ignore h1
-                              (dec (raw/llama_get_kv_cache_token_count llama-context)))
-        logits (llama/get-logits llama-context)
-        probs (softmax logits)
-        sp2 (nth probs s2)
-
-        happy-prob (* hp1 hp2)
-        sad-prob (* sp1 sp2)]
+        happy-prob (nth probs happy-token)
+        sad-prob (nth probs sad-token)]
     {:emoji (if (> happy-prob sad-prob)
               "😊"
               "😢")
      ;; :response (llama/generate-string llama-context prompt {:samplef llama/sample-logits-greedy})
      :happy happy-prob
      :sad sad-prob
-     :hps[hp1 hp2]
-     :sps [sp1 sp2]}))
+     :happy-prob happy-prob
+     :sad-prob sad-prob}))
 
 (def queries
   ["Programming with Clojure."
-   "Programming with monads."
+   "Programming without a REPL."
    "Crying in the rain."
    "Dancing in the rain."
    "Debugging a race condition."
@@ -559,7 +553,7 @@ If a question does not make any sense, or is not factually coherent, explain why
   (into [["sentence" "llama2 sentiment" "llama2 uncensored sentiment"]]
         (for [sentence queries]
           (let [llama2-sentiment (happy-or-sad? llama-context llama2-prompt sentence)
-                llama2-uncensored-sentiment (happy-or-sad? llama-uncensored-context llama2-uncensored-prompt sentence)]
+                llama2-uncensored-sentiment (happy-or-sad? llama2-uncensored-context llama2-uncensored-prompt sentence)]
             [sentence
              (:emoji llama2-sentiment)
              (:emoji llama2-uncensored-sentiment)])))))
