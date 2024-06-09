@@ -29,7 +29,7 @@
              [k (llama/create-context path opts)])))
    [[:llama7b-ggml llama7b-path {}]
     [:llama7b-ggml-embedding llama7b-path {:embedding true}]
-    [:llama7b-gguf llama7b-gguf-path {:n-gpu-layers n-gpu-layers}]
+    [:llama7b-gguf llama7b-gguf-path {}]
     [:llama7b-gguf-embedding llama7b-gguf-path {:embedding true}]
     [:gemma gemma-2b-path {}]
     [:bge bge-large-path {:embedding true}]]))
