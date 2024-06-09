@@ -181,6 +181,7 @@
        :seed (.writeField params "seed" (int v))
        :n-ctx (.writeField params "n_ctx" (int v))
        :n-batch (.writeField params "n_batch" (int v))
+       :n-ubatch (.writeField params "n_ubatch" (int v))
        :n-threads (.writeField params "n_threads" (int v))
        :n-threads-batch (.writeField params "n_threads_batch" (int v))
 
@@ -190,7 +191,10 @@
        :mul_mat_q (.writeField params "mul_mat_q" (->bool v))
        :f16-kv (.writeField params "f16_kv" (->bool v))
        :logits-all (.writeField params "logits_all" (->bool v))
-       :embedding (.writeField params "embedding" (->bool v))
+       ;; for backwards compatibility.
+       ;; the embedding param was renamed to embeddings
+       :embedding (.writeField params "embeddings" (->bool v))
+       :embeddings (.writeField params "embeddings" (->bool v))
 
        ;; ignore unknown keys
        nil)
@@ -241,21 +245,21 @@
   (let [add-bos (if add-bos?
                   1
                   0)
-
-        s (if add-bos?
-            (str " " s)
-            s)
         sbytes (.getBytes s "utf-8")
         max-tokens (+ add-bos 1 (alength sbytes))
         token-buf (get-token-buf ctx max-tokens)
-        num-tokens (llama_tokenize (:model ctx) sbytes (alength sbytes) token-buf max-tokens add-bos 0)]
+        num-tokens (llama_tokenize (:model ctx) sbytes (alength sbytes) token-buf max-tokens add-bos 1)]
     [num-tokens token-buf]))
 
 (defn ^:private get-embedding*
   ([ctx]
    (let [^com.sun.jna.ptr.FloatByReference
          fbr
-         (llama_get_embeddings ctx)
+         (or
+          ;; only support seq id 0 right now
+          (llama_get_embeddings_seq ctx 0)
+          (llama_get_embeddings_ith ctx
+                                    -1))
          p (.getPointer fbr)
          arr (float-array
              (llama_n_embd (:model ctx)))]
@@ -283,7 +287,12 @@
   ([ctx s n-past]
    (llama-eval* ctx s nil nil))
   ([ctx s n-past num-threads]
-   (let [n-past (or n-past (llama_get_kv_cache_token_count ctx))
+   (let [
+         ;; need to keep track of n-past ourselves now.
+         _ (when n-past
+             (llama_kv_cache_seq_rm ctx 0 n-past -1))
+         n-past (or n-past @(:n-past ctx))
+
          [total-tokens ^Memory token-buf]
          (cond
            (string? s)
@@ -319,10 +328,12 @@
            (.writeField batch "all_pos_1" (int 1))
            (.writeField batch "all_seq_id" (int 0))
            (llama_decode ctx batch)
+
            (let [next-offset (+ offset num-batch-tokens)]
              (when (< next-offset total-tokens)
                (recur next-offset
-                      (+ n-past num-batch-tokens)))))))
+                      (+ n-past num-batch-tokens))))))
+       (reset! (:n-past ctx) (+ n-past total-tokens)))
 
      ctx)))
 
@@ -654,6 +665,7 @@
                             (llama_free_model (Pointer. old)))))
 
          n-batch (.readField llama-context-params "n_batch")
+         n-past (atom 0)
          ;; make context autocloseable and implement
          ;; some map lookup interfaces
          context (proxy [Pointer
@@ -723,6 +735,7 @@
                          :n-threads (:n-threads params)
                          :model-format :gguf
                          :impl ::impl
+                         :n-past n-past
                          ;; else
                          nil))
                      (close []

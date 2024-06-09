@@ -5,7 +5,8 @@
             [nextjournal.clerk.viewer :as v]
             [util.viewers :refer [wrap-seed]]
             [com.phronemophobic.llama :as llama]
-            [com.phronemophobic.llama.raw :as raw]
+            ;; required to make clerk work.
+            [com.phronemophobic.llama.raw-gguf :as raw]
             [clojure.string :as str]))
 
 {:nextjournal.clerk/visibility {:code :show :result :hide}}
@@ -30,20 +31,22 @@
 ;; (require '[com.phronemophobic.llama :as llama])
 ;; ```
 
-;; Throughout these docs, we'll be using the llama 7b chat model.
+;; Throughout these docs, we'll be using the qwen 0.5b instruct model.
 ;; and the following context based on this model.
 ^{:nextjournal.clerk/visibility {:code :hide :result :show}}
 (clerk/code ";; downloaded previously from
-;; https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/resolve/main/llama-2-7b-chat.ggmlv3.q4_0.bin
-(def llama7b-path \"models/llama-2-7b-chat.ggmlv3.q4_0.bin\")
-(def llama-context (llama/create-context llama7b-path {:n-gpu-layers 1}))
+;; https://huggingface.co/Qwen/Qwen2-0.5B-Instruct-GGUF/resolve/main/qwen2-0_5b-instruct-q4_k_m.gguf?download=true
+(def model-path \"models/qwen2-0_5b-instruct-q4_k_m.gguf\")
+(def llama-context (llama/create-context model-path {}))
 ")
 
-^{:nextjournal.clerk/visibility {:code :hide :result :hide}}
+^{:nextjournal.clerk/visibility {:code :show :result :show}}
 (do
-  (def llama7b-path "models/llama-2-7b-chat.ggmlv3.q4_0.bin")
-  (def llama-context (llama/create-context llama7b-path {:n-gpu-layers 1}))
-  (def seed 4321))
+  (def model-path "models/qwen2-0_5b-instruct-q4_k_m.gguf")
+  (def llama-context (llama/create-context model-path {}))
+  (def seed 1337)
+  seed)
+
 
 {:nextjournal.clerk/visibility {:code :hide :result :hide}}
 
@@ -65,35 +68,99 @@
 ;; ```
 ;; If no `opts` are specified, then defaults will be used.
 ;; 
-;; The `model-path` arg should be a string path (relative or absolute) to a F16, Q4_0, Q4_1, Q5_0, Q5_1, or Q8_0 ggml model.
+;; The `model-path` arg should be a string path (relative or absolute) to a gguf or ggml model.
+
+;; ## Prompt Templates
+
+;; Most chat or instruct models expect a specific prompt format. `llama.cpp` provides limited support for applying chat templates. The `chat-apply-template` offers templates for many popular models and formats. Some less popular models may require custom templating and is not included.
+
+;; ### Model Provided Templates
+
+;; Many newer gguf models include the prompt format they expect in their metadata:
+
+{:nextjournal.clerk/visibility {:code :show :result :show}}
+(get (llama/metadata llama-context) "tokenizer.chat_template")
+
+;; If the template is included and llama.cpp recognizes it, then the template can be applied using `llama/chat-apply-template`.
+
+(llama/chat-apply-template llama-context
+                           [{:role "user"
+                             :content "What's the best way to code in clojure?"}])
+
+;; Typical roles are \"assistant\", \"system\", and \"user\". It is best to check the documentation for your particular model to see which roles are available. Also note that llama.cpp's template detection isn't exact and may guess incorrectly in some cases.
+
+;; ### Applying Templates By Name
+
+;; Even if a model doesn't include a particular template, many models use one of the popular template formats. In those cases, you can pass in a template name.
+
+(llama/chat-apply-template "llama3"
+                           [{:role "user"
+                             :content "What's the best way to code in clojure?"}])
+
+;; See the doc string of `chat-apply-template` for a list of allowed template names.
+
+{:nextjournal.clerk/visibility {:code :hide :result :show}}
 
 ;; ## Token Generation
 
 ;; Once a context is created, it can then be passed to `llama/generate-tokens`. The `llama/generate-tokens` function returns seqable or reducible sequence of tokens given a prompt. That means generated tokens can be processed using all of the normal clojure sequence and transducer based functions.
 
+
+^{:nextjournal.clerk/visibility {:code :show :result :show}}
+(def hello-world-prompt
+  (llama/chat-apply-template llama-context
+                             [{:role "user"
+                               :content "Hello World"}]))
+
 (wrap-seed
- (first (llama/generate-tokens llama-context "Hello World")))
+ (first (llama/generate-tokens llama-context
+                               hello-world-prompt)))
 (wrap-seed
  (clojure.string/join
    (eduction
     (llama/decode-token llama-context)
     (take 10)
-    (llama/generate-tokens llama-context "Hello World"))))
+    (llama/generate-tokens llama-context hello-world-prompt))))
 
 ;; ## Generating Text
 
 ;; Working with raw tokens is useful in some cases, but most of the time, it's more useful to work with a generated sequence of strings corresponding to those tokens. Lllama.clj provides a simple wrapper of `llama/generate-tokens` for that purpose, `llama/generate`.
 
+^{:nextjournal.clerk/visibility {:code :show :result :show}}
+(def haiku-prompt
+  (llama/chat-apply-template
+   llama-context
+   [{:role "user"
+     :content "Write a short poem about documentation."}]))
+
 (wrap-seed
  (into []
        (take 5)
-       (llama/generate llama-context "Write a haiku about documentation.")))
+       (llama/generate llama-context
+                       haiku-prompt)))
 
 ;; If results don't need to be streamed, then `llama/generate-string` can be used to return a string with all the generated text up to the max context size.
 
 (wrap-seed
- (llama/generate-string llama-context "Write a haiku about documentation."))
+ (llama/generate-string llama-context haiku-prompt))
+;; ## Log Callback
 
+;; By default, llama.cpp's logs are sent to stderr (note: stderr is different from `*err*` and `System/err`).
+;; The log output can be redirected by setting a log callback.
+
+;; ```clojure
+;; ;; disable logging
+;; (llama/set-log-callback (fn [& args]))
+;; ;; print to stdout
+;; (llama/set-log-callback
+;;  (fn [log-level msg]
+;;    (let [level-str (case log-level
+;;                      2 "error"
+;;                      3 "warn"
+;;                      4 "info"
+;;                      5 "debug")]
+;;      (println log-level msg))))
+;; ```
 
 ;; ## Generating Embeddings
 
@@ -101,10 +168,15 @@
 
 ;; To generate embeddings, contexts must be created with `:embedding` set to `true`.
 (def llama-embedding-context
-  (llama/create-context llama7b-path {:n-gpu-layers 1
-                                      :embedding true}))
+  (llama/create-context model-path
+                        {:embedding true}))
 
-(llama/generate-embedding llama-embedding-context "some text")
+
+
+
+(vec
+ (llama/generate-embedding llama-embedding-context "hello world"))
+
 
 ^{:nextjournal.clerk/visibility {:code :hide :result :hide}}
 (comment

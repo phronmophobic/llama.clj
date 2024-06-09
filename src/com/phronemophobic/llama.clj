@@ -76,6 +76,66 @@
   (delay
     @(requiring-resolve 'com.phronemophobic.llama.raw-gguf/llama-model)))
 
+(defonce ^:private log-callback (atom nil))
+(defn set-log-callback
+  "Sets the log callback. The callback should be a function that recieves two args: log level and msg.
+  Setting to nil will cause output to be written to stderr.
+  The log callback is global for all contexts.
+
+  The log levels are as follows:
+        GGML_LOG_LEVEL_ERROR = 2,
+        GGML_LOG_LEVEL_WARN  = 3,
+        GGML_LOG_LEVEL_INFO  = 4,
+        GGML_LOG_LEVEL_DEBUG = 5
+
+  Only supported for gguf models.
+
+  Example:
+  (set-log-callback ctx (fn [level msg]
+                          (println level msg)))"
+  
+  [cb]
+  (let [[old new] (reset-vals! log-callback
+                               (fn [level msg _user-info]
+                                 (cb level (.getString (.getPointer msg) 0 "utf-8"))))]
+    (model/set-log-callback @gguf-model new)
+   ;; try to hang onto old reference until new is set
+    (identity old)))
+
+(defn chat-apply-template
+  "Returns a string with chat `messages` formatted using the format associated with `ctx`.
+
+  Args:
+  `template`: A llama context or a template name. Templates names
+  are one of:
+  `#{\"chatml\", \"llama2\", \"phi3\", \"zephyr\", \"monarch\",
+  \"gemma\", \"orion\", \"openchat\", \"vicuna\",
+  \"deepseek\", \"command-r\", \"llama3\"}`
+
+  `messages`: a sequence of chat messages. chat messages are maps with `:role` and `:content`.
+  Typical roles are \"assistant\", \"system\", and \"user\".
+
+  `append-start-assistant-message?`: Whether to end the prompt with the token(s) that
+                                     indicate the start of an assistant message.
+                                     If omitted, defaults to true.
+
+  Throws `IllegalArgumentException` if the template format is unsupported.
+  See: https://github.com/ggerganov/llama.cpp/wiki/Templates-supported-by-llama_chat_apply_template
+
+  Throws `UnsupportedOperationException` for ggml models.
+
+  Example:
+  (chat-apply-template
+   ctx
+   [{:role \"assistant\" :content \"You are a friendly, helpful assistant.\"}
+    {:role \"user\" :content \"What is clojure?\"}]
+   true)
+  "
+  ([template messages]
+   (chat-apply-template template messages {}))
+  ([template messages opts]
+   (model/chat-apply-template @gguf-model template messages opts)))
+
 (defn create-context
   "Create and return an opaque llama context.
 
@@ -275,8 +335,7 @@
                        ]
                 :as opts}]
    (let [samplef (or samplef
-                     (init-mirostat-v2-sampler ctx))
-         eos (model/token-eos ctx)]
+                     (init-mirostat-v2-sampler ctx))]
      (reify
        clojure.lang.Seqable
        (seq [_]
@@ -284,7 +343,7 @@
            (model/set-rng-seed ctx seed))
          ((fn next [ctx]
             (let [next-token (samplef (model/get-logits ctx))]
-              (when (not= eos next-token)
+              (when (not (end-of-generation? ctx next-token))
                 (cons next-token
                       (lazy-seq (next (model/eval ctx next-token nil num-threads)))))))
           (llama-update ctx prompt 0 num-threads)))
@@ -295,8 +354,8 @@
          (loop [acc init
                 ret (llama-update ctx prompt 0 num-threads)]
            (let [next-token (samplef (model/get-logits ctx))]
-             (if (= eos next-token)
-               acc
+             (if (end-of-generation? ctx next-token)
+                 acc
                (let [acc (rf acc next-token)]
                  (if (reduced? acc)
                    @acc
@@ -364,16 +423,24 @@
   ),
 
 (defn -main [model-path prompt]
-  (let [ctx (create-context model-path)]
+  (let [ctx (create-context model-path)
+        formatted-prompt (try
+                           (chat-apply-template ctx
+                                                [{:role "user"
+                                                  :content prompt}])
+                           (catch IllegalArgumentException e
+                             prompt)
+                           (catch UnsupportedOperationException e
+                             prompt))]
     (transduce
-     (take-while (fn [_]
-                   (not (Thread/interrupted))))
-     (completing
-      (fn [_ s]
-        (print s)
-        (flush)))
-     nil
-     (generate ctx prompt))
+       (take-while (fn [_]
+                     (not (Thread/interrupted))))
+       (completing
+        (fn [_ s]
+          (print s)
+          (flush)))
+       nil
+       (generate ctx formatted-prompt))
     (println)))
 
 

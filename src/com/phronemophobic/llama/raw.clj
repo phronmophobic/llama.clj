@@ -539,8 +539,6 @@
                         (decode-token this))
                        ([opts]
                         (decode-token this opts)))
-                     (set_log_callback [cb]
-                       (llama_log_set cb nil))
                      (sample_mirostat_v2 [candidates-buf* mu* tau eta]
                        (sample-mirostat-v2* this candidates-buf* mu* tau eta))
                      (set_rng_seed [seed]
