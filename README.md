@@ -39,6 +39,9 @@ llama.clj relies on the excellent [llama.cpp](https://github.com/ggerganov/llama
 
 The llama.cpp shared library can either be compiled locally or can be included as a standalone maven dependency.
 
+
+_Note: The support for ggml has been deprecated. However, no breaking changes are planned._
+
 #### Precompiled native deps on clojars
 
 The easiest method is to include the corresponding native dependency for your platform (including multiple is fine, but will increase the size of your dependencies). See the [mvn-llama alias](https://github.com/phronmophobic/llama.clj/blob/b4fef0e8fc23a72349796911cef33d6bbdadcd73/deps.edn#L11) for an example.
@@ -50,6 +53,7 @@ com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b3040"}
 com.phronemophobic.cljonda/llama-cpp-gguf-darwin-x86-64 {:mvn/version "b3040"}
 
 ;; ggml dependencies
+;; Note: deprecated
 com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
 com.phronemophobic.cljonda/llama-cpp-darwin-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
 com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
