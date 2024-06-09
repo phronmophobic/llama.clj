@@ -3,8 +3,7 @@
    ;; [com.phronemophobic.llama.raw :as raw]
    [com.phronemophobic.llama.impl.model :as model]
             [clojure.string :as str])
-  (:import java.lang.ref.Cleaner
-           java.nio.charset.CodingErrorAction
+  (:import java.nio.charset.CodingErrorAction
            java.nio.charset.CharsetDecoder
            java.nio.charset.Charset
            java.nio.ByteBuffer
@@ -14,9 +13,6 @@
            com.sun.jna.ptr.IntByReference
            com.sun.jna.ptr.FloatByReference
            com.sun.jna.Structure))
-
-;; (raw/import-structs!)
-(defonce cleaner (delay (Cleaner/create)))
 
 (def ^:dynamic
   *num-threads*
