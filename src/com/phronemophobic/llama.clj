@@ -121,9 +121,10 @@
   `messages`: a sequence of chat messages. chat messages are maps with `:role` and `:content`.
   Typical roles are \"assistant\", \"system\", and \"user\".
 
-  `append-start-assistant-message?`: Whether to end the prompt with the token(s) that
-                                     indicate the start of an assistant message.
-                                     If omitted, defaults to true.
+  `opts`: A map with the following options:
+    `:append-start-assistant-message?`: Whether to end the prompt with the token(s) that
+                                        indicate the start of an assistant message.
+                                        If omitted, defaults to true.
 
   Throws `IllegalArgumentException` if the template format is unsupported.
   See: https://github.com/ggerganov/llama.cpp/wiki/Templates-supported-by-llama_chat_apply_template
