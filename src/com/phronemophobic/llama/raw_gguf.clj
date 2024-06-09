@@ -91,7 +91,8 @@
     (with-open [w (io/writer outf)]
       (write-edn w
                  ((requiring-resolve 'com.phronemophobic.clong.clang/easy-api)
-                  "/Users/adrian/workspace/llama.cpp/llama.h"
+                  ;; "/Users/adrian/workspace/llama.cpp/llama.h"
+                  "/Users/adrian/workspace/cljonda/build/llama.cpp/llama.h"
                   default-arguments)))))
 
 
@@ -103,13 +104,49 @@
                 rdr (java.io.PushbackReader. rdr)]
       (edn/read rdr)))
 
-(def api
-  (update raw-api
-          :structs
-          (fn [structs#]
-            (remove #(#{:clong/ggml_backend_graph_copy}
-                      (:id %))
-                    structs#))))
+(defn remove-broken [api]
+  (specter/setval
+   [:structs
+    specter/ALL
+    #(= :clong/ggml_backend_graph_copy
+        (:id %))]
+   specter/NONE
+   api))
+
+(defn adjust-batch-struct
+  "The llama_batch struct uses an int pointer for the token field.
+  That gets translated to IntByReference in JNA which is annoying to work with."
+  [api]
+  (specter/setval
+   [:structs
+    specter/ALL
+    #(= :clong/llama_batch (:id %))
+    :fields
+    specter/ALL
+    #(= "token" (:name %))
+    :datatype]
+   :coffi.mem/pointer
+   api))
+
+(defn adjust-chat-message-struct
+  "The llama_batch struct uses an char pointer for the token field.
+  That gets translated to ByteByReference in JNA which is annoying to work with."
+  [api]
+  (specter/setval
+   [:structs
+    specter/ALL
+    #(= :clong/llama_chat_message (:id %))
+    :fields
+    specter/ALL
+    #(#{"role" "content"} (:name %))
+    :datatype]
+   String
+   api))
+
+(def api (-> raw-api
+             (remove-broken)
+             (adjust-batch-struct)
+             (adjust-chat-message-struct)))
 
 (gen/def-api libllama api)
 
@@ -229,7 +266,7 @@
   "Returns a copy of the current context's logits as a float array."
   [ctx]
   (let [n-vocab (llama_n_vocab (:model ctx))]
-    (-> ^FloatByReference (llama_get_logits ctx)
+    (-> ^FloatByReference (llama_get_logits_ith ctx -1)
         .getPointer
         (.getFloatArray 0 n-vocab))))
 
@@ -266,25 +303,28 @@
                     "n_threads"
                     (int num-threads)))
 
-     (let [batch-size (:n-batch ctx)]
+     (let [batch-size (:n-batch ctx)
+           batch (doto (llama_batch.)
+                   (.writeField "embd" nil)
+                   (.writeField "pos" nil)
+                   (.writeField "n_seq_id" nil)
+                   (.writeField "logits" nil))]
        (loop [offset 0
               n-past n-past]
          (let [batch-buf (.share token-buf (* offset 4))
                num-batch-tokens (min batch-size (- total-tokens offset))]
-           (llama_eval  ctx batch-buf num-batch-tokens n-past)
+           (.writeField batch "n_tokens" (int (min batch-size (- total-tokens offset))))
+           (.writeField batch "token" batch-buf)
+           (.writeField batch "all_pos_0" (int n-past))
+           (.writeField batch "all_pos_1" (int 1))
+           (.writeField batch "all_seq_id" (int 0))
+           (llama_decode ctx batch)
            (let [next-offset (+ offset num-batch-tokens)]
              (when (< next-offset total-tokens)
                (recur next-offset
                       (+ n-past num-batch-tokens)))))))
 
      ctx)))
-
-(def
-  ^:private
-  ^com.sun.jna.Function
-  llama-token-to-piece
-  (.getFunction ^com.sun.jna.NativeLibrary libllama
-                "llama_token_to_piece"))
 
 (defn ^:private decode-token-to-buf
   ([ctx]
@@ -297,15 +337,11 @@
          ([] (rf))
          ([result] (rf result))
          ([result token]
-          (let [nbytes (.invoke llama-token-to-piece
-                                Integer/TYPE
-                                (to-array [model token buf buf-length]))
-                ]
-            #_(prn "nbytes" nbytes
-                   (into []
-                         (map #(format "%X" %))
-                         (.getByteArray buf 0 nbytes)))
-            ;; (vswap! offset* )
+          (let [nbytes (llama_token_to_piece model
+                                             token
+                                             buf
+                                             buf-length
+                                             1)]
             (if (pos? nbytes)
               (let [bb
                     (if @skip-whitespace*
@@ -466,6 +502,72 @@
     (decode-token-to-char ctx charset)
     (char->str))))
 
+
+(defn ^:private chat-template [ctx ^Memory buf]
+  (let [written (llama_model_meta_val_str (:model ctx)
+                                          "tokenizer.chat_template"
+                                          buf
+                                          (.size buf))]
+    (when (< written (.size buf))
+      (.getString buf 0 "utf-8"))))
+
+(def ^:private message-size (delay
+                              (.size (llama_chat_message.))))
+(defn chat-apply-template* [ctx-or-template messages opts]
+  (let [append-start-assistant-message? (get opts :append-start-assistant-message? true)
+        content-length (transduce
+                        (comp (map :content)
+                              (map count))
+                        +
+                        messages)
+        buf (Memory. (max 2048
+                          content-length))
+        template (if (string? ctx-or-template)
+                   ctx-or-template
+                   (chat-template ctx-or-template buf))]
+    (if (not template)
+      (throw (IllegalArgumentException. "No chat template found for context."))
+
+      ;; else
+      (let [messages* (Memory. (* @message-size
+                                  (count messages)))]
+        (doseq [[i msg] (map-indexed vector messages)]
+          (let [msg* (Structure/newInstance llama_chat_messageByReference (.share messages* (* i @message-size)))]
+            (.writeField msg* "role" (:role msg))
+            (.writeField msg* "content" (:content msg))))
+        (loop [buf buf]
+          (let [ret (llama_chat_apply_template nil
+                                               template
+                                               messages*
+                                               (count messages)
+                                               (if append-start-assistant-message?
+                                                 1
+                                                 0)
+                                               buf
+                                               (.size buf))]
+            (cond
+              (neg? ret) (throw (IllegalArgumentException. "No chat template found for context."))
+              (<= ret (.size buf)) (.getString buf 0 "utf-8")
+              :else (recur (Memory. (inc ret))))))))))
+
+(defn metadata* [ctx]
+  (let [model (:model ctx)
+        n (llama_model_meta_count model)]
+    ;; keys and values seem to be much shorter than 256
+    ;; can revisit if things change.
+    (loop [buf (Memory. 256)
+           i 0
+           meta {}]
+      (if (>= i n)
+        meta
+        (let [_written (llama_model_meta_key_by_index model i buf (.size buf))
+              k (.getString buf 0 "utf-8")
+              _written (llama_model_meta_val_str_by_index model i buf (.size buf))
+              v (.getString buf 0 "utf-8")]
+          (recur buf
+                 (inc i)
+                 (assoc meta k v)))))))
+
 (def ^:private token-data-size (.size (llama_token_data.)))
 
 (defn ^:private ctx->candidates [ctx candidates-buf*]
@@ -565,6 +667,8 @@
                        (llama_token_eos (:model this)))
                      (token_bos []
                        (llama_token_bos (:model this)))
+                     (token_is_eog [token]
+                       (not (zero? (llama_token_is_eog (:model this) token))))
                      (tokenize [s add-bos?]
                        (tokenize* this s add-bos?))
                      (get_embedding []
@@ -583,6 +687,16 @@
                         (decode-token-to-char this))
                        ([opts]
                         (decode-token-to-char this opts)))
+                     (metadata []
+                       (metadata* this))
+                     (model_description []
+                       (let [buf (Memory. 512)]
+                         (llama_model_desc (:model this) buf (.size buf))
+                         (.getString buf 0 "utf-8")))
+                     (model_size []
+                       (llama_model_size (:model this)))
+                     (model_n_params []
+                       (llama_model_n_params (:model this)))
                      (sample_mirostat_v2 [candidates-buf* mu* tau eta]
                        (sample-mirostat-v2* this candidates-buf* mu* tau eta))
                      (set_rng_seed [seed]
@@ -625,4 +739,10 @@
   (reify
     model/ILLama
     (create-context [_ model-path opts]
-      (create-context model-path opts))))
+      (create-context model-path opts))
+    (set_log_callback [_ cb]
+      (llama_log_set cb nil))
+    (chat_apply_template [this template messages opts]
+      (chat-apply-template* template messages opts))))
+
+

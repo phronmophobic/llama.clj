@@ -506,6 +506,8 @@
                             (llama_free_model (Pointer. old)))))
 
          n-batch (.readField llama-params "n_batch")
+
+         eos (llama_token_eos)
          ;; make context autocloseable and implement
          ;; some map lookup interfaces
          context (proxy [Pointer
@@ -516,9 +518,11 @@
 
                    ;; ILLamaContext
                      (token_eos []
-                       (llama_token_eos))
+                       eos)
                      (token_bos []
                        (llama_token_bos))
+                     (token_is_eog [token]
+                       (= eos token))
                      (tokenize [s add-bos?]
                        (tokenize* this s add-bos?))
                      (get_embedding []
@@ -535,6 +539,8 @@
                         (decode-token this))
                        ([opts]
                         (decode-token this opts)))
+                     (set_log_callback [cb]
+                       (llama_log_set cb nil))
                      (sample_mirostat_v2 [candidates-buf* mu* tau eta]
                        (sample-mirostat-v2* this candidates-buf* mu* tau eta))
                      (set_rng_seed [seed]

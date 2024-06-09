@@ -44,6 +44,31 @@
   ([ctx]
    (model/token-bos ctx)))
 
+(defn end-of-generation?
+  "Check if the token is supposed to end generation (end-of-generation, eg. EOS, EOT, etc.)"
+  [ctx token]
+  (model/token-is-eog ctx token))
+
+(defn metadata
+  "Returns a map of the metadata associated with ctx."
+  [ctx]
+  (model/metadata ctx))
+
+(defn model-description
+  "Get a string describing the model type."
+  [ctx]
+  (model/model-description ctx))
+
+(defn model-size
+  "Returns the total size of all the tensors in the model in bytes."
+  [ctx]
+  (model/model-size ctx))
+
+(defn model-n-params
+  "Returns the total number of parameters in the model."
+  [ctx]
+  (model/model-n-params ctx))
+
 (def ^:private ggml-model
   (delay
     @(requiring-resolve 'com.phronemophobic.llama.raw/llama-model)))
