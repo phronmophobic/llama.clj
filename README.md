@@ -9,9 +9,9 @@ If you're just looking for a model to try things out, try the 0.5Gb [qwen instru
 ```sh
 mkdir -p models
 # Download 0.5Gb model to models/ directory
-(cd models && curl -L -O 'https://huggingface.co/Qwen/Qwen2-0.5B-Instruct-GGUF/resolve/main/qwen2-0_5b-instruct-q4_k_m.gguf')
+(cd models && curl -L -O 'https://huggingface.co/Qwen/Qwen2-0.5B-Instruct-GGUF/resolve/main/qwen2-0_5b-instruct-q4_0.gguf')
 # mvn-llama alias pulls precompiled llama.cpp libs from maven
-clojure -M:mvn-llama -m com.phronemophobic.llama "models/qwen2-0_5b-instruct-q4_k_m.gguf" "what is 2+2?"
+clojure -M:mvn-llama -m com.phronemophobic.llama "models/qwen2-0_5b-instruct-q4_0.gguf" "what is 2+2?"
 ```
 
 ## Documentation
@@ -115,8 +115,8 @@ Example:
 ```bash
 mkdir -p models
 # Download 0.5Gb model to models/ directory
-(cd models && curl -L -O 'https://huggingface.co/Qwen/Qwen2-0.5B-Instruct-GGUF/resolve/main/qwen2-0_5b-instruct-q4_k_m.gguf')
-clojure -M:mvn-llama -m com.phronemophobic.llama "models/qwen2-0_5b-instruct-q4_k_m.gguf" "what is 2+2?"
+(cd models && curl -L -O 'https://huggingface.co/Qwen/Qwen2-0.5B-Instruct-GGUF/resolve/main/qwen2-0_5b-instruct-q4_0.gguf')
+clojure -M:mvn-llama -m com.phronemophobic.llama "models/qwen2-0_5b-instruct-q4_0.gguf" "what is 2+2?"
 ```
 
 ## cuBLAS support
