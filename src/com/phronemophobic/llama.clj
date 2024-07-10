@@ -164,7 +164,7 @@
   - `:vocab-only`: only load the vocabulary, no weights
   - `:use-mmap`: use mmap if possible
   - `:use-mlock`: force system to keep model in RAM
-  - `:embedding`: embedding mode only
+  - `:embedding`: if true, extract embeddings (together with logits)
   - `:gqa`: grouped-query attention factor (TEMP!!! use 8 for LLaMAv2 70B) (ggml only)
   - `:rms-norm-eps`: rms norm eps (TEMP!!! use 1e-5 for LLaMAv2) (ggml only)
 
