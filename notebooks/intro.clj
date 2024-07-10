@@ -418,6 +418,8 @@ If a question does not make any sense, or is not factually coherent, explain why
 
 ;; By artificially boosting the chances of selecting "and", we were able to generate a rambling response. It's also possible to get rambling responses by changing the prompt to ask for a rambling response. In some cases, it's more effective to artificially augment the probabilities offered by the LLM.
 
+;; This is a pretty naive strategy and improvements are left as an exercise to the reader. As a suggestion, two easy improvements might be to use a better model or pay more attention to the probabilities rather than having sharp cut offs (ie. boosting at every five tokens and only considering the top 30 results).
+
 ;; ##### JSON Output
 
 ;; We can also use more complicated methods to constrain outputs. For example, we can force our
