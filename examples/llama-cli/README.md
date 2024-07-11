@@ -4,11 +4,15 @@ Example usage of llama.clj with native image.
 
 ## Native image compilation
 
-Add a compiled copy of libllama.dylib to the current directory.
-
 ```bash
 clojure -T:build uber
 ./compile_native.sh
+```
+
+Usage:
+
+```bash
+./target/llama-cli <model-path> <prompt>
 ```
 
 ## License

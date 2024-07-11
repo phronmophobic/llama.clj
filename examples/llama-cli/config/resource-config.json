@@ -3,6 +3,15 @@
   "resources": {
     "includes": [
       {
+        "pattern":"\\Qdarwin-aarch64/libllama-gguf.dylib\\E"
+      },
+      {
+        "pattern":"\\Qdarwin-x86-64/libllama-gguf.dylib\\E"
+      },
+      {
+        "pattern":"\\Qlinux-x86-64/libllama-gguf.so\\E"
+      },
+      {
         "condition": {
           "typeReachable": "com.sun.jna.Native"
         },
