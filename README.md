@@ -143,9 +143,19 @@ cmake --build . --config Release
 
 ## "Roadmap"
 
+If you see a feature you're interested in or have a feature you want, please file an issue to help me prioritize future work.
+
 - [ ] Add convenience namespace for obtaining and using models.
-- [ ] Pure clojure implementation for mirostatv2 and other useful samplers.
-- [ ] Provide reasonable default implementations for generating responses larger than the context size.
+- [ ] Provide precompiled native dependencies for Windows
+- [ ] API for sampling using a grammar
+- [ ] Expose API for sessions
+- [ ] Expose API for Sequence ids
+- [ ] Expose API for more special tokens.
+- [X] Expose API for generating embeddings
+- [X] Expose API for chat templates
+- [X] Expose logging API
+- [X] Expose API for reading model metadata
+- [X] Windows support
 - [X] Update llama.cpp to [support gguf format](https://github.com/phronmophobic/llama.clj/issues/8)
 - [X] More docs!
   - [X] Reference docs
