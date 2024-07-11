@@ -1,0 +1,3103 @@
+[
+  {
+    "condition": {
+      "typeReachable": "com.sun.jna.CallbackReference"
+    },
+    "name": "com.sun.jna.CallbackProxy",
+    "methods": [
+      {
+        "name": "callback",
+        "parameterTypes": [
+          "java.lang.Object[]"
+        ]
+      }
+    ]
+  },
+  {
+    "name" : "com.sun.jna.ptr.LongByReference",
+    "methods" : [
+      { "name" : "<init>", "parameterTypes" : [] }
+    ]
+  },
+  {
+    "condition": {
+      "typeReachable": "com.sun.jna.Library$Handler"
+    },
+    "name": "java.lang.Object",
+    "methods": [
+      {
+        "name": "equals",
+        "parameterTypes": [
+          "java.lang.Object"
+        ]
+      },
+      {
+        "name": "hashCode",
+        "parameterTypes": []
+      },
+      {
+        "name": "toString",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "condition": {
+      "typeReachable": "com.sun.jna.NativeLibrary"
+    },
+    "name": "java.lang.Throwable",
+    "methods": [
+      {
+        "name": "addSuppressed",
+        "parameterTypes": [
+          "java.lang.Throwable"
+        ]
+      }
+    ]
+  },
+  {
+    "condition": {
+      "typeReachable": "com.sun.jna.internal.ReflectionUtils"
+    },
+    "name": "java.lang.invoke.MethodHandle",
+    "methods": [
+      {
+        "name": "bindTo",
+        "parameterTypes": [
+          "java.lang.Object"
+        ]
+      },
+      {
+        "name": "invokeWithArguments",
+        "parameterTypes": [
+          "java.lang.Object[]"
+        ]
+      }
+    ]
+  },
+  {
+    "condition": {
+      "typeReachable": "com.sun.jna.internal.ReflectionUtils"
+    },
+    "name": "java.lang.invoke.MethodHandles",
+    "methods": [
+      {
+        "name": "lookup",
+        "parameterTypes": []
+      },
+      {
+        "name": "privateLookupIn",
+        "parameterTypes": [
+          "java.lang.Class",
+          "java.lang.invoke.MethodHandles$Lookup"
+        ]
+      }
+    ]
+  },
+  {
+    "condition": {
+      "typeReachable": "com.sun.jna.internal.ReflectionUtils"
+    },
+    "name": "java.lang.invoke.MethodHandles$Lookup",
+    "methods": [
+      {
+        "name": "findSpecial",
+        "parameterTypes": [
+          "java.lang.Class",
+          "java.lang.String",
+          "java.lang.invoke.MethodType",
+          "java.lang.Class"
+        ]
+      },
+      {
+        "name": "in",
+        "parameterTypes": [
+          "java.lang.Class"
+        ]
+      },
+      {
+        "name": "unreflectSpecial",
+        "parameterTypes": [
+          "java.lang.reflect.Method",
+          "java.lang.Class"
+        ]
+      }
+    ]
+  },
+  {
+    "condition": {
+      "typeReachable": "com.sun.jna.internal.ReflectionUtils"
+    },
+    "name": "java.lang.invoke.MethodType",
+    "methods": [
+      {
+        "name": "methodType",
+        "parameterTypes": [
+          "java.lang.Class",
+          "java.lang.Class[]"
+        ]
+      }
+    ]
+  },
+  {
+    "condition": {
+      "typeReachable": "com.sun.jna.VarArgsChecker"
+    },
+    "name": "java.lang.reflect.Method",
+    "methods": [
+      {
+        "name": "isVarArgs",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "condition": {
+      "typeReachable": "com.sun.jna.internal.ReflectionUtils"
+    },
+    "name": "java.lang.reflect.Method",
+    "methods": [
+      {
+        "name": "isDefault",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "condition": {
+      "typeReachable": "com.sun.jna.Platform"
+    },
+    "name": "java.nio.Buffer"
+  },
+  {
+    "condition": {
+      "typeReachable": "com.sun.jna.Native"
+    },
+    "name": "java.security.SecureRandomParameters"
+  },
+  {
+    "condition": {
+      "typeReachable": "com.sun.jna.Native"
+    },
+    "name": "sun.security.provider.NativePRNG",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "condition": {
+      "typeReachable": "com.sun.jna.Native"
+    },
+    "name": "sun.security.provider.SHA",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  }
+
+  ,
+
+{
+  "name":"com.phronemophobic.llama.impl.model.ILLama"
+},
+{
+  "name":"com.phronemophobic.llama.impl.model.ILLamaContext"
+},
+{
+  "name":"com.phronemophobic.llama.impl.model__init"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10009",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10032",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10055",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10078",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10101",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10124",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10147",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1016",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10170",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10193",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10216",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10239",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10262",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10285",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10308",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10331",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10354",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10377",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1039",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10400",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10423",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10446",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10469",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10492",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10515",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10538",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10561",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10584",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10607",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1062",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10630",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10653",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10676",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10699",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10722",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10745",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10768",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10791",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10814",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10837",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1085",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10860",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10883",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10906",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10929",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10952",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10975",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval10998",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11021",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11044",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11067",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1108",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11090",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11113",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11136",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11159",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11182",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11205",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11228",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11251",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11274",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11297",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1131",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11320",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11343",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11366",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11389",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11412",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11435",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11458",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11481",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11504",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11527",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1154",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11550",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11573",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11596",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11619",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11642",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11665",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11688",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11711",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11734",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11757",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1177",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11780",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11803",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11826",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11849",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11872",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11895",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11918",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11941",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11964",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval11987",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1200",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12010",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12033",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12056",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12079",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12102",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12125",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12148",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12171",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12194",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12217",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1223",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12240",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12263",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12286",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12309",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12332",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12355",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12378",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12401",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12424",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12447",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1246",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12470",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12493",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12516",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12539",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12562",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12585",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12608",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12631",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12654",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12677",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1269",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12700",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12723",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12746",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12769",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12792",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12815",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12838",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12861",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12884",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12907",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1292",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12930",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12953",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12976",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval12999",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13022",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13045",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13068",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13091",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13114",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13137",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1315",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13160",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13183",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13206",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13229",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13252",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13275",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13298",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13321",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13344",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13367",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1338",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13390",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13413",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13436",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13459",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13482",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13505",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13528",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13551",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13574",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13597",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1361",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13620",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13643",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13666",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13689",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13712",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13735",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13758",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13779",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13781",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13783",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13785",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13787",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13789",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13791",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13793",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13795",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13797",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13799",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13801",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13803",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13805",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13807",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13809",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13811",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13813",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13815",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13817",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13819",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13821",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13823",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13825",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13827",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13829",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13831",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13833",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13835",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13837",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13839",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1384",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13841",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13843",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13845",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13847",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13849",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13851",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13853",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13855",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13857",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13859",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13861",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13863",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13865",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13867",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13869",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13871",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13873",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13875",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13877",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13879",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13881",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13883",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13885",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13887",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13889",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13891",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13893",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13895",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13897",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13899",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13901",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13903",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval13905",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1407",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1430",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1453",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1476",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1499",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1522",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1545",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1568",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1591",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1614",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1637",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1660",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1683",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1706",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1729",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1752",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1775",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1798",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1821",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1844",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1867",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1890",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1913",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval193",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1936",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1959",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval1982",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2005",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2028",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval205",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2051",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2074",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2097",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2120",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2143",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2166",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2189",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval219",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2212",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2235",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2258",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2281",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2304",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2327",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval234",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2350",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2373",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2396",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2419",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2442",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2465",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2488",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2511",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2534",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2557",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval257",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2580",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2603",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2626",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2649",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2672",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2695",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2718",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2741",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2764",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2787",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval280",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2810",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2833",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2856",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2879",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2902",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2925",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2948",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2971",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval2994",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3017",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval303",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3040",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3063",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3086",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3109",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3132",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3155",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3178",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3201",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3224",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3247",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval326",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3270",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3293",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3316",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3339",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3362",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3385",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3408",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3431",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3454",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3477",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval349",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3500",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3523",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3546",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3569",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3592",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3615",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3638",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3661",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3684",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3707",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval372",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3730",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3753",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3776",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3799",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3822",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3845",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3868",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3891",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3914",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3937",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval395",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3960",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval3983",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4006",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4029",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4052",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4075",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4098",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4121",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4144",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4167",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval418",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4190",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4213",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4236",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4259",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4282",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4305",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4328",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4351",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4374",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4397",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval441",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4420",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4443",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4466",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4489",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4512",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4535",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4558",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4581",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4604",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4627",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval464",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4650",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4673",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4696",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4719",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4742",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4765",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4788",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4811",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4834",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4857",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval487",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4880",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4903",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4926",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4949",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4972",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval4995",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5018",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5041",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5064",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5087",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval510",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5110",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5133",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5156",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5179",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5202",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5225",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5248",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5271",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5294",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5317",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval533",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5340",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5363",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5386",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5409",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5432",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5455",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5478",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5501",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5524",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5547",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval556",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5570",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5593",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5616",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5639",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5662",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5685",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5708",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5731",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5754",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5777",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval579",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5800",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5823",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5846",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5869",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5892",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5915",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5938",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5961",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval5984",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6007",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval602",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6030",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6053",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6076",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6099",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6122",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6145",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6168",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6191",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6214",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6237",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval625",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6260",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6283",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6306",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6329",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6352",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6375",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6398",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6421",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6444",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6467",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval648",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6490",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6513",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6536",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6559",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6582",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6605",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6628",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6651",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6674",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6697",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval671",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6720",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6743",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6766",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6789",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6812",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6835",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6858",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6881",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6904",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6927",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval694",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6950",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6973",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval6996",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7019",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7042",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7065",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7088",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7111",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7134",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7157",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval717",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7180",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7203",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7226",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7249",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7272",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7295",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7318",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7341",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7364",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7387",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval740",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7410",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7433",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7456",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7479",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7502",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7525",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7548",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7571",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7594",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7617",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval763",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7640",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7663",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7686",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7709",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7732",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7755",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7778",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7801",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7824",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7847",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval786",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7870",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7893",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7916",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7939",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7962",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval7985",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8008",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8031",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8054",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8077",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval809",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8100",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8123",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8146",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8169",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8192",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8215",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8238",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8261",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8284",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8307",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval832",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8330",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8353",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8376",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8399",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8422",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8445",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8468",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8491",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8514",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8537",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval855",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8560",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8583",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8606",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8629",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8652",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8675",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8698",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8721",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8744",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8767",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval878",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8790",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8813",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8836",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8859",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8882",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8905",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8928",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8951",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8974",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval8997",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval901",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9020",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9043",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9066",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9089",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9112",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9135",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9158",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9181",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9204",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9227",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval924",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9250",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9273",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9296",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9319",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9342",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9365",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9388",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9411",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9434",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9457",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval947",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9480",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9503",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9526",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9549",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9572",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9595",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9618",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9641",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9664",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9687",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval970",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9710",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9733",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9756",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9779",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9802",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9825",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9848",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9871",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9894",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9917",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval993",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9940",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9963",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf$eval9986",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.Struct_33023E32"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.Struct_33023E32ByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.Struct_A696EC15"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.Struct_A696EC15ByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.Struct_A6B1AD3E"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.Struct_A6B1AD3EByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.Struct_B6B81675"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.Struct_B6B81675ByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_bf16_t"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_bf16_tByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_cgraph"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_cgraphByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_compute_params"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_compute_paramsByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_cplan"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_cplanByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_hash_set"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_hash_setByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_init_params"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_init_paramsByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_object"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_objectByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_opt_context"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_opt_contextByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_opt_params"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_opt_paramsByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_scratch"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_scratchByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_tallocr"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_tallocrByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_tensor"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_tensorByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_type_traits_t"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.ggml_type_traits_tByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.gguf_init_params"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.gguf_init_paramsByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_batch",
+  "allDeclaredFields":true,
+  "fields":[{"name":"OPTIONS"}, {"name":"STRING_ENCODING"}, {"name":"STRUCTURE_ALIGNMENT"}, {"name":"TYPE_MAPPER"}]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_batchByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_beam_view"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_beam_viewByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_beams_state"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_beams_stateByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_chat_message",
+  "allDeclaredFields":true,
+  "fields":[{"name":"OPTIONS"}, {"name":"STRING_ENCODING"}, {"name":"STRUCTURE_ALIGNMENT"}, {"name":"TYPE_MAPPER"}]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_chat_messageByReference",
+  "allDeclaredFields":true,
+  "queryAllPublicConstructors":true,
+  "fields":[{"name":"OPTIONS"}, {"name":"STRING_ENCODING"}, {"name":"STRUCTURE_ALIGNMENT"}, {"name":"TYPE_MAPPER"}],
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_context_params",
+  "allDeclaredFields":true,
+  "fields":[{"name":"OPTIONS"}, {"name":"STRING_ENCODING"}, {"name":"STRUCTURE_ALIGNMENT"}, {"name":"TYPE_MAPPER"}],
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_context_paramsByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_grammar_element"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_grammar_elementByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_kv_cache_view"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_kv_cache_viewByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_kv_cache_view_cell"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_kv_cache_view_cellByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_model_kv_override"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_model_kv_overrideByReference",
+  "allDeclaredFields":true,
+  "queryAllPublicConstructors":true,
+  "fields":[{"name":"OPTIONS"}, {"name":"STRING_ENCODING"}, {"name":"STRUCTURE_ALIGNMENT"}, {"name":"TYPE_MAPPER"}],
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_model_params",
+  "allDeclaredFields":true,
+  "fields":[{"name":"OPTIONS"}, {"name":"STRING_ENCODING"}, {"name":"STRUCTURE_ALIGNMENT"}, {"name":"TYPE_MAPPER"}],
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_model_paramsByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_model_quantize_params"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_model_quantize_paramsByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_timings"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_timingsByReference"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_token_data",
+  "allDeclaredFields":true,
+  "fields":[{"name":"OPTIONS"}, {"name":"STRING_ENCODING"}, {"name":"STRUCTURE_ALIGNMENT"}, {"name":"TYPE_MAPPER"}]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_token_dataByReference",
+  "allDeclaredFields":true,
+  "queryAllPublicConstructors":true,
+  "fields":[{"name":"OPTIONS"}, {"name":"STRING_ENCODING"}, {"name":"STRUCTURE_ALIGNMENT"}, {"name":"TYPE_MAPPER"}],
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_token_data_array"
+},
+{
+  "name":"com.phronemophobic.llama.raw_gguf.structs.llama_token_data_arrayByReference",
+  "allDeclaredFields":true,
+  "queryAllPublicMethods":true,
+  "fields":[{"name":"OPTIONS"}, {"name":"STRING_ENCODING"}, {"name":"STRUCTURE_ALIGNMENT"}, {"name":"TYPE_MAPPER"}]
+},
+{
+  "name":"com.sun.jna.CallbackProxy",
+  "methods":[{"name":"callback","parameterTypes":["java.lang.Object[]"] }]
+},
+{
+  "name":"com.sun.jna.Function",
+  "queryAllPublicMethods":true
+},
+{
+  "name":"com.sun.jna.Pointer",
+  "fields":[{"name":"OPTIONS"}, {"name":"STRING_ENCODING"}, {"name":"STRUCTURE_ALIGNMENT"}, {"name":"TYPE_MAPPER"}]
+},
+
+{
+  "name":"com.sun.jna.Structure$FFIType",
+  "allDeclaredFields":true,
+  "queryAllPublicConstructors":true,
+  "fields":[{"name":"OPTIONS"}, {"name":"STRING_ENCODING"}, {"name":"STRUCTURE_ALIGNMENT"}, {"name":"TYPE_MAPPER"}],
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.jna.Structure$FFIType$size_t",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.jna.Structure$FieldOrder"
+},
+{
+  "name":"com.sun.jna.ptr.ByteByReference",
+  "fields":[{"name":"OPTIONS"}, {"name":"STRING_ENCODING"}, {"name":"STRUCTURE_ALIGNMENT"}, {"name":"TYPE_MAPPER"}],
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.jna.ptr.DoubleByReference"
+},
+{
+  "name":"com.sun.jna.ptr.FloatByReference",
+  "fields":[{"name":"OPTIONS"}, {"name":"STRING_ENCODING"}, {"name":"STRUCTURE_ALIGNMENT"}, {"name":"TYPE_MAPPER"}],
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.jna.ptr.IntByReference",
+  "fields":[{"name":"OPTIONS"}, {"name":"STRING_ENCODING"}, {"name":"STRUCTURE_ALIGNMENT"}, {"name":"TYPE_MAPPER"}],
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+}
+
+]

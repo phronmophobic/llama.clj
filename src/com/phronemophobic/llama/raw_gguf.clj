@@ -21,7 +21,7 @@
            com.sun.jna.Platform)
   (:gen-class))
 
-(def cleaner (Cleaner/create))
+(def cleaner (delay (Cleaner/create)))
 
 
 (defn ^:private write-edn [w obj]
@@ -50,19 +50,20 @@
                                              RTLD_LOCAL
                                              RTLD_LAZY)})))
 (def ^:no-doc libllama
-  (try
-    (com.sun.jna.NativeLibrary/getInstance "llama-gguf" libllama-options)
-    (catch UnsatisfiedLinkError e
-      ;; to support local builds
-      (let [libllama (com.sun.jna.NativeLibrary/getInstance "llama" libllama-options)]
-        ;; Make sure it's not an old version
-        (try
-          (.getFunction ^com.sun.jna.NativeLibrary libllama
-                        "llama_token_to_piece")
-          (catch UnsatisfiedLinkError _
-            ;; throw original error
-            (throw e)))
-        libllama))))
+  (delay
+    (try
+      (com.sun.jna.NativeLibrary/getInstance "llama-gguf" libllama-options)
+      (catch UnsatisfiedLinkError e
+        ;; to support local builds
+        (let [libllama (com.sun.jna.NativeLibrary/getInstance "llama" libllama-options)]
+          ;; Make sure it's not an old version
+          (try
+            (.getFunction ^com.sun.jna.NativeLibrary libllama
+                          "llama_token_to_piece")
+            (catch UnsatisfiedLinkError _
+              ;; throw original error
+              (throw e)))
+          libllama)))))
 
 (def default-arguments
   [ "-resource-dir"
@@ -104,11 +105,13 @@
                 rdr (java.io.PushbackReader. rdr)]
       (edn/read rdr)))
 
+;; there's a struct and a function named ggml_backend_graph_copy
+;; which causes problems.
 (defn remove-broken [api]
   (specter/setval
-   [:structs
+   [:functions
     specter/ALL
-    #(= :clong/ggml_backend_graph_copy
+    #(= :ggml_backend_graph_copy
         (:id %))]
    specter/NONE
    api))
@@ -148,7 +151,7 @@
              (adjust-batch-struct)
              (adjust-chat-message-struct)))
 
-(gen/def-api libllama api)
+(gen/def-api-lazy libllama api)
 
 (let [struct-prefix (gen/ns-struct-prefix *ns*)]
   (defmacro import-structs! []
@@ -745,8 +748,8 @@
                        (delete-model)))]
 
      ;; cleanup
-     (.register ^Cleaner cleaner context delete-context)
-     (.register ^Cleaner cleaner model delete-model)
+     (.register ^Cleaner @cleaner context delete-context)
+     (.register ^Cleaner @cleaner model delete-model)
 
      context)))
 

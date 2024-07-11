@@ -4,7 +4,7 @@
 *.jar
 *.class
 /.calva/output-window/
-/.cpcache
+.cpcache
 /.lein-*
 /.lsp/sqlite*.db
 /.nrepl-history
