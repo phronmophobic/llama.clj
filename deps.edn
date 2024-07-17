@@ -112,8 +112,8 @@
                 com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"
                                                                      ;;:local/root "/Users/adrian/workspace/cljonda/build/llama-cpp.jar"
                                                                      }
-                com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {;; :mvn/version "b3040"
-                                                                          :local/root "/Users/adrian/workspace/cljonda/build/llama-cpp-gguf.jar"
+                com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 { :mvn/version "b3040"
+                                                                          ;; :local/root "/Users/adrian/workspace/cljonda/build/llama-cpp-gguf.jar"
                                                                           }
                 io.github.nextjournal/clerk {:mvn/version "0.14.919"}
                 org.clojure/test.check {:mvn/version "1.1.1"}
