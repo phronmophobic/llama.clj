@@ -305,8 +305,9 @@
            (let [^Memory buf (get-token-buf ctx 1)]
              [1 (doto buf
                   (.setInt 0 s))]))]
-     (assert (< n-past (llama_n_ctx ctx))
-             "Context size exceeded")
+     (when (not (< n-past (llama_n_ctx ctx)))
+       (throw (ex-info "Context size exceeded."
+                       {})))
      (when (and num-threads
                 (not= num-threads
                       (:num-threads ctx)))
