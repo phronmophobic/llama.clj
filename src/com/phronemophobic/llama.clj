@@ -150,7 +150,7 @@
 
   An optional map of parameters may be passed for parameterizing the model. The following keys map to their corresponding llama.cpp equivalents:
   - `:seed`: RNG seed, -1 for random
-  - `:n-ctx`: text context
+  - `:n-ctx`: context size, set to 0 to use context size from model
   - `:n-batch`: prompt processing batch size
   - `:n-gpu-layers`: number of layers to store in VRAM
   - `:main-gpu`: the GPU that is used for scratch and small tensors
@@ -417,7 +417,9 @@
   (def model-path "models/llama-2-7b-chat.Q4_0.gguf")
   (def model-path "models/qwen2-0_5b-instruct-q4_0.gguf")
 
-  (def ctx (create-context model-path {:n-ctx 2048
+  (def model-path "models/bge-large-en-v1.5-q4_k_m.gguf")
+
+  (def ctx (create-context model-path {:n-ctx 0
                                        ;;:n-gpu-layers 1
                                        }))
 
