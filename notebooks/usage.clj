@@ -37,13 +37,14 @@
 (clerk/code ";; downloaded previously from
 ;; https://huggingface.co/Qwen/Qwen2-0.5B-Instruct-GGUF/resolve/main/qwen2-0_5b-instruct-q4_k_m.gguf?download=true
 (def model-path \"models/qwen2-0_5b-instruct-q4_k_m.gguf\")
-(def llama-context (llama/create-context model-path {}))
+;; Use larger context size of 2048.
+(def llama-context (llama/create-context model-path {:n-ctx 2048}))
 ")
 
-^{:nextjournal.clerk/visibility {:code :show :result :show}}
+^{:nextjournal.clerk/visibility {:code :hide :result :hide}}
 (do
   (def model-path "models/qwen2-0_5b-instruct-q4_k_m.gguf")
-  (def llama-context (llama/create-context model-path {}))
+  (def llama-context (llama/create-context model-path {:n-ctx 2048}))
   (def seed 1337)
   seed)
 
@@ -69,6 +70,22 @@
 ;; If no `opts` are specified, then defaults will be used.
 ;; 
 ;; The `model-path` arg should be a string path (relative or absolute) to a gguf or ggml model.
+
+;; ### Context Size
+
+;; The default context size is 512 tokens, which can be limiting. To increase the context size, provide `:n-ctx` as an option during context creation.
+
+;; ```clojure
+;; ;; Use context size of 2048 tokens
+;; (llama/create-context model-path {:n-ctx 2048})
+;; ```
+
+;; The max context size of the model can be used by passing `0` for `:n-ctx`.
+
+;; ```clojure
+;; ;; Use model's max context size.
+;; (llama/create-context model-path {:n-ctx 0})
+;; ```
 
 ;; ## Prompt Templates
 
@@ -177,6 +194,12 @@
 (vec
  (llama/generate-embedding llama-embedding-context "hello world"))
 
+
+;; ## FAQ
+
+;; ### Context size exceeded
+
+;; This exception means that the maximum number of tokens for a particular context have been generated and that no more tokens can be generated. There are many options for handling generation beyond the context size that are beyond the scope of this documentation. However, one easy option is to increase the context size of the context if the context size is not already at its maximum (see [:n-ctx](#context-size)). The maximum context size will depend on your hardware and the model. However, there are tradeoffs to larger context sizes that can be mitigated with other techniques. The [Local LLama](https://www.reddit.com/r/LocalLLaMA) subreddit can be a good resource for practical tips.
 
 ^{:nextjournal.clerk/visibility {:code :hide :result :hide}}
 (comment
