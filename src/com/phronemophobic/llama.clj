@@ -75,6 +75,11 @@
   [ctx]
   (model/n-embd ctx))
 
+(defn n-ctx
+  "The context size for the associated model."
+  [ctx]
+  (model/n-ctx ctx))
+
 (def ^:private ggml-model
   (delay
     @(requiring-resolve 'com.phronemophobic.llama.raw/llama-model)))
