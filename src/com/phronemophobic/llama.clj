@@ -425,6 +425,7 @@
   (def model-path "models/bge-large-en-v1.5-q4_k_m.gguf")
 
   (def ctx (create-context model-path {:n-ctx 0
+                                       ;; :embedding true
                                        ;;:n-gpu-layers 1
                                        }))
 
