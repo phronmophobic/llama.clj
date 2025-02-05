@@ -331,14 +331,24 @@
                         (.writeField "sorted" (byte 0)))]
       candidates*)))
 
-;; tau default 5.0
-;; eta default 0.1
+
 (defn ^:private sample-mirostat-v2* [ctx candidates-buf* mu* tau eta]
   (let [mu (FloatByReference. @mu*)
         candidates (ctx->candidates ctx candidates-buf*)
         next-token (llama_sample_token_mirostat_v2 ctx candidates tau eta mu)]
     (vreset! mu* (.getValue mu))
     next-token))
+
+(defn ^:private init-mirostat-v2-sampler* [ctx tau eta]
+  (let [candidates-buf* (volatile! nil)
+        mu* (volatile! (* 2 tau))]
+    (fn [logits]
+      (model/sample-mirostat-v2 ctx
+                                candidates-buf*
+                                mu*
+                                tau
+                                eta))))
+
 
 (defn ^:private get-embedding*
   [ctx]
@@ -540,6 +550,8 @@
                         (decode-token this))
                        ([opts]
                         (decode-token this opts)))
+                     (init_mirostat_v2_sampler [tau eta]
+                       (init-mirostat-v2-sampler* this tau eta))
                      (sample_mirostat_v2 [candidates-buf* mu* tau eta]
                        (sample-mirostat-v2* this candidates-buf* mu* tau eta))
                      (set_rng_seed [seed]

@@ -85,7 +85,7 @@
     @(requiring-resolve 'com.phronemophobic.llama.raw/llama-model)))
 (def ^:private gguf-model
   (delay
-    @(requiring-resolve 'com.phronemophobic.llama.raw-gguf/llama-model)))
+    (@(requiring-resolve 'com.phronemophobic.llama.raw-gguf/guess-model-api))))
 
 (defonce ^:private log-callback (atom nil))
 (defn set-log-callback
@@ -154,24 +154,36 @@
   `model-path` should be an absolute or relative path to a ggml or gguf model.
 
   An optional map of parameters may be passed for parameterizing the model. The following keys map to their corresponding llama.cpp equivalents:
-  - `:seed`: RNG seed, -1 for random
-  - `:n-ctx`: context size, set to 0 to use context size from model
-  - `:n-batch`: prompt processing batch size
+  - `:n-ctx`: text context, 0 = from model
+  - `:n-batch`: logical maximum batch size that can be submitted to llama_decode
+  - `:n-ubatch`: physical maximum batch size
+  - `:n-threads`: number of threads to use for generation
+  - `:n-threads-batch`: number of threads to use for batch processing
+
   - `:n-gpu-layers`: number of layers to store in VRAM
-  - `:main-gpu`: the GPU that is used for scratch and small tensors
+  - `:main-gpu`: the GPU that is used for the entire model when split_mode is LLAMA_SPLIT_MODE_NONE
   - `:tensor-split`: how to split layers across multiple GPUs
-  - `:rope-freq-base`: RoPE base frequency
-  - `:rope-freq-scale`: RoPE frequency scaling factor
-  - `:low-vram`: if true, reduce VRAM usage at the cost of performance (ggml only)
-  - `:mul_mat_q`: if true, use experimental mul_mat_q kernels
-  - `:f16-kv`: use fp16 for KV cache
-  - `:logits-all`: the llama_eval() call computes all logits, not just the last one
   - `:vocab-only`: only load the vocabulary, no weights
   - `:use-mmap`: use mmap if possible
   - `:use-mlock`: force system to keep model in RAM
-  - `:embedding`: if true, extract embeddings (together with logits)
-  - `:gqa`: grouped-query attention factor (TEMP!!! use 8 for LLaMAv2 70B) (ggml only)
-  - `:rms-norm-eps`: rms norm eps (TEMP!!! use 1e-5 for LLaMAv2) (ggml only)
+  - `:check-tensors`: validate model tensor data
+
+
+  // ref: https://github.com/ggerganov/llama.cpp/pull/2054
+  - `:rope-freq-base`: RoPE base frequency, 0 = from model
+  - `:rope-freq-scale`: RoPE frequency scaling factor, 0 = from model
+  - `:yarn-ext-factor`: YaRN extrapolation mix factor, negative = from model
+  - `:yarn-attn-factor`: YaRN magnitude scaling factor
+  - `:yarn-beta-fast`: YaRN low correction dim
+  - `:yarn-beta-slow`: YaRN high correction dim
+  - `:yarn-orig-ctx`: YaRN original context size
+  - `:defrag-thold`: defragment the KV cache if holes/size > thold, < 0 disabled (default)
+
+  - `:logits-all`: the llama_decode() call computes all logits, not just the last one (DEPRECATED - set llama_batch.logits instead)
+  - `:embeddings`: if true, extract embeddings (together with logits)
+  - `:offload-kqv`: whether to offload the KQV ops (including the KV cache) to GPU
+  - `:flash-attn`: whether to use flash attention [EXPERIMENTAL]
+  - `:no-perf`: whether to measure performance timings
 
   The `:model-format` can be specified as either `:ggml` or `:gguf`. If not provided,
   the model format will be guessed by looking at `model-path`.
@@ -279,15 +291,7 @@
          eta (float 0.1)]
      (init-mirostat-v2-sampler ctx tau eta)))
   ([ctx tau eta]
-   (fn [logits]
-     (model/sample-mirostat-v2 ctx
-                               (volatile! nil)
-                               (volatile! (* 2 tau))
-                               tau
-                               eta))))
-
-
-
+   (model/init-mirostat-v2-sampler ctx tau eta)))
 
 (defn ^:private char->str
   "Transducer that expects a stream of chars. If a surrogate pair is detected,
@@ -423,10 +427,12 @@
   (def model-path "models/qwen2-0_5b-instruct-q4_0.gguf")
 
   (def model-path "models/bge-large-en-v1.5-q4_k_m.gguf")
+  (def model-path "models/DeepSeek-R1-Distill-Qwen-1.5B-Q8_0.gguf")
 
-  (def ctx (create-context model-path {:n-ctx 0
+  (def ctx (create-context model-path {;; :n-ctx 0
                                        ;; :embedding true
                                        ;;:n-gpu-layers 1
+                                       ;; :samplef sample-logits-greedy
                                        }))
 
   (require '[com.phronemophobic.llama.util.prompt :as prompt])
