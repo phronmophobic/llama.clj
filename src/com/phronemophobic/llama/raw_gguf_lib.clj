@@ -19,6 +19,13 @@
 (def ^:no-doc libllama
   (delay
     (try
+      ;; must be loaded in dependency order and before libllama.
+      (doseq [libname ["ggml-base" "ggml-metal" "ggml-blas" "ggml-cpu" "ggml"]]
+        (try
+          (com.sun.jna.NativeLibrary/getInstance libname libllama-options)
+          (catch UnsatisfiedLinkError e
+            #_(println libname "not found."))))
+
       (com.sun.jna.NativeLibrary/getInstance "llama-gguf" libllama-options)
       (catch UnsatisfiedLinkError e
         ;; to support local builds
