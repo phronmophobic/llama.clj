@@ -3,7 +3,7 @@
             [clojure.string :as str]))
 
 (def lib 'com.phronemophobic/llama-clj)
-(def version "0.8.5")
+(def version "0.8.6-SNAPSHOT")
 
 (def class-dir "target/classes")
 (def basis (b/create-basis {:project "deps.edn"}))
@@ -52,7 +52,7 @@
          'com.phronemophobic.cljonda/llama-cpp-darwin-x86-64 {:mvn/version ggml-version}
          'com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version ggml-version}}
 
-        gguf-version "b3040"
+        gguf-version "b4634"
         gguf-deps
         {'com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version gguf-version}
          'com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version gguf-version}
