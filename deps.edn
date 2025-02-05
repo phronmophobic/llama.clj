@@ -46,11 +46,16 @@
   :sanity-check
   {:main-opts ["-m" "sanity-check"]
    :extra-paths ["notebooks"]
-   :extra-deps {com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b3040"}
+   :extra-deps {;;com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b3040"}
+                com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {;;   :mvn/version "b3040"
+                                                                          :mvn/version "b4634-SNAPSHOT"
+                                                                          ;; :local/root "/Users/adrian/workspace/cljonda/build/llama-cpp-gguf.jar"
+                                                                          }
                 com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
 
                 com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
-                com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version "b3040"}}}
+                com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {;;:mvn/version "b3040"
+                                                                        :mvn/version "b4634-SNAPSHOT"}}}
 
   :codox
   {:extra-deps {codox-theme-rdash/codox-theme-rdash {:mvn/version "0.1.2"}
@@ -105,15 +110,17 @@
               "-XX:+DebugNonSafepoints"
               "-XX:-HeapDumpOnOutOfMemoryError"
 
-              ;; "-Djna.library.path=/Users/adrian/workspace/llama.cpp/build"
+              ;; "-Djna.library.path=/Users/adrian/workspace/cljonda/build/llama.cpp/build/bin"
               ]
    :extra-deps {org.bytedeco/llvm-platform {:mvn/version "16.0.4-1.5.9"}
                 instaparse/instaparse {:mvn/version "1.4.12"}
                 com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"
                                                                      ;;:local/root "/Users/adrian/workspace/cljonda/build/llama-cpp.jar"
                                                                      }
-                com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 { :mvn/version "b3040"
+                com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {;;  :mvn/version "b3040"
+                                                                          :mvn/version "b4634-20250205.060025-2"
                                                                           ;; :local/root "/Users/adrian/workspace/cljonda/build/llama-cpp-gguf.jar"
+                                                                          ;; :local/root "/Users/adrian/workspace/cljonda/build/llama.cpp/build/bin"
                                                                           }
                 io.github.nextjournal/clerk {:mvn/version "0.14.919"}
                 org.clojure/test.check {:mvn/version "1.1.1"}
