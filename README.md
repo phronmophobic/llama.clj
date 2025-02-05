@@ -25,12 +25,12 @@ clojure -M:mvn-llama -m com.phronemophobic.llama "models/qwen2-0_5b-instruct-q4_
 For llama.clj with required native dependencies:
 
 ```clojure
-com.phronemophobic/llama-clj-combined {:mvn/version "0.8.5"}
+com.phronemophobic/llama-clj-combined {:mvn/version "0.8.6"}
 ```
 
 For llama.clj only _(see below for various alternatives for specifying native dependencies)_:
 ```clojure
-com.phronemophobic/llama-clj {:mvn/version "0.8.5"}
+com.phronemophobic/llama-clj {:mvn/version "0.8.6"}
 ```
 
 ### Native Dependency
@@ -48,9 +48,9 @@ The easiest method is to include the corresponding native dependency for your pl
 
 ```clojure
 ;; gguf dependencies
-com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version "b3040"}
-com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b3040"}
-com.phronemophobic.cljonda/llama-cpp-gguf-darwin-x86-64 {:mvn/version "b3040"}
+com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version "b4634"}
+com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b4634"}
+com.phronemophobic.cljonda/llama-cpp-gguf-darwin-x86-64 {:mvn/version "b4634"}
 
 ;; ggml dependencies
 ;; Note: deprecated
@@ -63,17 +63,21 @@ com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "6e88a462d7d2d28
 
 Clone https://github.com/ggerganov/llama.cpp and follow the instructions for building. Make sure to include the shared library options.
 
-_Note: The llama.cpp ffi bindings are based on the `b3040` release for gguf models and the `4329d1acb01c353803a54733b8eef9d93d0b84b2` git commit for ggml models. Future versions of llama.cpp might not be compatible if breaking changes are made. TODO: include instructions for updating ffi bindings._
+_Note: The llama.cpp ffi bindings are based on the `b4634` release for gguf models and the `4329d1acb01c353803a54733b8eef9d93d0b84b2` git commit for ggml models. Future versions of llama.cpp might not be compatible if breaking changes are made. TODO: include instructions for updating ffi bindings._
 
 For Example:
 
 ```sh
 git clone https://github.com/ggerganov/llama.cpp
 cd llama.cpp
-git checkout b3040
+git checkout b4634
 mkdir build
 cd build
+
+# mac osx users will probably want to include -DGGML_METAL_EMBED_LIBRARY=ON
+# eg. cmake -DBUILD_SHARED_LIBS=ON -DGGML_METAL_EMBED_LIBRARY=ON ..
 cmake -DBUILD_SHARED_LIBS=ON ..
+
 cmake --build . --config Release
 ```
 
@@ -81,7 +85,7 @@ Next, include an alias that includes the path to the directory where the shared 
 ```clojure
 ;; in aliases
 ;; add jvm opt for local llama build.
-:local-llama {:jvm-opts ["-Djna.library.path=/path/to/llama.cpp/build/"]}
+:local-llama {:jvm-opts ["-Djna.library.path=/path/to/llama.cpp/build/bin"]}
 ```
 
 ##### Dual wielding with local builds
@@ -130,7 +134,7 @@ Currently, pre-compiled binaries of llama.cpp with cuBLAS support are not availa
 ```sh
 git clone https://github.com/ggerganov/llama.cpp
 cd llama.cpp
-git checkout b3040
+git checkout b4634
 mkdir build
 cd build
 cmake -DBUILD_SHARED_LIBS=ON -DLLAMA_CUBLAS=ON ..
@@ -165,7 +169,7 @@ If you see a feature you're interested in or have a feature you want, please fil
 
 The MIT License (MIT)
 
-Copyright © 2024 Adrian Smith
+Copyright © 2025 Adrian Smith
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
