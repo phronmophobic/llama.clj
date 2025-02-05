@@ -22,10 +22,10 @@
 
   :clerk {:extra-paths ["notebooks"]
           :extra-deps
-          {io.github.nextjournal/clerk {:mvn/version "0.14.919"}}}
+          {io.github.nextjournal/clerk {:mvn/version "0.17.1102"}}}
 
   :generate-docs
-  {:extra-deps {io.github.nextjournal/clerk {:mvn/version "0.14.919"}
+  {:extra-deps {io.github.nextjournal/clerk {:mvn/version "0.17.1102"}
                 instaparse/instaparse {:mvn/version "1.4.12"}
 
                 com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b4634"}
@@ -122,6 +122,6 @@
                                                                           ;; :local/root "/Users/adrian/workspace/cljonda/build/llama-cpp-gguf.jar"
                                                                           ;; :local/root "/Users/adrian/workspace/cljonda/build/llama.cpp/build/bin"
                                                                           }
-                io.github.nextjournal/clerk {:mvn/version "0.14.919"}
+                io.github.nextjournal/clerk {:mvn/version "0.17.1102"}
                 org.clojure/test.check {:mvn/version "1.1.1"}
                 }}}}
