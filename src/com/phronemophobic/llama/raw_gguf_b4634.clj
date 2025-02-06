@@ -23,6 +23,9 @@
 
 (def cleaner (delay (Cleaner/create)))
 
+(defn ^:private random-int []
+  (.nextInt (java.util.Random.)))
+
 (defn ^:private write-edn [w obj]
   (binding [*print-length* nil
             *print-level* nil
@@ -597,27 +600,41 @@
 
 (defn ^:private init-mirostat-v2-sampler*
   ([ctx tau eta]
-   (init-mirostat-v2-sampler* ctx tau eta (.nextInt (java.util.Random.))))
-  ([ctx tau eta seed]
-   (let [sparams (llama_sampler_chain_default_params)
-         sampler (llama_sampler_chain_init sparams)
-         ptr (Pointer/nativeValue (.getPointer sampler))
-         _ (.register ^Cleaner @cleaner
-                      sampler
-                      (fn []
-                        (llama_sampler_free (Pointer. ptr))))
-         _ (llama_sampler_chain_add sampler (llama_sampler_init_mirostat_v2 seed tau eta))
+   (let [sampler* (::sampler ctx)
+         sampler-seed* (::sampler-seed ctx)
 
          samplef
          (fn [_logits]
-           (let [sampler @(::sampler ctx)
+           (let [
+                 next-seed @sampler-seed*
+                 previous-sampler @sampler*
+
+                 ;; create a new sampler if the seed has changed
+                 ;; or we don't have an existing sampler
+                 ;; set a new seed to create a new sampler
+                 sampler (if (or (nil? previous-sampler)
+                                 next-seed)
+                           (let [sparams (llama_sampler_chain_default_params)
+                                 ^llama_sampler
+                                 sampler (llama_sampler_chain_init sparams)
+                                 ptr (Pointer/nativeValue (.getPointer  sampler))
+                                 _ (.register ^Cleaner @cleaner
+                                              sampler
+                                              (fn []
+                                                (llama_sampler_free (Pointer. ptr))))
+
+                                 seed (or next-seed (random-int))
+                                 _ (llama_sampler_chain_add sampler (llama_sampler_init_mirostat_v2 seed tau eta))]
+                             ;; ignore race conditions
+                             ;; generating from multiple threads doesn't work anyway
+                             (reset! sampler-seed* nil)
+                             (reset! sampler* sampler)
+
+                             sampler)
+                           previous-sampler)
                  token (llama_sampler_sample sampler ctx -1)]
              (llama_sampler_accept sampler token)
              token))]
-     (reset! (::sampler ctx) sampler)
-     (reset! (::set-sampler-seed ctx)
-             (fn [seed]
-               (init-mirostat-v2-sampler* ctx tau eta seed)))
      samplef)))
 
 (defonce ^:private llm-init
@@ -664,8 +681,12 @@
                           (when old
                             (llama_free_model (Pointer. old)))))
 
-         set-sampler-seed (atom nil)
          sampler (atom nil)
+         sampler-seed (atom (let [params-seed (:seed params)]
+                              (cond
+                                (= -1 params-seed) (random-int)
+                                (nil? params-seed) (random-int)
+                                :else (int params-seed))))
 
          n-batch (.readField llama-context-params "n_batch")
          n-past (atom 0)
@@ -717,8 +738,7 @@
                      ;; Deprecated
                      #_(sample_mirostat_v2 [candidates-buf* mu* tau eta])
                      (set_rng_seed [seed]
-                       (when-let [set-seed @(::set-sampler-seed this)]
-                         (set-seed seed)))
+                       (reset! sampler-seed seed))
                      (n_ctx []
                        (llama_n_ctx this))
                      (n_vocab []
@@ -748,7 +768,7 @@
                          ;; used by mirostat sampler
                          ;; may be used by more generic sampling
                          ;; in the future
-                         ::set-sampler-seed set-sampler-seed
+                         ::sampler-seed sampler-seed
                          ::sampler sampler
 
                          ;; else
