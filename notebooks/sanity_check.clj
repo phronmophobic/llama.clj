@@ -13,6 +13,7 @@
 (def llama7b-gguf-path "models/llama-2-7b-chat.Q4_0.gguf")
 (def gemma-2b-path "models/gemma-2b.gguf")
 (def bge-large-path "models/bge-large-en-v1.5-q4_k_m.gguf")
+(def deepseek-path "models/DeepSeek-R1-Distill-Qwen-1.5B-Q8_0.gguf")
 
 ;; (def llama7b-ggml (llama/create-context llama7b-path))
 ;; (def llama7b-ggml-embedding (llama/create-context llama7b-path
@@ -27,7 +28,8 @@
    (keep (fn [[k path opts]]
            (when (.exists (io/file path))
              [k (llama/create-context path opts)])))
-   [[:llama7b-ggml llama7b-path {}]
+   [[:deepseek-gguf deepseek-path {}]
+    [:llama7b-ggml llama7b-path {}]
     [:llama7b-ggml-embedding llama7b-path {:embedding true}]
     [:llama7b-gguf llama7b-gguf-path {}]
     [:llama7b-gguf-embedding llama7b-gguf-path {:embedding true}]
@@ -64,6 +66,7 @@
 
         [:llama7b-ggml
          :llama7b-gguf
+         :deepseek-gguf
          :gemma]))
 
 

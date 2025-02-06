@@ -26,5 +26,7 @@ jobs:
         run: mkdir -p models && cd models && curl -L -O 'https://huggingface.co/CompendiumLabs/bge-large-en-v1.5-gguf/resolve/main/bge-large-en-v1.5-q4_k_m.gguf'
       - name: Download qwen
         run: mkdir -p models && cd models && curl -L -O 'https://huggingface.co/Qwen/Qwen2-0.5B-Instruct-GGUF/resolve/main/qwen2-0_5b-instruct-q4_k_m.gguf'
+      - name: Download Deepseek
+        run: mkdir -p models && cd models && curl -L -O 'https://huggingface.co/bartowski/DeepSeek-R1-Distill-Qwen-1.5B-GGUF/resolve/main/DeepSeek-R1-Distill-Qwen-1.5B-Q8_0.gguf'
       - name: Build static
         run: clojure -J-Dclojure.main.report=stderr -M:sanity-check
