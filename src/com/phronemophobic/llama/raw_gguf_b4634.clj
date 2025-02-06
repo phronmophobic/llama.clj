@@ -310,6 +310,7 @@
        (loop [offset 0
               n-past n-past]
          (let [batch-buf (.share token-buf (* offset 4))
+               ^long
                num-batch-tokens (min batch-size (- total-tokens offset))]
 
            (.writeField batch "n_tokens" (int (min batch-size (- total-tokens offset))))
