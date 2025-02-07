@@ -6,7 +6,7 @@
   (:import com.sun.jna.Memory))
 
 (defn next-token
-  "Give a sequence of tokens, return the next token."
+  "Given a sequence of tokens, return the next token."
   [ctx tokens]
   (let [ctx (reduce (fn [ctx token]
                       (llama/llama-update ctx token))
@@ -32,7 +32,7 @@
 (defn print-response
   "Generates a response from prompt and print the results as they become available.
 
-  Returns nil"
+  Returns nil."
   ([ctx prompt]
    (print-response ctx prompt nil))
   ([ctx prompt opts]
