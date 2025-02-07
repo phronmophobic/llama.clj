@@ -73,7 +73,6 @@
                :output-path "docs/reference"
                :source-uri "https://github.com/phronmophobic/llama.clj/blob/main/{filepath}#L{line}"
                :namespaces [com.phronemophobic.llama
-                            com.phronemophobic.llama.raw
                             com.phronemophobic.llama.util]}}
 
   :test {:extra-paths ["test"]
