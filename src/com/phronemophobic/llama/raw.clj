@@ -1,4 +1,6 @@
 (ns com.phronemophobic.llama.raw
+  "Use of this namespace directly is deprecated and discouraged.
+  Use the high level api in com.phronemophobic.llama instead."
   (:require [com.phronemophobic.clong.gen.jna :as gen]
             [clojure.edn :as edn]
             [clojure.java.io :as io]
