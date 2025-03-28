@@ -123,9 +123,15 @@ mkdir -p models
 clojure -M:mvn-llama -m com.phronemophobic.llama "models/qwen2-0_5b-instruct-q4_0.gguf" "what is 2+2?"
 ```
 
+## Backends
+
+`llama.clj` can support any [backend](https://github.com/ggml-org/llama.cpp?tab=readme-ov-file#supported-backends) that [llama.cpp](https://github.com/ggml-org/llama.cpp?tab=readme-ov-file#supported-backends) supports (up to the latest supported release of llama.cpp, b4634). However, using a backend other than CPU or Metal will likely require compiling llama.cpp and installing any required dependency.
+
+Below is an example for how to use llama.clj with cuBLAS on linux.
+
 ## cuBLAS support
 
-For gpu support on linux, cuda must be installed. The instructions for cuda installation can be found in [nvidia's documentation](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/contents.html).
+Cuda must be installed. The instructions for cuda installation can be found in [nvidia's documentation](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/contents.html).
 
 Make sure to restart and follow the [post installation instructions](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#post-installation-actions) so that the cuda development tools like nvcc are available on the path.
 
