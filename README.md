@@ -125,7 +125,7 @@ clojure -M:mvn-llama -m com.phronemophobic.llama "models/qwen2-0_5b-instruct-q4_
 
 ## Backends
 
-`llama.clj` can support any [backend](https://github.com/ggml-org/llama.cpp?tab=readme-ov-file#supported-backends) that [llama.cpp](https://github.com/ggml-org/llama.cpp?tab=readme-ov-file) supports (up to the latest supported release of llama.cpp, b4634). However, using a backend other than CPU or Metal will likely require compiling llama.cpp and installing any required dependency.
+`llama.clj` can support any [backend](https://github.com/ggml-org/llama.cpp?tab=readme-ov-file#supported-backends) that [llama.cpp](https://github.com/ggml-org/llama.cpp?tab=readme-ov-file) supports (up to the latest supported release of llama.cpp, `b4634`). However, using a backend other than CPU or Metal will likely require compiling llama.cpp and installing any required dependency.
 
 Below is an example for how to use llama.clj with cuBLAS on linux.
 
