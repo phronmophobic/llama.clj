@@ -428,6 +428,7 @@
 
   (def model-path "models/bge-large-en-v1.5-q4_k_m.gguf")
   (def model-path "models/DeepSeek-R1-Distill-Qwen-1.5B-Q8_0.gguf")
+  (def model-path "models/Meta-Llama-3-8B-Instruct-Q4_K_M.gguf")
 
   (def ctx (create-context model-path {;; :n-ctx 0
                                        ;; :embedding true
@@ -437,7 +438,13 @@
 
   (require '[com.phronemophobic.llama.util.prompt :as prompt])
   (require '[com.phronemophobic.llama.util :as llutil])
-  (llutil/print-response ctx "what is clojure?")
+  
+  (llutil/print-response ctx
+                         (chat-apply-template ctx
+                        [{:role "user"
+                          :content "what is clojure?"}]))
+
+
 
   (generate-string
    ctx
