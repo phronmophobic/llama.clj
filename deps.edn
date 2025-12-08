@@ -16,9 +16,9 @@
     com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
 
     ;; gguf dependencies
-    com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version "b4634"}
-    com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b4634"}
-    com.phronemophobic.cljonda/llama-cpp-gguf-darwin-x86-64 {:mvn/version "b4634"}}}
+    com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version "b7325"}
+    com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b7325"}
+    com.phronemophobic.cljonda/llama-cpp-gguf-darwin-x86-64 {:mvn/version "b7325"}}}
 
   :clerk {:extra-paths ["notebooks"]
           :extra-deps
@@ -28,11 +28,11 @@
   {:extra-deps {io.github.nextjournal/clerk {:mvn/version "0.14.919"}
                 instaparse/instaparse {:mvn/version "1.4.12"}
 
-                com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b4634"}
+                com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b7325"}
                 com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
 
                 com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
-                com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version "b4634"}}
+                com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version "b7325"}}
    :extra-paths ["notebooks"]
    :exec-fn nextjournal.clerk/build!
    :exec-args {:paths ["notebooks/intro.clj"
@@ -48,14 +48,14 @@
    :extra-paths ["notebooks"]
    :extra-deps {;;com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b3040"}
                 com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {;;   :mvn/version "b3040"
-                                                                          :mvn/version "b4634"
+                                                                          :mvn/version "b7325"
                                                                           ;; :local/root "/Users/adrian/workspace/cljonda/build/llama-cpp-gguf.jar"
                                                                           }
                 com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
 
                 com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
                 com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {;;:mvn/version "b3040"
-                                                                        :mvn/version "b4634"}}}
+                                                                        :mvn/version "b7325"}}}
 
   :codox
   {:extra-deps {codox-theme-rdash/codox-theme-rdash {:mvn/version "0.1.2"}
@@ -80,7 +80,7 @@
          {com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"
                                                                      ;;:local/root "/Users/adrian/workspace/cljonda/build/llama-cpp.jar"
                                                                      }
-          com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b4634"}
+          com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b7325"}
           io.github.cognitect-labs/test-runner
           {:git/tag "v0.5.1" :git/sha "dfb30dd"}
           org.clojure/test.check {:mvn/version "1.1.1"}}
@@ -117,7 +117,7 @@
                                                                      ;;:local/root "/Users/adrian/workspace/cljonda/build/llama-cpp.jar"
                                                                      }
                 com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {;;  :mvn/version "b3040"
-                                                                          :mvn/version "b4634"
+                                                                          :mvn/version "b7325"
                                                                           ;; :local/root "/Users/adrian/workspace/cljonda/build/llama-cpp-gguf.jar"
                                                                           ;; :local/root "/Users/adrian/workspace/cljonda/build/llama.cpp/build/bin"
                                                                           }

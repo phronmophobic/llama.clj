@@ -8,7 +8,7 @@
                     "llama_set_rng_seed")
       @(requiring-resolve 'com.phronemophobic.llama.raw-gguf-b3040/llama-model)
       (catch UnsatisfiedLinkError e
-        @(requiring-resolve 'com.phronemophobic.llama.raw-gguf-b4634/llama-model)))))
+        @(requiring-resolve 'com.phronemophobic.llama.raw-gguf-b7325/llama-model)))))
 
 
 

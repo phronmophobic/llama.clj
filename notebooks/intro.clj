@@ -7,7 +7,7 @@
             [util.viewers :refer [wrap-seed]]
             [com.phronemophobic.llama :as llama]
             ;; required to make clerk work.
-            [com.phronemophobic.llama.raw-gguf-b4634 :as raw]
+            [com.phronemophobic.llama.raw-gguf-b7325 :as raw]
             [com.phronemophobic.llama.util :as llutil]
             [clojure.java.io :as io]
             [clojure.string :as str]))

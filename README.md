@@ -48,9 +48,9 @@ The easiest method is to include the corresponding native dependency for your pl
 
 ```clojure
 ;; gguf dependencies
-com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version "b4634"}
-com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b4634"}
-com.phronemophobic.cljonda/llama-cpp-gguf-darwin-x86-64 {:mvn/version "b4634"}
+com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version "b7325"}
+com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b7325"}
+com.phronemophobic.cljonda/llama-cpp-gguf-darwin-x86-64 {:mvn/version "b7325"}
 
 ;; ggml dependencies
 ;; Note: deprecated
@@ -63,14 +63,14 @@ com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "6e88a462d7d2d28
 
 Clone https://github.com/ggerganov/llama.cpp and follow the instructions for building. Make sure to include the shared library options.
 
-_Note: The llama.cpp ffi bindings are based on the `b4634` release for gguf models and the `4329d1acb01c353803a54733b8eef9d93d0b84b2` git commit for ggml models. Future versions of llama.cpp might not be compatible if breaking changes are made. TODO: include instructions for updating ffi bindings._
+_Note: The llama.cpp ffi bindings are based on the `b7325` release for gguf models and the `4329d1acb01c353803a54733b8eef9d93d0b84b2` git commit for ggml models. Future versions of llama.cpp might not be compatible if breaking changes are made. TODO: include instructions for updating ffi bindings._
 
 For Example:
 
 ```sh
 git clone https://github.com/ggerganov/llama.cpp
 cd llama.cpp
-git checkout b4634
+git checkout b7325
 mkdir build
 cd build
 
@@ -125,7 +125,7 @@ clojure -M:mvn-llama -m com.phronemophobic.llama "models/qwen2-0_5b-instruct-q4_
 
 ## Backends
 
-`llama.clj` can support any [backend](https://github.com/ggml-org/llama.cpp?tab=readme-ov-file#supported-backends) that [llama.cpp](https://github.com/ggml-org/llama.cpp?tab=readme-ov-file) supports (up to the latest supported release of llama.cpp, `b4634`). However, using a backend other than CPU or Metal will likely require compiling llama.cpp and installing any required dependency.
+`llama.clj` can support any [backend](https://github.com/ggml-org/llama.cpp?tab=readme-ov-file#supported-backends) that [llama.cpp](https://github.com/ggml-org/llama.cpp?tab=readme-ov-file) supports (up to the latest supported release of llama.cpp, `b7325`). However, using a backend other than CPU or Metal will likely require compiling llama.cpp and installing any required dependency.
 
 Below is an example for how to use llama.clj with cuBLAS on linux.
 
@@ -140,7 +140,7 @@ Currently, pre-compiled binaries of llama.cpp with cuBLAS support are not availa
 ```sh
 git clone https://github.com/ggerganov/llama.cpp
 cd llama.cpp
-git checkout b4634
+git checkout b7325
 mkdir build
 cd build
 cmake -DBUILD_SHARED_LIBS=ON -DLLAMA_CUBLAS=ON ..
