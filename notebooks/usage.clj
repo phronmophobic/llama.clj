@@ -20,7 +20,7 @@
 ;; deps.edn dependency:
 
 ;; ```clojure
-;; com.phronemophobic/llama-clj {:mvn/version "0.8.6"}
+;; com.phronemophobic/llama-clj {:mvn/version "0.9.0"}
 ;; ```
 
 ;; ## Requires

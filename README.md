@@ -25,12 +25,12 @@ clojure -M:mvn-llama -m com.phronemophobic.llama "models/qwen2-0_5b-instruct-q4_
 For llama.clj with required native dependencies:
 
 ```clojure
-com.phronemophobic/llama-clj-combined {:mvn/version "0.8.6"}
+com.phronemophobic/llama-clj-combined {:mvn/version "0.9.0"}
 ```
 
 For llama.clj only _(see below for various alternatives for specifying native dependencies)_:
 ```clojure
-com.phronemophobic/llama-clj {:mvn/version "0.8.6"}
+com.phronemophobic/llama-clj {:mvn/version "0.9.0"}
 ```
 
 ### Native Dependency
