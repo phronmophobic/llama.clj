@@ -46,16 +46,13 @@
   :sanity-check
   {:main-opts ["-m" "sanity-check"]
    :extra-paths ["notebooks"]
-   :extra-deps {;;com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b3040"}
-                com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {;;   :mvn/version "b3040"
-                                                                          :mvn/version "b7325"
+   :extra-deps {com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b7325-3"
                                                                           ;; :local/root "/Users/adrian/workspace/cljonda/build/llama-cpp-gguf.jar"
                                                                           }
                 com.phronemophobic.cljonda/llama-cpp-darwin-aarch64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
 
                 com.phronemophobic.cljonda/llama-cpp-linux-x86-64 {:mvn/version "6e88a462d7d2d281e33f35c3c41df785ef633bc1"}
-                com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {;;:mvn/version "b3040"
-                                                                        :mvn/version "b7325"}}}
+                com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version "b7325-3"}}}
 
   :codox
   {:extra-deps {codox-theme-rdash/codox-theme-rdash {:mvn/version "0.1.2"}
