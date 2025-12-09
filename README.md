@@ -48,9 +48,9 @@ The easiest method is to include the corresponding native dependency for your pl
 
 ```clojure
 ;; gguf dependencies
-com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version "b7325"}
-com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b7325"}
-com.phronemophobic.cljonda/llama-cpp-gguf-darwin-x86-64 {:mvn/version "b7325"}
+com.phronemophobic.cljonda/llama-cpp-gguf-linux-x86-64 {:mvn/version "b7325-6"}
+com.phronemophobic.cljonda/llama-cpp-gguf-darwin-aarch64 {:mvn/version "b7325-6"}
+com.phronemophobic.cljonda/llama-cpp-gguf-darwin-x86-64 {:mvn/version "b7325-6"}
 
 ;; ggml dependencies
 ;; Note: deprecated
